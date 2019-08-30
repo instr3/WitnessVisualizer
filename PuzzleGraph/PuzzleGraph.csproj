@@ -55,6 +55,7 @@
     <Compile Include="Edge.cs" />
     <Compile Include="Face.cs" />
     <Compile Include="Graph.cs" />
+    <Compile Include="GraphElement.cs" />
     <Compile Include="IEdgeDecorable.cs" />
     <Compile Include="IFaceDecorable.cs" />
     <Compile Include="INodeDecorable.cs" />
@@ -62,6 +63,7 @@
     <Compile Include="Node.cs" />
     <Compile Include="Decorator.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SaveState.cs" />
     <Compile Include="TetrisTemplate.cs" />
     <Compile Include="XmlColor.cs" />
   </ItemGroup>

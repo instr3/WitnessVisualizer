@@ -64,6 +64,8 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="PuzzleGraphRenderer.cs" />
     <Compile Include="PuzzleSettings.cs" />
+    <Compile Include="PuzzleToolkit.cs" />
+    <Compile Include="PuzzleToolkitItem.cs" />
     <Compile Include="TetrisTemplateRenderer.cs" />
     <EmbeddedResource Include="MainForm.resx">
       <DependentUpon>MainForm.cs</DependentUpon>
@@ -101,6 +103,11 @@
       <Project>{e3452841-69be-4ec8-90d3-8ec07758d230}</Project>
       <Name>PuzzleGraph</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Templates\README.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

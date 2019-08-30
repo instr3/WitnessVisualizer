@@ -2,11 +2,11 @@
 
 namespace PuzzleGraph
 {
-    public class Node
+    public class Node: GraphElement
     {
         public double X { get; set; }
         public double Y { get; set; }
-        public Decorator Decorator { get; set; }
+        private Node() { }
         public Node(double inputX,double inputY)
         {
             X = inputX;

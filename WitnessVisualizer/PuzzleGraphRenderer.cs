@@ -89,7 +89,7 @@ namespace WitnessVisualizer
             DrawSelectionBoxes(view, view.SelectedObjects, Color.DarkGoldenrod, true);
             DrawSelectionBoxes(view, view.SelectedObjects, Color.Yellow);
         }
-        public void DrawSelectionBoxes(EditView view, List<object> selectedObjects, Color color, bool skew=false)
+        public void DrawSelectionBoxes(EditView view, List<GraphElement> selectedObjects, Color color, bool skew=false)
         {
             Vector skewVector = skew ? new Vector(2.0, 2.0) : Vector.Zero;
             float width = skew ? 2.5f : 2f;
@@ -309,7 +309,8 @@ namespace WitnessVisualizer
                 foreach (int index in indexes)
                 {
                     List<Node> shape = metaData.TetrisTemplate.Shapes[index];
-                    PointF[] points = shape.Select(node => (new Vector(node.X, node.Y)-selfBias).MapToScreen(totalScale, centerPosition).ToPoint()).ToArray();
+                    PointF[] points = shape.Select(node => (new Vector(node.X, node.Y) - selfBias).Rotate(angle / 180 * Math.PI)
+                    .MapToScreen(totalScale, centerPosition).ToPoint()).ToArray();
                     if (isHollow)
                         graphics.DrawClosedCurve(pen, points, 0.0f, System.Drawing.Drawing2D.FillMode.Alternate);
                     else
@@ -321,7 +322,8 @@ namespace WitnessVisualizer
                 foreach (int index in indexes)
                 {
                     List<Node> shape = metaData.TetrisTemplate.Shapes[index];
-                    PointF[] points = shape.Select(node => (new Vector(node.X, node.Y) - selfBias).MapToScreen(totalScale, centerPosition).ToPoint()).ToArray();
+                    PointF[] points = shape.Select(node => (new Vector(node.X, node.Y) - selfBias).Rotate(angle / 180 * Math.PI)
+                        .MapToScreen(totalScale, centerPosition).ToPoint()).ToArray();
                     graphics.DrawClosedCurve(pen, points, 0.0f, System.Drawing.Drawing2D.FillMode.Alternate);
 
                 }

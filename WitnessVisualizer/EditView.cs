@@ -18,20 +18,20 @@ namespace WitnessVisualizer
         bool isDragging;
         Vector mouseDownPosition;
         Vector editorSize;
-        Vector terisTemplateEditorSize;
-        public List<object> SelectedObjects { get; private set; } = new List<object>();
-        public List<object> HoveredObjects { get; private set; } = new List<object>();
+        Vector tetrisTemplateEditorSize;
+        public List<GraphElement> SelectedObjects { get; private set; } = new List<GraphElement>();
+        public List<GraphElement> HoveredObjects { get; private set; } = new List<GraphElement>();
         public bool[] SelectedTetrisShapes { get; private set; }
         public EditView(Graph inputGraph, int inputEditorWidth, int inputEditorHeight, int inputTetrisTemplateWidth, int inputTetrisTemplateHeight)
         {
             editorSize = new Vector(inputEditorWidth, inputEditorHeight);
-            terisTemplateEditorSize = new Vector(inputTetrisTemplateWidth, inputTetrisTemplateHeight);
+            tetrisTemplateEditorSize = new Vector(inputTetrisTemplateWidth, inputTetrisTemplateHeight);
             Graph = inputGraph;
             CalculateTetrisTemplateScaleAndOrigin(Graph.MetaData.TetrisTemplate);
             SelectedTetrisShapes = new bool[Graph.MetaData.TetrisTemplate.Shapes.Count];
         }
         #region graph
-        public object QueryPosition(Vector query)
+        public GraphElement QueryPosition(Vector query)
         {
             foreach(Node node in Graph.Nodes)
             {
@@ -79,8 +79,8 @@ namespace WitnessVisualizer
         {
             if (HoveredObjects.Count > 0)
             {
-                List<object> objectToKeep = new List<object>();
-                foreach (object havoredObject in HoveredObjects)
+                List<GraphElement> objectToKeep = new List<GraphElement>();
+                foreach (GraphElement havoredObject in HoveredObjects)
                 {
                     if(!SelectedObjects.Contains(havoredObject))
                     {
@@ -111,7 +111,7 @@ namespace WitnessVisualizer
             }
             else
             {
-                object havoredObject = QueryPosition(mousePosition.MapFromScreen(Scale, Origin));
+                GraphElement havoredObject = QueryPosition(mousePosition.MapFromScreen(Scale, Origin));
                 if(havoredObject != null)
                 {
                     HoveredObjects.Add(havoredObject);
@@ -161,7 +161,7 @@ namespace WitnessVisualizer
                     maxY = Math.Max(maxY, node.Y);
                 }
             }
-            TetrisTemplateScale = Math.Min((terisTemplateEditorSize.Y - marginSize * 2) / (maxY - minY), (terisTemplateEditorSize.X - marginSize * 2) / (maxX - minX));
+            TetrisTemplateScale = Math.Min((tetrisTemplateEditorSize.Y - marginSize * 2) / (maxY - minY), (tetrisTemplateEditorSize.X - marginSize * 2) / (maxX - minX));
             TetrisTemplateOrigin = new Vector(-minX * TetrisTemplateScale + marginSize, -minY * TetrisTemplateScale + marginSize);
 
         }

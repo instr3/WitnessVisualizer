@@ -4,11 +4,10 @@ using System.Text;
 
 namespace PuzzleGraph
 {
-    public class Edge
+    public class Edge : GraphElement
     {
         public Node Start { get; set; }
         public Node End { get; set; }
-        public Decorator Decorator { get; set; }
 
         public Edge(Node inputStart,Node inputEnd)
         {

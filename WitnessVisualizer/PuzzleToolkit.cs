@@ -4,11 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace PuzzleGraph
+namespace WitnessVisualizer
 {
-    public class TetrisTemplate
+    class PuzzleToolkit
     {
-        public List<List<Node>> Shapes { get; set; } = new List<List<Node>>();
-
     }
 }

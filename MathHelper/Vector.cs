@@ -98,6 +98,12 @@ namespace MathHelper
             double cosValue = (a ^ b) / lengthProduct;
             return Math.Acos(cosValue);
         }
+
+        public Vector Rotate(double angle)
+        {
+            double cosValue = Math.Cos(angle), sinValue = Math.Sin(angle);
+            return new Vector(cosValue * X - sinValue * Y, sinValue * X + cosValue * Y);
+        }
         #endregion
     }
 }

@@ -5,6 +5,7 @@ using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.Drawing.Drawing2D;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -19,6 +20,7 @@ namespace WitnessVisualizer
         BufferedGraphics graphBuffer, tetrisTemplateBuffer;
         PuzzleSettings settings;
         EditView editView;
+        string savePath;
         public MainForm()
         {
             InitializeComponent();
@@ -52,6 +54,18 @@ namespace WitnessVisualizer
         {
             tetrisTemplateRenderer.Draw(editView);
             tetrisTemplateBuffer.Render();
+        }
+        void UpdatePropertyGridBinding()
+        {
+            if(editView.SelectedObjects.Count==1)
+            {
+                GraphElement element = editView.SelectedObjects[0];
+                puzzlePropertyGrid.SelectedObject = element.Decorator;
+            }
+            else
+            {
+                puzzlePropertyGrid.SelectedObject = editView.Graph.MetaData;
+            }
         }
         Graph TestCreateTestGraph()
         {
@@ -115,7 +129,7 @@ namespace WitnessVisualizer
             edges[10].Decorator = new PuzzleGraph.Decorators.BrokenDecorator();
             edges[12].Decorator = new PuzzleGraph.Decorators.StartDecorator();
             nodes[24].Decorator = new PuzzleGraph.Decorators.EndDecorator();
-            faces[7].Decorator = new PuzzleGraph.Decorators.TetrisDecorator() { Indexes = new List<int>() { 0, 1, 2, 3, 6 } };
+            faces[7].Decorator = new PuzzleGraph.Decorators.TetrisDecorator() { Indexes = new List<int>() { 0, 1, 2, 3, 6 }, Angel = 30 };
             faces[8].Decorator = new PuzzleGraph.Decorators.HollowTetrisDecorator() { Indexes = new List<int>() { 0, 1, 3, 5 } };
             return graph;
         }
@@ -136,11 +150,11 @@ namespace WitnessVisualizer
         {
             Graph graph = TestCreateRectGraph();
             createTetrisTemplate(graph);
+            graph = new Graph(graph.ToString());
             editView = new EditView(graph, editorPictureBox.Width, editorPictureBox.Height, tetrisTemplatePictureBox.Width, tetrisTemplatePictureBox.Height);
             graph.MetaData.PuzzleTitle = "abc";
             UpdateGraphDrawing();
             UpdateTetrisTemplateDrawing();
-            // MessageBox.Show(graph.ToString());
             ImagePrepare();
         }
         void ImagePrepare()
@@ -182,11 +196,10 @@ namespace WitnessVisualizer
         {
             if (editView != null)
             {
-                
                 editView.MouseDown(e.X, e.Y, e.Button);
                 UpdateGraphDrawing();
+                UpdatePropertyGridBinding();
             }
-
         }
 
         private void EditorPictureBox_MouseMove(object sender, MouseEventArgs e)
@@ -236,6 +249,65 @@ namespace WitnessVisualizer
             e.Graphics.FillEllipse(Brushes.Red, e.Bounds);
         }
 
+        private void PuzzlePropertyGrid_PropertyValueChanged(object s, PropertyValueChangedEventArgs e)
+        {
+            UpdateGraphDrawing();
+            UpdateTetrisTemplateDrawing();
+        }
+
+        #region menu
+        private void NewToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            createFileDialog.InitialDirectory = Path.Combine(Application.StartupPath, "Templates");
+            if (createFileDialog.ShowDialog() == DialogResult.Cancel)
+                return;
+            savePath = null;
+            Graph graph = Graph.LoadFromFile(createFileDialog.FileName);
+            editView = new EditView(graph, editorPictureBox.Width, editorPictureBox.Height, tetrisTemplatePictureBox.Width, tetrisTemplatePictureBox.Height);
+            UpdateGraphDrawing();
+            UpdateTetrisTemplateDrawing();
+
+        }
+
+        private void SaveAsToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (editView != null)
+            {
+                if (saveInfoFileDialog.ShowDialog() == DialogResult.Cancel)
+                    return;
+                savePath = saveInfoFileDialog.FileName;
+                editView.Graph.SaveToFile(savePath);
+            }
+        }
+
+        private void SaveToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if(editView != null)
+            {
+                if(!string.IsNullOrEmpty(savePath))
+                    editView.Graph.SaveToFile(savePath);
+                else
+                    SaveAsToolStripMenuItem_Click(sender, e);
+            }
+        }
+        private void OpenToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (openInfoFileDialog.ShowDialog() == DialogResult.Cancel)
+                return;
+            savePath = openInfoFileDialog.FileName;
+            Graph graph = Graph.LoadFromFile(savePath);
+            editView = new EditView(graph, editorPictureBox.Width, editorPictureBox.Height, tetrisTemplatePictureBox.Width, tetrisTemplatePictureBox.Height);
+            UpdateGraphDrawing();
+            UpdateTetrisTemplateDrawing();
+        }
+
+
+
+        #endregion
+        private void AboutToolStripMenuItem1_Click(object sender, EventArgs e)
+        {
+            MessageBox.Show("The Witness Puzzle Designer\ninstr3.github.com");
+        }
 
         private void ListView1_DrawSubItem(object sender, DrawListViewSubItemEventArgs e)
         {

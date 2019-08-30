@@ -6,9 +6,8 @@ using System.Threading.Tasks;
 
 namespace PuzzleGraph
 {
-    public class TetrisTemplate
+    public abstract class GraphElement
     {
-        public List<List<Node>> Shapes { get; set; } = new List<List<Node>>();
-
+        public Decorator Decorator { get; set; }
     }
 }
