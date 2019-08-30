@@ -65,7 +65,9 @@
     <Compile Include="PuzzleGraphRenderer.cs" />
     <Compile Include="PuzzleSettings.cs" />
     <Compile Include="PuzzleToolkit.cs" />
+    <Compile Include="PuzzleToolkitDecoratorItem.cs" />
     <Compile Include="PuzzleToolkitItem.cs" />
+    <Compile Include="PuzzleToolkitMiscItem.cs" />
     <Compile Include="TetrisTemplateRenderer.cs" />
     <EmbeddedResource Include="MainForm.resx">
       <DependentUpon>MainForm.cs</DependentUpon>
@@ -105,6 +107,9 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Icons\Cursor.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Templates\README.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

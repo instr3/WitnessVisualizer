@@ -19,8 +19,10 @@ namespace WitnessVisualizer
         TetrisTemplateRenderer tetrisTemplateRenderer;
         BufferedGraphics graphBuffer, tetrisTemplateBuffer;
         PuzzleSettings settings;
+        PuzzleToolkit toolkit;
         EditView editView;
         string savePath;
+        int toolkitIconSize = 32;
         public MainForm()
         {
             InitializeComponent();
@@ -36,8 +38,7 @@ namespace WitnessVisualizer
             tetrisTemplateRenderer = new TetrisTemplateRenderer(tetrisTemplateBuffer.Graphics);
             // Init other stuff
             editorPictureBox.MouseWheel += EditorPictureBox_MouseWheel;
-            settings = new PuzzleSettings();
-            puzzlePropertyGrid.SelectedObject = settings;
+            PrepareToolkitListView();
         }
 
 
@@ -67,6 +68,7 @@ namespace WitnessVisualizer
                 puzzlePropertyGrid.SelectedObject = editView.Graph.MetaData;
             }
         }
+        #region test
         Graph TestCreateTestGraph()
         {
             Graph graph = new Graph();
@@ -169,9 +171,28 @@ namespace WitnessVisualizer
             imageList.ColorDepth = ColorDepth.Depth32Bit;
             imageList.ImageSize = new Size(16, 16);
             imageList.Images.Add("key", image);;
-            listView1.LargeImageList = imageList;
-            listView1.Items.Add("abc", 0);
+            ToolkitListView.LargeImageList = imageList;
+            ToolkitListView.Items.Add("abc", 0);
         }
+        #endregion
+        #region toolkit
+        void PrepareToolkitListView()
+        {
+            toolkit = PuzzleToolkit.CreateDefaultPuzzleToolkit();
+            ImageList imageList = new ImageList
+            {
+                ColorDepth = ColorDepth.Depth32Bit,
+                ImageSize = new Size(toolkitIconSize, toolkitIconSize)
+            };
+            ToolkitListView.LargeImageList = imageList;
+            ToolkitListView.Items.Clear();
+            foreach (PuzzleToolkitItem item in toolkit.Items)
+            {
+                imageList.Images.Add(item.GetImage(toolkitIconSize, toolkitIconSize));
+                ToolkitListView.Items.Add(item.Name, imageList.Images.Count - 1);
+            }
+        }
+        #endregion
         private void EditorPictureBox_MouseWheel(object sender, MouseEventArgs e)
         {
             if(editView != null)

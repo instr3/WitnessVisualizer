@@ -28,13 +28,13 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.ListViewItem listViewItem2 = new System.Windows.Forms.ListViewItem("test2", 0);
+            System.Windows.Forms.ListViewItem listViewItem1 = new System.Windows.Forms.ListViewItem("test2", 0);
             this.editorPictureBox = new System.Windows.Forms.PictureBox();
             this.button1 = new System.Windows.Forms.Button();
             this.puzzlePropertyGrid = new System.Windows.Forms.PropertyGrid();
             this.resetPropertyButton = new System.Windows.Forms.Button();
             this.button2 = new System.Windows.Forms.Button();
-            this.listView1 = new System.Windows.Forms.ListView();
+            this.ToolkitListView = new System.Windows.Forms.ListView();
             this.columnHeader1 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnHeader2 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnHeader3 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
@@ -64,7 +64,7 @@
             // editorPictureBox
             // 
             this.editorPictureBox.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.editorPictureBox.Location = new System.Drawing.Point(184, 22);
+            this.editorPictureBox.Location = new System.Drawing.Point(255, 22);
             this.editorPictureBox.Name = "editorPictureBox";
             this.editorPictureBox.Size = new System.Drawing.Size(636, 589);
             this.editorPictureBox.TabIndex = 0;
@@ -75,7 +75,7 @@
             // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(103, 22);
+            this.button1.Location = new System.Drawing.Point(174, 22);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(75, 23);
             this.button1.TabIndex = 1;
@@ -85,7 +85,7 @@
             // 
             // puzzlePropertyGrid
             // 
-            this.puzzlePropertyGrid.Location = new System.Drawing.Point(826, 211);
+            this.puzzlePropertyGrid.Location = new System.Drawing.Point(897, 211);
             this.puzzlePropertyGrid.Name = "puzzlePropertyGrid";
             this.puzzlePropertyGrid.Size = new System.Drawing.Size(177, 371);
             this.puzzlePropertyGrid.TabIndex = 2;
@@ -93,7 +93,7 @@
             // 
             // resetPropertyButton
             // 
-            this.resetPropertyButton.Location = new System.Drawing.Point(826, 588);
+            this.resetPropertyButton.Location = new System.Drawing.Point(897, 588);
             this.resetPropertyButton.Name = "resetPropertyButton";
             this.resetPropertyButton.Size = new System.Drawing.Size(75, 23);
             this.resetPropertyButton.TabIndex = 3;
@@ -103,7 +103,7 @@
             // 
             // button2
             // 
-            this.button2.Location = new System.Drawing.Point(103, 51);
+            this.button2.Location = new System.Drawing.Point(174, 51);
             this.button2.Name = "button2";
             this.button2.Size = new System.Drawing.Size(75, 23);
             this.button2.TabIndex = 4;
@@ -111,30 +111,30 @@
             this.button2.UseVisualStyleBackColor = true;
             this.button2.Click += new System.EventHandler(this.Button2_Click);
             // 
-            // listView1
+            // ToolkitListView
             // 
-            this.listView1.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
+            this.ToolkitListView.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
             this.columnHeader1,
             this.columnHeader2,
             this.columnHeader3});
-            this.listView1.GridLines = true;
-            this.listView1.HideSelection = false;
-            listViewItem2.StateImageIndex = 0;
-            this.listView1.Items.AddRange(new System.Windows.Forms.ListViewItem[] {
-            listViewItem2});
-            this.listView1.Location = new System.Drawing.Point(12, 22);
-            this.listView1.Name = "listView1";
-            this.listView1.Size = new System.Drawing.Size(155, 589);
-            this.listView1.TabIndex = 5;
-            this.listView1.UseCompatibleStateImageBehavior = false;
-            this.listView1.DrawColumnHeader += new System.Windows.Forms.DrawListViewColumnHeaderEventHandler(this.ListView1_DrawColumnHeader);
-            this.listView1.DrawItem += new System.Windows.Forms.DrawListViewItemEventHandler(this.ListView1_DrawItem);
-            this.listView1.DrawSubItem += new System.Windows.Forms.DrawListViewSubItemEventHandler(this.ListView1_DrawSubItem);
+            this.ToolkitListView.GridLines = true;
+            this.ToolkitListView.HideSelection = false;
+            listViewItem1.StateImageIndex = 0;
+            this.ToolkitListView.Items.AddRange(new System.Windows.Forms.ListViewItem[] {
+            listViewItem1});
+            this.ToolkitListView.Location = new System.Drawing.Point(12, 22);
+            this.ToolkitListView.Name = "ToolkitListView";
+            this.ToolkitListView.Size = new System.Drawing.Size(237, 589);
+            this.ToolkitListView.TabIndex = 5;
+            this.ToolkitListView.UseCompatibleStateImageBehavior = false;
+            this.ToolkitListView.DrawColumnHeader += new System.Windows.Forms.DrawListViewColumnHeaderEventHandler(this.ListView1_DrawColumnHeader);
+            this.ToolkitListView.DrawItem += new System.Windows.Forms.DrawListViewItemEventHandler(this.ListView1_DrawItem);
+            this.ToolkitListView.DrawSubItem += new System.Windows.Forms.DrawListViewSubItemEventHandler(this.ListView1_DrawSubItem);
             // 
             // tetrisTemplatePictureBox
             // 
             this.tetrisTemplatePictureBox.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.tetrisTemplatePictureBox.Location = new System.Drawing.Point(826, 22);
+            this.tetrisTemplatePictureBox.Location = new System.Drawing.Point(897, 22);
             this.tetrisTemplatePictureBox.Name = "tetrisTemplatePictureBox";
             this.tetrisTemplatePictureBox.Size = new System.Drawing.Size(177, 183);
             this.tetrisTemplatePictureBox.TabIndex = 6;
@@ -150,7 +150,7 @@
             this.aboutToolStripMenuItem});
             this.menuStrip.Location = new System.Drawing.Point(0, 0);
             this.menuStrip.Name = "menuStrip";
-            this.menuStrip.Size = new System.Drawing.Size(1015, 25);
+            this.menuStrip.Size = new System.Drawing.Size(1093, 25);
             this.menuStrip.TabIndex = 7;
             this.menuStrip.Text = "menuStrip1";
             // 
@@ -222,7 +222,7 @@
             this.undoToolStripMenuItem.Enabled = false;
             this.undoToolStripMenuItem.Name = "undoToolStripMenuItem";
             this.undoToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Z)));
-            this.undoToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.undoToolStripMenuItem.Size = new System.Drawing.Size(196, 22);
             this.undoToolStripMenuItem.Text = "Undo";
             // 
             // redoToolStripMenuItem
@@ -230,7 +230,7 @@
             this.redoToolStripMenuItem.Enabled = false;
             this.redoToolStripMenuItem.Name = "redoToolStripMenuItem";
             this.redoToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Y)));
-            this.redoToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.redoToolStripMenuItem.Size = new System.Drawing.Size(196, 22);
             this.redoToolStripMenuItem.Text = "Redo";
             // 
             // aboutToolStripMenuItem1
@@ -256,13 +256,13 @@
             // toolStripMenuItem1
             // 
             this.toolStripMenuItem1.Name = "toolStripMenuItem1";
-            this.toolStripMenuItem1.Size = new System.Drawing.Size(177, 6);
+            this.toolStripMenuItem1.Size = new System.Drawing.Size(193, 6);
             // 
             // copyToolStripMenuItem
             // 
             this.copyToolStripMenuItem.Name = "copyToolStripMenuItem";
             this.copyToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.C)));
-            this.copyToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.copyToolStripMenuItem.Size = new System.Drawing.Size(196, 22);
             this.copyToolStripMenuItem.Text = "Copy";
             // 
             // changeBoardSizeToolStripMenuItem
@@ -276,9 +276,9 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1015, 745);
+            this.ClientSize = new System.Drawing.Size(1093, 745);
             this.Controls.Add(this.tetrisTemplatePictureBox);
-            this.Controls.Add(this.listView1);
+            this.Controls.Add(this.ToolkitListView);
             this.Controls.Add(this.button2);
             this.Controls.Add(this.resetPropertyButton);
             this.Controls.Add(this.puzzlePropertyGrid);
@@ -305,7 +305,7 @@
         private System.Windows.Forms.PropertyGrid puzzlePropertyGrid;
         private System.Windows.Forms.Button resetPropertyButton;
         private System.Windows.Forms.Button button2;
-        private System.Windows.Forms.ListView listView1;
+        private System.Windows.Forms.ListView ToolkitListView;
         private System.Windows.Forms.ColumnHeader columnHeader1;
         private System.Windows.Forms.ColumnHeader columnHeader2;
         private System.Windows.Forms.ColumnHeader columnHeader3;
