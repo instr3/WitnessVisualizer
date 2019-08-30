@@ -8,7 +8,7 @@ namespace PuzzleGraph.Decorators
 {
     public class EndDecorator : Decorator, INodeDecorable
     {
-        public double X { get; set; }
-        public double Y { get; set; }
+        public double DirX { get; set; } = 0.141;
+        public double DirY { get; set; } = 0.141;
     }
 }

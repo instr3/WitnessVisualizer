@@ -40,7 +40,7 @@ namespace WitnessVisualizer
                     }
                     else
                     {
-                        DrawDecorator(graphics, face.Decorator, screenPosition, view.Scale * (1 - graph.MetaData.EdgeWidth));
+                        DrawDecorator(graphics, face.Decorator, screenPosition, view.Scale * (1 - graph.MetaData.EdgeWidth), view.Graph.MetaData);
                     }
 
 
@@ -73,7 +73,7 @@ namespace WitnessVisualizer
                 if (node.Decorator != null)
                 {
                     Vector screenPosition = new Vector(node.X, node.Y).MapToScreen(view.Scale, view.Origin);
-                    DrawDecorator(graphics, node.Decorator, screenPosition, view.Scale * graph.MetaData.EdgeWidth);
+                    DrawDecorator(graphics, node.Decorator, screenPosition, view.Scale * graph.MetaData.EdgeWidth, view.Graph.MetaData);
                 }
             }
             foreach (Edge edge in graph.Edges)
@@ -81,7 +81,7 @@ namespace WitnessVisualizer
                 if(edge.Decorator != null && !(edge.Decorator is PuzzleGraph.Decorators.BrokenDecorator))
                 {
                     Vector screenPosition = new Vector((edge.Start.X + edge.End.X) / 2, (edge.Start.Y + edge.End.Y) / 2).MapToScreen(view.Scale, view.Origin);
-                    DrawDecorator(graphics, edge.Decorator, screenPosition, view.Scale * graph.MetaData.EdgeWidth);
+                    DrawDecorator(graphics, edge.Decorator, screenPosition, view.Scale * graph.MetaData.EdgeWidth, view.Graph.MetaData);
                 }
             }
             DrawSelectionBoxes(view, view.HoveredObjects, Color.DarkGreen, true);
@@ -136,7 +136,7 @@ namespace WitnessVisualizer
             }
         }
 
-        public void DrawDecorator(Graphics graphics, Decorator decorator, Vector centerPosition, double scale)
+        public void DrawDecorator(Graphics graphics, Decorator decorator, Vector centerPosition, double scale, MetaData metaData)
         {
             if(decorator is PuzzleGraph.Decorators.EliminatorDecorator elimatorDecorator)
             {
@@ -212,6 +212,14 @@ namespace WitnessVisualizer
                     }
                 }
             }
+            else if(decorator is PuzzleGraph.Decorators.TetrisDecorator)
+            {
+                DrawTetris(graphics, decorator, centerPosition, scale, metaData);
+            }
+            else if (decorator is PuzzleGraph.Decorators.HollowTetrisDecorator)
+            {
+                DrawTetris(graphics, decorator, centerPosition, scale, metaData);
+            }
             else if(decorator is PuzzleGraph.Decorators.PointDecorator pointDecorator)
             {
                 double radius = 0.375;
@@ -229,7 +237,94 @@ namespace WitnessVisualizer
                         new Vector(x2, radius / 2).MapToScreen(scale, centerPosition).ToPoint(),
                         new Vector(-x2, -radius / 2).MapToScreen(scale, centerPosition).ToPoint());
                 }
+            }
+            else if(decorator is PuzzleGraph.Decorators.StartDecorator)
+            {
+                double radius = 2.55 / 2;
+                using (Brush brush=new SolidBrush(metaData.ForegroundColor))
+                {
+                    graphics.FillEllipse(brush, centerPosition.ToCircleBoundingBox(radius * scale));
+                }
+            }
+            else if (decorator is PuzzleGraph.Decorators.EndDecorator endDecorator)
+            {
+                using (Pen pen = new Pen(metaData.ForegroundColor, (float)scale) { EndCap = System.Drawing.Drawing2D.LineCap.Round })
+                {
+                    graphics.DrawLine(pen, centerPosition.ToPoint(),
+                        new Vector(endDecorator.DirX,endDecorator.DirY).MapToScreen(scale/metaData.EdgeWidth, centerPosition).ToPoint());
+                }
+            }
+        }
 
+        void DrawTetris(Graphics graphics, Decorator decorator, Vector centerPosition, double scale, MetaData metaData)
+        {
+            double angle;
+            List<int> indexes;
+            Color color;
+            bool isHollow;
+            if (decorator is PuzzleGraph.Decorators.TetrisDecorator tetrisDecorator)
+            {
+                angle = tetrisDecorator.Angel;
+                indexes = tetrisDecorator.Indexes;
+                color = tetrisDecorator.Color;
+                isHollow = false;
+            }
+            else if (decorator is PuzzleGraph.Decorators.HollowTetrisDecorator hollowTetrisDecorator)
+            {
+                angle = hollowTetrisDecorator.Angel;
+                indexes = hollowTetrisDecorator.Indexes;
+                color = hollowTetrisDecorator.Color;
+                isHollow = true;
+            }
+            else throw new NotSupportedException();
+            if (indexes.Count == 0)
+            {
+                return;
+            }
+            double minX = double.PositiveInfinity, minY = double.PositiveInfinity;
+            double maxX = double.NegativeInfinity, maxY = double.NegativeInfinity;
+            foreach (int index in indexes)
+            {
+                List<Node> shape = metaData.TetrisTemplate.Shapes[index];
+                foreach (Node node in shape)
+                {
+                    minX = Math.Min(minX, node.X);
+                    minY = Math.Min(minY, node.Y);
+                    maxX = Math.Max(maxX, node.X);
+                    maxY = Math.Max(maxY, node.Y);
+                }
+            }
+            Vector selfBias = new Vector((minX + maxX) / 2, (minY + maxY) / 2);
+            double totalScale = metaData.TetrisSize * scale;
+            double border = 0.142857;
+            double hollowThickness = 0.190476;
+            float compoundPercent = (float)(1 - (hollowThickness + border / 2) / (2 * (hollowThickness + border)));
+            // Well, there are really some strange things here, which I assume is Winform's bug
+            // Inset & CompoundArray both have rendering issues in this case, but CompoundArray is better
+            // Inset will cause antialiasing to go away & CompoundArray will cause strage random lines in the corner
+            using (Pen pen = new Pen(color, (float)((hollowThickness + border) * totalScale)) {
+                CompoundArray = new float[] { compoundPercent, 1.0f},LineJoin=System.Drawing.Drawing2D.LineJoin.MiterClipped})
+            using (Brush brush = new SolidBrush(color))
+            {
+                foreach (int index in indexes)
+                {
+                    List<Node> shape = metaData.TetrisTemplate.Shapes[index];
+                    PointF[] points = shape.Select(node => (new Vector(node.X, node.Y)-selfBias).MapToScreen(totalScale, centerPosition).ToPoint()).ToArray();
+                    if (isHollow)
+                        graphics.DrawClosedCurve(pen, points, 0.0f, System.Drawing.Drawing2D.FillMode.Alternate);
+                    else
+                        graphics.FillClosedCurve(brush, points, System.Drawing.Drawing2D.FillMode.Alternate, 0.0f);
+                }
+            }
+            using (Pen pen = new Pen(metaData.BackgroundColor, (float)(border * totalScale)))
+            {
+                foreach (int index in indexes)
+                {
+                    List<Node> shape = metaData.TetrisTemplate.Shapes[index];
+                    PointF[] points = shape.Select(node => (new Vector(node.X, node.Y) - selfBias).MapToScreen(totalScale, centerPosition).ToPoint()).ToArray();
+                    graphics.DrawClosedCurve(pen, points, 0.0f, System.Drawing.Drawing2D.FillMode.Alternate);
+
+                }
             }
         }
     }

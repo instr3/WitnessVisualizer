@@ -108,9 +108,15 @@ namespace WitnessVisualizer
             faces[5].Decorator = new PuzzleGraph.Decorators.TriangleDecorator() { Count = 2 };
             faces[6].Decorator = new PuzzleGraph.Decorators.TriangleDecorator() { Count = 3 };
             nodes[0].Decorator = new PuzzleGraph.Decorators.PointDecorator();
+            nodes[1].Decorator = new PuzzleGraph.Decorators.StartDecorator();
+            nodes[2].Decorator = new PuzzleGraph.Decorators.StartDecorator();
             edges[0].Decorator = new PuzzleGraph.Decorators.PointDecorator();
             edges[1].Decorator = new PuzzleGraph.Decorators.BrokenDecorator();
             edges[10].Decorator = new PuzzleGraph.Decorators.BrokenDecorator();
+            edges[12].Decorator = new PuzzleGraph.Decorators.StartDecorator();
+            nodes[24].Decorator = new PuzzleGraph.Decorators.EndDecorator();
+            faces[7].Decorator = new PuzzleGraph.Decorators.TetrisDecorator() { Indexes = new List<int>() { 0, 1, 2, 3, 6 } };
+            faces[8].Decorator = new PuzzleGraph.Decorators.HollowTetrisDecorator() { Indexes = new List<int>() { 0, 1, 3, 5 } };
             return graph;
         }
         void createTetrisTemplate(Graph graph)
