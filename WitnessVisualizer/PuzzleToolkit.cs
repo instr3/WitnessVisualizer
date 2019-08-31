@@ -15,9 +15,13 @@ namespace WitnessVisualizer
         {
             PuzzleToolkit Toolkit = new PuzzleToolkit();
             Toolkit.Items.Add(new PuzzleToolkitMiscItem("Pointer", Image.FromFile("Icons/Cursor.png")));
+            Toolkit.Items.Add(new PuzzleToolkitDecoratorItem("Empty", null));
+            Toolkit.Items.Add(new PuzzleToolkitDecoratorItem("Eliminator", new PuzzleGraph.Decorators.EliminatorDecorator()));
             Toolkit.Items.Add(new PuzzleToolkitDecoratorItem("Triangle 1", new PuzzleGraph.Decorators.TriangleDecorator() { Count = 1 }));
             Toolkit.Items.Add(new PuzzleToolkitDecoratorItem("Triangle 2", new PuzzleGraph.Decorators.TriangleDecorator() { Count = 2 }));
             Toolkit.Items.Add(new PuzzleToolkitDecoratorItem("Triangle 3", new PuzzleGraph.Decorators.TriangleDecorator() { Count = 3 }));
+            Toolkit.Items.Add(new PuzzleToolkitDecoratorItem("Triangle 4", new PuzzleGraph.Decorators.TriangleDecorator() { Count = 4 }));
+            Toolkit.Items.Add(new PuzzleToolkitDecoratorItem("Triangle 5", new PuzzleGraph.Decorators.TriangleDecorator() { Count = 5 }));
             Toolkit.Items.Add(new PuzzleToolkitDecoratorItem("Tetris", new PuzzleGraph.Decorators.TetrisDecorator() { Indexes=new List<int>() { 0, 1, 2, 3 } }));
             Toolkit.Items.Add(new PuzzleToolkitDecoratorItem("Hollow Tetris", new PuzzleGraph.Decorators.HollowTetrisDecorator() { Indexes = new List<int>() { 0, 1, 2, 3 } }));
             Toolkit.Items.Add(new PuzzleToolkitDecoratorItem("Skew Tetris", new PuzzleGraph.Decorators.TetrisDecorator() { Indexes = new List<int>() { 0, 1, 2, 3 }, Angle = -15 }));

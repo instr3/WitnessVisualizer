@@ -28,7 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.ListViewItem listViewItem2 = new System.Windows.Forms.ListViewItem("test2", 0);
+            System.Windows.Forms.ListViewItem listViewItem4 = new System.Windows.Forms.ListViewItem("test2", 0);
             this.editorPictureBox = new System.Windows.Forms.PictureBox();
             this.button1 = new System.Windows.Forms.Button();
             this.puzzlePropertyGrid = new System.Windows.Forms.PropertyGrid();
@@ -51,14 +51,14 @@
             this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripSeparator();
             this.copyToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.changeBoardSizeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.clearDecorationsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.deleteElementsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.aboutToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.openInfoFileDialog = new System.Windows.Forms.OpenFileDialog();
             this.saveInfoFileDialog = new System.Windows.Forms.SaveFileDialog();
             this.createFileDialog = new System.Windows.Forms.OpenFileDialog();
             this.puzzlePropertyLabel = new System.Windows.Forms.Label();
-            this.clearDecorationsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.deleteElementsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             ((System.ComponentModel.ISupportInitialize)(this.editorPictureBox)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.tetrisTemplatePictureBox)).BeginInit();
             this.menuStrip.SuspendLayout();
@@ -66,15 +66,19 @@
             // 
             // editorPictureBox
             // 
+            this.editorPictureBox.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.editorPictureBox.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.editorPictureBox.Location = new System.Drawing.Point(255, 28);
+            this.editorPictureBox.Location = new System.Drawing.Point(267, 28);
             this.editorPictureBox.Name = "editorPictureBox";
-            this.editorPictureBox.Size = new System.Drawing.Size(636, 583);
+            this.editorPictureBox.Size = new System.Drawing.Size(624, 601);
             this.editorPictureBox.TabIndex = 0;
             this.editorPictureBox.TabStop = false;
             this.editorPictureBox.MouseDown += new System.Windows.Forms.MouseEventHandler(this.EditorPictureBox_MouseDown);
             this.editorPictureBox.MouseMove += new System.Windows.Forms.MouseEventHandler(this.EditorPictureBox_MouseMove);
             this.editorPictureBox.MouseUp += new System.Windows.Forms.MouseEventHandler(this.EditorPictureBox_MouseUp);
+            this.editorPictureBox.Resize += new System.EventHandler(this.EditorPictureBox_Resize);
             // 
             // button1
             // 
@@ -84,24 +88,28 @@
             this.button1.TabIndex = 1;
             this.button1.Text = "update";
             this.button1.UseVisualStyleBackColor = true;
+            this.button1.Visible = false;
             this.button1.Click += new System.EventHandler(this.Button1_Click);
             // 
             // puzzlePropertyGrid
             // 
-            this.puzzlePropertyGrid.Location = new System.Drawing.Point(897, 238);
+            this.puzzlePropertyGrid.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.puzzlePropertyGrid.Location = new System.Drawing.Point(897, 235);
             this.puzzlePropertyGrid.Name = "puzzlePropertyGrid";
-            this.puzzlePropertyGrid.Size = new System.Drawing.Size(177, 344);
+            this.puzzlePropertyGrid.Size = new System.Drawing.Size(177, 365);
             this.puzzlePropertyGrid.TabIndex = 2;
             this.puzzlePropertyGrid.ToolbarVisible = false;
             this.puzzlePropertyGrid.PropertyValueChanged += new System.Windows.Forms.PropertyValueChangedEventHandler(this.PuzzlePropertyGrid_PropertyValueChanged);
             // 
             // resetPropertyButton
             // 
-            this.resetPropertyButton.Location = new System.Drawing.Point(897, 588);
+            this.resetPropertyButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.resetPropertyButton.Location = new System.Drawing.Point(897, 606);
             this.resetPropertyButton.Name = "resetPropertyButton";
-            this.resetPropertyButton.Size = new System.Drawing.Size(75, 23);
+            this.resetPropertyButton.Size = new System.Drawing.Size(177, 23);
             this.resetPropertyButton.TabIndex = 3;
-            this.resetPropertyButton.Text = "Reset";
+            this.resetPropertyButton.Text = "Reset Value";
             this.resetPropertyButton.UseVisualStyleBackColor = true;
             this.resetPropertyButton.Click += new System.EventHandler(this.ResetPropertyButton_Click);
             // 
@@ -113,28 +121,32 @@
             this.button2.TabIndex = 4;
             this.button2.Text = "select";
             this.button2.UseVisualStyleBackColor = true;
+            this.button2.Visible = false;
             this.button2.Click += new System.EventHandler(this.Button2_Click);
             // 
             // ToolkitListView
             // 
+            this.ToolkitListView.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left)));
             this.ToolkitListView.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
             this.columnHeader1,
             this.columnHeader2,
             this.columnHeader3});
             this.ToolkitListView.GridLines = true;
             this.ToolkitListView.HideSelection = false;
-            listViewItem2.StateImageIndex = 0;
+            listViewItem4.StateImageIndex = 0;
             this.ToolkitListView.Items.AddRange(new System.Windows.Forms.ListViewItem[] {
-            listViewItem2});
+            listViewItem4});
             this.ToolkitListView.Location = new System.Drawing.Point(12, 28);
             this.ToolkitListView.Name = "ToolkitListView";
-            this.ToolkitListView.Size = new System.Drawing.Size(237, 583);
+            this.ToolkitListView.Size = new System.Drawing.Size(249, 601);
             this.ToolkitListView.TabIndex = 5;
             this.ToolkitListView.UseCompatibleStateImageBehavior = false;
             this.ToolkitListView.SelectedIndexChanged += new System.EventHandler(this.ToolkitListView_SelectedIndexChanged);
             // 
             // tetrisTemplatePictureBox
             // 
+            this.tetrisTemplatePictureBox.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.tetrisTemplatePictureBox.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.tetrisTemplatePictureBox.Location = new System.Drawing.Point(897, 28);
             this.tetrisTemplatePictureBox.Name = "tetrisTemplatePictureBox";
@@ -240,6 +252,7 @@
             this.copyToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.C)));
             this.copyToolStripMenuItem.Size = new System.Drawing.Size(233, 22);
             this.copyToolStripMenuItem.Text = "Copy";
+            this.copyToolStripMenuItem.Click += new System.EventHandler(this.CopyToolStripMenuItem_Click);
             // 
             // changeBoardSizeToolStripMenuItem
             // 
@@ -247,6 +260,22 @@
             this.changeBoardSizeToolStripMenuItem.Name = "changeBoardSizeToolStripMenuItem";
             this.changeBoardSizeToolStripMenuItem.Size = new System.Drawing.Size(233, 22);
             this.changeBoardSizeToolStripMenuItem.Text = "Change Board Size...";
+            // 
+            // clearDecorationsToolStripMenuItem
+            // 
+            this.clearDecorationsToolStripMenuItem.Name = "clearDecorationsToolStripMenuItem";
+            this.clearDecorationsToolStripMenuItem.ShortcutKeys = System.Windows.Forms.Keys.Delete;
+            this.clearDecorationsToolStripMenuItem.Size = new System.Drawing.Size(233, 22);
+            this.clearDecorationsToolStripMenuItem.Text = "Clear Decoration(s)";
+            this.clearDecorationsToolStripMenuItem.Click += new System.EventHandler(this.ClearDecorationsToolStripMenuItem_Click);
+            // 
+            // deleteElementsToolStripMenuItem
+            // 
+            this.deleteElementsToolStripMenuItem.Enabled = false;
+            this.deleteElementsToolStripMenuItem.Name = "deleteElementsToolStripMenuItem";
+            this.deleteElementsToolStripMenuItem.Size = new System.Drawing.Size(233, 22);
+            this.deleteElementsToolStripMenuItem.Text = "Delete Element(s)";
+            this.deleteElementsToolStripMenuItem.Click += new System.EventHandler(this.DeleteElementsToolStripMenuItem_Click);
             // 
             // aboutToolStripMenuItem
             // 
@@ -278,29 +307,14 @@
             // 
             // puzzlePropertyLabel
             // 
+            this.puzzlePropertyLabel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.puzzlePropertyLabel.AutoSize = true;
             this.puzzlePropertyLabel.Font = new System.Drawing.Font("宋体", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.puzzlePropertyLabel.Location = new System.Drawing.Point(898, 220);
             this.puzzlePropertyLabel.Name = "puzzlePropertyLabel";
             this.puzzlePropertyLabel.Size = new System.Drawing.Size(124, 12);
             this.puzzlePropertyLabel.TabIndex = 8;
-            this.puzzlePropertyLabel.Text = "Nothing Selected.";
-            // 
-            // clearDecorationsToolStripMenuItem
-            // 
-            this.clearDecorationsToolStripMenuItem.Name = "clearDecorationsToolStripMenuItem";
-            this.clearDecorationsToolStripMenuItem.ShortcutKeys = System.Windows.Forms.Keys.Delete;
-            this.clearDecorationsToolStripMenuItem.Size = new System.Drawing.Size(233, 22);
-            this.clearDecorationsToolStripMenuItem.Text = "Clear Decoration(s)";
-            this.clearDecorationsToolStripMenuItem.Click += new System.EventHandler(this.ClearDecorationsToolStripMenuItem_Click);
-            // 
-            // deleteElementsToolStripMenuItem
-            // 
-            this.deleteElementsToolStripMenuItem.Enabled = false;
-            this.deleteElementsToolStripMenuItem.Name = "deleteElementsToolStripMenuItem";
-            this.deleteElementsToolStripMenuItem.Size = new System.Drawing.Size(233, 22);
-            this.deleteElementsToolStripMenuItem.Text = "Delete Element(s)";
-            this.deleteElementsToolStripMenuItem.Click += new System.EventHandler(this.DeleteElementsToolStripMenuItem_Click);
+            this.puzzlePropertyLabel.Text = "No Property Shown";
             // 
             // MainForm
             // 

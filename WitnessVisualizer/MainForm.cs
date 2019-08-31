@@ -18,7 +18,6 @@ namespace WitnessVisualizer
         PuzzleGraphRenderer graphRenderer;
         TetrisTemplateRenderer tetrisTemplateRenderer;
         BufferedGraphics graphBuffer, tetrisTemplateBuffer;
-        PuzzleSettings settings;
         PuzzleToolkit toolkit;
         EditView editView;
         string savePath;
@@ -28,7 +27,7 @@ namespace WitnessVisualizer
             InitializeComponent();
             // Init graph drawing
             Graphics graphTargetGraphics = editorPictureBox.CreateGraphics();
-            graphBuffer = BufferedGraphicsManager.Current.Allocate(graphTargetGraphics, new Rectangle(0, 0, editorPictureBox.Width, editorPictureBox.Height));
+            graphBuffer = BufferedGraphicsManager.Current.Allocate(graphTargetGraphics, new Rectangle(0, 0, Screen.FromControl(this).Bounds.Width, Screen.FromControl(this).Bounds.Height));
             graphBuffer.Graphics.SmoothingMode = SmoothingMode.AntiAlias;
             graphRenderer = new PuzzleGraphRenderer(graphBuffer.Graphics);
             // Init tetris template drawing
@@ -75,7 +74,7 @@ namespace WitnessVisualizer
                 }
             }
             if (puzzlePropertyGrid.SelectedObject is null)
-                puzzlePropertyLabel.Text = "Nothing Selected.";
+                puzzlePropertyLabel.Text = "No Property Shown";
             else
                 puzzlePropertyLabel.Text = puzzlePropertyGrid.SelectedObject.GetType().Name;
         }
@@ -224,12 +223,14 @@ namespace WitnessVisualizer
                 int index = ToolkitListView.SelectedIndices[0];
                 if (index == 0)
                 {
-                    editView.ChooseSampleDecorator(null);
+                    editView.ChooseSampleDecorator(null, false);
+                    UpdatePropertyGridBinding();
+                    editView.PasteMode = false;
                 }
                 else // Decorator
                 {
                     PuzzleToolkitDecoratorItem item = ToolkitListView.Items[index].Tag as PuzzleToolkitDecoratorItem;
-                    editView.ChooseSampleDecorator(item.Decorator);
+                    editView.ChooseSampleDecorator(item.Decorator, false);
                     UpdatePropertyGridBinding();
                     UpdateGraphDrawing();
                     UpdateTetrisTemplateDrawing();
@@ -261,7 +262,8 @@ namespace WitnessVisualizer
         {
             if (editView != null)
             {
-                editView.MouseDown(e.X, e.Y, e.Button);
+                if (editView.MouseDown(e.X, e.Y, e.Button))
+                    ToolkitListView.SelectedItems.Clear(); // Copy is performed
                 UpdateGraphDrawing();
                 UpdatePropertyGridBinding();
                 UpdateTetrisTemplateDrawing();
@@ -313,11 +315,12 @@ namespace WitnessVisualizer
             editView = new EditView(graph, editorPictureBox.Width, editorPictureBox.Height, tetrisTemplatePictureBox.Width, tetrisTemplatePictureBox.Height);
             UpdateGraphDrawing();
             UpdateTetrisTemplateDrawing();
-
+            ToolkitListView.SelectedItems.Clear();
         }
 
         private void SaveAsToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            saveInfoFileDialog.InitialDirectory = Path.Combine(Application.StartupPath, "Puzzles");
             if (editView != null)
             {
                 if (saveInfoFileDialog.ShowDialog() == DialogResult.Cancel)
@@ -339,6 +342,7 @@ namespace WitnessVisualizer
         }
         private void OpenToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            openInfoFileDialog.InitialDirectory = Path.Combine(Application.StartupPath, "Puzzles");
             if (openInfoFileDialog.ShowDialog() == DialogResult.Cancel)
                 return;
             savePath = openInfoFileDialog.FileName;
@@ -346,6 +350,7 @@ namespace WitnessVisualizer
             editView = new EditView(graph, editorPictureBox.Width, editorPictureBox.Height, tetrisTemplatePictureBox.Width, tetrisTemplatePictureBox.Height);
             UpdateGraphDrawing();
             UpdateTetrisTemplateDrawing();
+            ToolkitListView.SelectedItems.Clear();
         }
 
         private void DeleteElementsToolStripMenuItem_Click(object sender, EventArgs e)
@@ -357,9 +362,34 @@ namespace WitnessVisualizer
         {
             if (editView != null)
             {
+                editView.ClearSelectedDecorations();
                 UpdateGraphDrawing();
                 UpdateTetrisTemplateDrawing();
-                editView.ClearSelectedDecorations();
+            }
+        }
+
+        private void CopyToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (editView != null)
+            {
+                if (editView.SelectedObjects.Count > 0)
+                {
+                    editView.ChooseSampleDecorator(editView.SelectedObjects[0].Decorator, true);
+                    ToolkitListView.SelectedIndices.Clear();
+                }
+                UpdateGraphDrawing();
+                UpdateTetrisTemplateDrawing();
+            }
+
+        }
+
+        private void EditorPictureBox_Resize(object sender, EventArgs e)
+        {
+            if(editView!=null)
+            {
+                editView.Resize(editorPictureBox.Width, editorPictureBox.Height, tetrisTemplatePictureBox.Width, tetrisTemplatePictureBox.Height);
+                UpdateGraphDrawing();
+                UpdateTetrisTemplateDrawing();
             }
         }
 

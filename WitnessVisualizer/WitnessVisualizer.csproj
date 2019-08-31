@@ -110,6 +110,9 @@
     <Content Include="Icons\Cursor.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="Puzzles\README.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Templates\README.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

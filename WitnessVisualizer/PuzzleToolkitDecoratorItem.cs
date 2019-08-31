@@ -18,7 +18,7 @@ namespace WitnessVisualizer
         static PuzzleToolkitDecoratorItem()
         {
             metaData = new MetaData();
-            metaData.BackgroundColor = Color.White;
+            metaData.BackgroundColor = Color.FromArgb(240, 240, 240);
             metaData.ForegroundColor = Color.Black;
             metaData.TetrisTemplate = new TetrisTemplate()
             {
@@ -49,6 +49,7 @@ namespace WitnessVisualizer
             {
                 using (Pen pen = new Pen(Color.Gray, 3))
                 {
+                    g.Clear(metaData.BackgroundColor);
                     g.DrawRectangle(pen, 0.0f, 0.0f, width - 1, height - 1);
                 }
                 g.SmoothingMode = SmoothingMode.AntiAlias;

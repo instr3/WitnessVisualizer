@@ -191,24 +191,37 @@ namespace WitnessVisualizer
                 double length = 0.2;
                 double distance = 0.05;
                 double height = 0.175;
-                double verticalBase = 0.087;
-                using(Brush brush=new SolidBrush(triangleDecorator.Color))
+                int levels = (triangleDecorator.Count - 1) / 3 + 1;
+                int[] numbersPerlevel = new int[levels];
+                int left = triangleDecorator.Count;
+                for (int i=0;i<levels;++i)
                 {
-                    double totalWidth = length * triangleDecorator.Count + distance * (triangleDecorator.Count - 1);
-                    Vector p1 = new Vector(- totalWidth / 2, verticalBase);
-                    Vector p2 = new Vector(- totalWidth / 2 + length / 2, verticalBase - height);
-                    Vector p3 = new Vector(- totalWidth / 2 + length, verticalBase);
-                    for (int i=0;i<triangleDecorator.Count;++i)
+                    numbersPerlevel[i] = left <= 3 ? left : left == 4 ? 2 : 3;
+                    left -= numbersPerlevel[i];
+                }
+                using (Brush brush=new SolidBrush(triangleDecorator.Color))
+                {
+                    double totalHeight = height * levels + distance * (levels - 1);
+                    double currentHeight = totalHeight / 2;
+                    for (int level = 0; level < levels; ++level)
                     {
-                        graphics.FillPolygon(brush, new PointF[] {
-                            p1.MapToScreen(scale,centerPosition).ToPoint(),
-                            p2.MapToScreen(scale,centerPosition).ToPoint(),
-                            p3.MapToScreen(scale,centerPosition).ToPoint(),
-                            p1.MapToScreen(scale,centerPosition).ToPoint(),
-                        });
-                        p1 += new Vector(length + distance, 0);
-                        p2 += new Vector(length + distance, 0);
-                        p3 += new Vector(length + distance, 0);
+                        double totalWidth = length * numbersPerlevel[level] + distance * (numbersPerlevel[level] - 1);
+                        Vector p1 = new Vector(-totalWidth / 2, currentHeight);
+                        Vector p2 = new Vector(-totalWidth / 2 + length / 2, currentHeight - height);
+                        Vector p3 = new Vector(-totalWidth / 2 + length, currentHeight);
+                        for (int i = 0; i < numbersPerlevel[level]; ++i)
+                        {
+                            graphics.FillPolygon(brush, new PointF[] {
+                                p1.MapToScreen(scale,centerPosition).ToPoint(),
+                                p2.MapToScreen(scale,centerPosition).ToPoint(),
+                                p3.MapToScreen(scale,centerPosition).ToPoint(),
+                                p1.MapToScreen(scale,centerPosition).ToPoint(),
+                            });
+                            p1 += new Vector(length + distance, 0);
+                            p2 += new Vector(length + distance, 0);
+                            p3 += new Vector(length + distance, 0);
+                        }
+                        currentHeight -= height + distance;
                     }
                 }
             }

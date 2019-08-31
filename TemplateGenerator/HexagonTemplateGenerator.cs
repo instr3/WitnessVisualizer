@@ -22,11 +22,18 @@ namespace TemplateGenerator
             {
                 for (int j = 0; j <= Y; ++j)
                 {
-                    dict1[i, j] = new Node(((j - i) * 1.5 - 0.5) * scale, ((j + i) * sqrt3 / 2) * scale);
-                    dict2[i, j] = new Node(((j - i) * 1.5 + 0.5) * scale, ((j + i) * sqrt3 / 2) * scale);
-                    nodes.Add(dict1[i, j]);
-                    nodes.Add(dict2[i, j]);
-                    edges.Add(new Edge(dict1[i, j], dict2[i, j]));
+                    if (i != X || j != 0)
+                    {
+                        dict1[i, j] = new Node(((j - i) * 1.5 - 0.5) * scale, ((j + i) * sqrt3 / 2) * scale);
+                        nodes.Add(dict1[i, j]);
+                    }
+                    if (i != 0 || j != Y)
+                    {
+                        dict2[i, j] = new Node(((j - i) * 1.5 + 0.5) * scale, ((j + i) * sqrt3 / 2) * scale);
+                        nodes.Add(dict2[i, j]);
+                    }
+                    if (dict1[i, j] != null && dict2[i, j] != null)
+                        edges.Add(new Edge(dict1[i, j], dict2[i, j]));
                 }
             }
             for (int i = 1; i <= X; ++i)
@@ -49,6 +56,7 @@ namespace TemplateGenerator
         void GenerateTetrisTemplate(Graph graph,int tetrisTemplateSize)
         {
             double sqrt3 = Math.Sqrt(3.0);
+            double scale = 0.75;
             Node[,] dict1 = new Node[tetrisTemplateSize + 1, tetrisTemplateSize + 1];
             Node[,] dict2 = new Node[tetrisTemplateSize + 1, tetrisTemplateSize + 1];
             List<List<Node>> result = new List<List<Node>>();
@@ -56,8 +64,8 @@ namespace TemplateGenerator
             {
                 for (int j = 0; j <= tetrisTemplateSize; ++j)
                 {
-                    dict1[i, j] = new Node((j - i) * 1.5 - 0.5, (j + i) * sqrt3 / 2);
-                    dict2[i, j] = new Node((j - i) * 1.5 + 0.5, (j + i) * sqrt3 / 2);
+                    dict1[i, j] = new Node(((j - i) * 1.5 - 0.5) * scale, ((j + i) * sqrt3 / 2) * scale);
+                    dict2[i, j] = new Node(((j - i) * 1.5 + 0.5) * scale, ((j + i) * sqrt3 / 2) * scale);
                 }
             }
             for (int i = 1; i <= tetrisTemplateSize; ++i)

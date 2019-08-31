@@ -20,6 +20,7 @@ namespace WitnessVisualizer
         Vector editorSize;
         Vector tetrisTemplateEditorSize;
         public Decorator SampleDecorator { get; private set; }
+        public bool PasteMode { get; set; }
         public List<GraphElement> SelectedObjects { get; private set; } = new List<GraphElement>();
         public List<GraphElement> HoveredObjects { get; private set; } = new List<GraphElement>();
         public bool[] SelectedTetrisShapes { get; private set; }
@@ -30,6 +31,11 @@ namespace WitnessVisualizer
             Graph = inputGraph;
             CalculateTetrisTemplateScaleAndOrigin(Graph.MetaData.TetrisTemplate);
             SelectedTetrisShapes = new bool[Graph.MetaData.TetrisTemplate.Shapes.Count];
+        }
+        public void Resize(int inputEditorWidth, int inputEditorHeight, int inputTetrisTemplateWidth, int inputTetrisTemplateHeight)
+        {
+            editorSize = new Vector(inputEditorWidth, inputEditorHeight);
+            tetrisTemplateEditorSize = new Vector(inputTetrisTemplateWidth, inputTetrisTemplateHeight);
         }
         #region graph
         public GraphElement QueryPosition(Vector query)
@@ -76,8 +82,9 @@ namespace WitnessVisualizer
             Scale *= deltaScale;
         }
 
-        internal void MouseDown(int x, int y, MouseButtons button)
+        internal bool MouseDown(int x, int y, MouseButtons button) // Return true if copy operation is performed
         {
+            bool copyPerformed = false;
             if (HoveredObjects.Count > 0)
             {
                 List<GraphElement> objectToKeep = new List<GraphElement>();
@@ -89,15 +96,26 @@ namespace WitnessVisualizer
                     }
                 }
                 SelectedObjects.Clear();
-                if(SampleDecorator is null) // Selection mode
+                if(button==MouseButtons.Right)
                 {
-                    SelectedObjects.AddRange(objectToKeep);
-                }
-                else // Applying mode
-                {
-                    foreach(GraphElement element in objectToKeep)
+                    if(objectToKeep.Count>0)
                     {
-                        ApplyDecoratorToObject(SampleDecorator,element);
+                        ChooseSampleDecorator(objectToKeep[0].Decorator, true);
+                        copyPerformed = true;
+                    }
+                }
+                else if (button == MouseButtons.Left)
+                {
+                    if (!PasteMode) // Selection mode
+                    {
+                        SelectedObjects.AddRange(objectToKeep);
+                    }
+                    else // Paste mode
+                    {
+                        foreach (GraphElement element in objectToKeep)
+                        {
+                            ApplyDecoratorToObject(SampleDecorator, element);
+                        }
                     }
                 }
                 HoveredObjects.Clear();
@@ -111,11 +129,16 @@ namespace WitnessVisualizer
                 mouseDownPosition = new Vector(x, y);
                 isDragging = true;
             }
-
+            return copyPerformed;
         }
 
         private void ApplyDecoratorToObject(Decorator decorator, GraphElement element)
         {
+            if(decorator is null)
+            {
+                element.Decorator = null;
+                return;
+            }
             bool okay = (element is Node && decorator is INodeDecorable) ||
                 (element is Edge && decorator is IEdgeDecorable) ||
                 (element is Face && decorator is IFaceDecorable);
@@ -223,7 +246,7 @@ namespace WitnessVisualizer
                 {
                     TemplateViewToTetrisIndex(SelectedObjects[0].Decorator);
                 }
-                else if(SampleDecorator!=null)
+                else if(PasteMode)
                 {
                     TemplateViewToTetrisIndex(SampleDecorator);
                 }
@@ -265,7 +288,7 @@ namespace WitnessVisualizer
 
         }
         #endregion
-        internal void ChooseSampleDecorator(Decorator decorator)
+        internal void ChooseSampleDecorator(Decorator decorator, bool importTetris)
         {
             SelectedObjects.Clear();
             if(decorator is null)
@@ -275,8 +298,12 @@ namespace WitnessVisualizer
             else
             {
                 SampleDecorator = decorator.Clone() as Decorator;
-                TemplateViewToTetrisIndex(SampleDecorator);
+                if (importTetris)
+                    TetrisIndexToTemplateView(SampleDecorator);
+                else
+                    TemplateViewToTetrisIndex(SampleDecorator);
             }
+            PasteMode = true;
         }
 
         internal void ClearSelectedDecorations()
