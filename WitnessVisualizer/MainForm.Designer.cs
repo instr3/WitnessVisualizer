@@ -28,7 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.ListViewItem listViewItem1 = new System.Windows.Forms.ListViewItem("test2", 0);
+            System.Windows.Forms.ListViewItem listViewItem2 = new System.Windows.Forms.ListViewItem("test2", 0);
             this.editorPictureBox = new System.Windows.Forms.PictureBox();
             this.button1 = new System.Windows.Forms.Button();
             this.puzzlePropertyGrid = new System.Windows.Forms.PropertyGrid();
@@ -41,21 +41,24 @@
             this.tetrisTemplatePictureBox = new System.Windows.Forms.PictureBox();
             this.menuStrip = new System.Windows.Forms.MenuStrip();
             this.filesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.editToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.newToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.openToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.saveToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.saveAsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.editToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.undoToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.redoToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripSeparator();
+            this.copyToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.changeBoardSizeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.aboutToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.openInfoFileDialog = new System.Windows.Forms.OpenFileDialog();
             this.saveInfoFileDialog = new System.Windows.Forms.SaveFileDialog();
             this.createFileDialog = new System.Windows.Forms.OpenFileDialog();
-            this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripSeparator();
-            this.copyToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.changeBoardSizeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.puzzlePropertyLabel = new System.Windows.Forms.Label();
+            this.clearDecorationsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.deleteElementsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             ((System.ComponentModel.ISupportInitialize)(this.editorPictureBox)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.tetrisTemplatePictureBox)).BeginInit();
             this.menuStrip.SuspendLayout();
@@ -64,9 +67,9 @@
             // editorPictureBox
             // 
             this.editorPictureBox.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.editorPictureBox.Location = new System.Drawing.Point(255, 22);
+            this.editorPictureBox.Location = new System.Drawing.Point(255, 28);
             this.editorPictureBox.Name = "editorPictureBox";
-            this.editorPictureBox.Size = new System.Drawing.Size(636, 589);
+            this.editorPictureBox.Size = new System.Drawing.Size(636, 583);
             this.editorPictureBox.TabIndex = 0;
             this.editorPictureBox.TabStop = false;
             this.editorPictureBox.MouseDown += new System.Windows.Forms.MouseEventHandler(this.EditorPictureBox_MouseDown);
@@ -85,10 +88,11 @@
             // 
             // puzzlePropertyGrid
             // 
-            this.puzzlePropertyGrid.Location = new System.Drawing.Point(897, 211);
+            this.puzzlePropertyGrid.Location = new System.Drawing.Point(897, 238);
             this.puzzlePropertyGrid.Name = "puzzlePropertyGrid";
-            this.puzzlePropertyGrid.Size = new System.Drawing.Size(177, 371);
+            this.puzzlePropertyGrid.Size = new System.Drawing.Size(177, 344);
             this.puzzlePropertyGrid.TabIndex = 2;
+            this.puzzlePropertyGrid.ToolbarVisible = false;
             this.puzzlePropertyGrid.PropertyValueChanged += new System.Windows.Forms.PropertyValueChangedEventHandler(this.PuzzlePropertyGrid_PropertyValueChanged);
             // 
             // resetPropertyButton
@@ -119,22 +123,20 @@
             this.columnHeader3});
             this.ToolkitListView.GridLines = true;
             this.ToolkitListView.HideSelection = false;
-            listViewItem1.StateImageIndex = 0;
+            listViewItem2.StateImageIndex = 0;
             this.ToolkitListView.Items.AddRange(new System.Windows.Forms.ListViewItem[] {
-            listViewItem1});
-            this.ToolkitListView.Location = new System.Drawing.Point(12, 22);
+            listViewItem2});
+            this.ToolkitListView.Location = new System.Drawing.Point(12, 28);
             this.ToolkitListView.Name = "ToolkitListView";
-            this.ToolkitListView.Size = new System.Drawing.Size(237, 589);
+            this.ToolkitListView.Size = new System.Drawing.Size(237, 583);
             this.ToolkitListView.TabIndex = 5;
             this.ToolkitListView.UseCompatibleStateImageBehavior = false;
-            this.ToolkitListView.DrawColumnHeader += new System.Windows.Forms.DrawListViewColumnHeaderEventHandler(this.ListView1_DrawColumnHeader);
-            this.ToolkitListView.DrawItem += new System.Windows.Forms.DrawListViewItemEventHandler(this.ListView1_DrawItem);
-            this.ToolkitListView.DrawSubItem += new System.Windows.Forms.DrawListViewSubItemEventHandler(this.ListView1_DrawSubItem);
+            this.ToolkitListView.SelectedIndexChanged += new System.EventHandler(this.ToolkitListView_SelectedIndexChanged);
             // 
             // tetrisTemplatePictureBox
             // 
             this.tetrisTemplatePictureBox.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.tetrisTemplatePictureBox.Location = new System.Drawing.Point(897, 22);
+            this.tetrisTemplatePictureBox.Location = new System.Drawing.Point(897, 28);
             this.tetrisTemplatePictureBox.Name = "tetrisTemplatePictureBox";
             this.tetrisTemplatePictureBox.Size = new System.Drawing.Size(177, 183);
             this.tetrisTemplatePictureBox.TabIndex = 6;
@@ -150,7 +152,7 @@
             this.aboutToolStripMenuItem});
             this.menuStrip.Location = new System.Drawing.Point(0, 0);
             this.menuStrip.Name = "menuStrip";
-            this.menuStrip.Size = new System.Drawing.Size(1093, 25);
+            this.menuStrip.Size = new System.Drawing.Size(1082, 25);
             this.menuStrip.TabIndex = 7;
             this.menuStrip.Text = "menuStrip1";
             // 
@@ -164,26 +166,6 @@
             this.filesToolStripMenuItem.Name = "filesToolStripMenuItem";
             this.filesToolStripMenuItem.Size = new System.Drawing.Size(45, 21);
             this.filesToolStripMenuItem.Text = "Files";
-            // 
-            // editToolStripMenuItem
-            // 
-            this.editToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.undoToolStripMenuItem,
-            this.redoToolStripMenuItem,
-            this.toolStripMenuItem1,
-            this.copyToolStripMenuItem,
-            this.changeBoardSizeToolStripMenuItem});
-            this.editToolStripMenuItem.Name = "editToolStripMenuItem";
-            this.editToolStripMenuItem.Size = new System.Drawing.Size(42, 21);
-            this.editToolStripMenuItem.Text = "Edit";
-            // 
-            // aboutToolStripMenuItem
-            // 
-            this.aboutToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.aboutToolStripMenuItem1});
-            this.aboutToolStripMenuItem.Name = "aboutToolStripMenuItem";
-            this.aboutToolStripMenuItem.Size = new System.Drawing.Size(55, 21);
-            this.aboutToolStripMenuItem.Text = "About";
             // 
             // newToolStripMenuItem
             // 
@@ -217,12 +199,26 @@
             this.saveAsToolStripMenuItem.Text = "Save As...";
             this.saveAsToolStripMenuItem.Click += new System.EventHandler(this.SaveAsToolStripMenuItem_Click);
             // 
+            // editToolStripMenuItem
+            // 
+            this.editToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.undoToolStripMenuItem,
+            this.redoToolStripMenuItem,
+            this.toolStripMenuItem1,
+            this.copyToolStripMenuItem,
+            this.changeBoardSizeToolStripMenuItem,
+            this.clearDecorationsToolStripMenuItem,
+            this.deleteElementsToolStripMenuItem});
+            this.editToolStripMenuItem.Name = "editToolStripMenuItem";
+            this.editToolStripMenuItem.Size = new System.Drawing.Size(42, 21);
+            this.editToolStripMenuItem.Text = "Edit";
+            // 
             // undoToolStripMenuItem
             // 
             this.undoToolStripMenuItem.Enabled = false;
             this.undoToolStripMenuItem.Name = "undoToolStripMenuItem";
             this.undoToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Z)));
-            this.undoToolStripMenuItem.Size = new System.Drawing.Size(196, 22);
+            this.undoToolStripMenuItem.Size = new System.Drawing.Size(233, 22);
             this.undoToolStripMenuItem.Text = "Undo";
             // 
             // redoToolStripMenuItem
@@ -230,13 +226,40 @@
             this.redoToolStripMenuItem.Enabled = false;
             this.redoToolStripMenuItem.Name = "redoToolStripMenuItem";
             this.redoToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Y)));
-            this.redoToolStripMenuItem.Size = new System.Drawing.Size(196, 22);
+            this.redoToolStripMenuItem.Size = new System.Drawing.Size(233, 22);
             this.redoToolStripMenuItem.Text = "Redo";
+            // 
+            // toolStripMenuItem1
+            // 
+            this.toolStripMenuItem1.Name = "toolStripMenuItem1";
+            this.toolStripMenuItem1.Size = new System.Drawing.Size(230, 6);
+            // 
+            // copyToolStripMenuItem
+            // 
+            this.copyToolStripMenuItem.Name = "copyToolStripMenuItem";
+            this.copyToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.C)));
+            this.copyToolStripMenuItem.Size = new System.Drawing.Size(233, 22);
+            this.copyToolStripMenuItem.Text = "Copy";
+            // 
+            // changeBoardSizeToolStripMenuItem
+            // 
+            this.changeBoardSizeToolStripMenuItem.Enabled = false;
+            this.changeBoardSizeToolStripMenuItem.Name = "changeBoardSizeToolStripMenuItem";
+            this.changeBoardSizeToolStripMenuItem.Size = new System.Drawing.Size(233, 22);
+            this.changeBoardSizeToolStripMenuItem.Text = "Change Board Size...";
+            // 
+            // aboutToolStripMenuItem
+            // 
+            this.aboutToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.aboutToolStripMenuItem1});
+            this.aboutToolStripMenuItem.Name = "aboutToolStripMenuItem";
+            this.aboutToolStripMenuItem.Size = new System.Drawing.Size(55, 21);
+            this.aboutToolStripMenuItem.Text = "About";
             // 
             // aboutToolStripMenuItem1
             // 
             this.aboutToolStripMenuItem1.Name = "aboutToolStripMenuItem1";
-            this.aboutToolStripMenuItem1.Size = new System.Drawing.Size(180, 22);
+            this.aboutToolStripMenuItem1.Size = new System.Drawing.Size(120, 22);
             this.aboutToolStripMenuItem1.Text = "About...";
             this.aboutToolStripMenuItem1.Click += new System.EventHandler(this.AboutToolStripMenuItem1_Click);
             // 
@@ -253,30 +276,38 @@
             // 
             this.createFileDialog.Filter = "The Witness Maps Templates|*.wit";
             // 
-            // toolStripMenuItem1
+            // puzzlePropertyLabel
             // 
-            this.toolStripMenuItem1.Name = "toolStripMenuItem1";
-            this.toolStripMenuItem1.Size = new System.Drawing.Size(193, 6);
+            this.puzzlePropertyLabel.AutoSize = true;
+            this.puzzlePropertyLabel.Font = new System.Drawing.Font("宋体", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.puzzlePropertyLabel.Location = new System.Drawing.Point(898, 220);
+            this.puzzlePropertyLabel.Name = "puzzlePropertyLabel";
+            this.puzzlePropertyLabel.Size = new System.Drawing.Size(124, 12);
+            this.puzzlePropertyLabel.TabIndex = 8;
+            this.puzzlePropertyLabel.Text = "Nothing Selected.";
             // 
-            // copyToolStripMenuItem
+            // clearDecorationsToolStripMenuItem
             // 
-            this.copyToolStripMenuItem.Name = "copyToolStripMenuItem";
-            this.copyToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.C)));
-            this.copyToolStripMenuItem.Size = new System.Drawing.Size(196, 22);
-            this.copyToolStripMenuItem.Text = "Copy";
+            this.clearDecorationsToolStripMenuItem.Name = "clearDecorationsToolStripMenuItem";
+            this.clearDecorationsToolStripMenuItem.ShortcutKeys = System.Windows.Forms.Keys.Delete;
+            this.clearDecorationsToolStripMenuItem.Size = new System.Drawing.Size(233, 22);
+            this.clearDecorationsToolStripMenuItem.Text = "Clear Decoration(s)";
+            this.clearDecorationsToolStripMenuItem.Click += new System.EventHandler(this.ClearDecorationsToolStripMenuItem_Click);
             // 
-            // changeBoardSizeToolStripMenuItem
+            // deleteElementsToolStripMenuItem
             // 
-            this.changeBoardSizeToolStripMenuItem.Enabled = false;
-            this.changeBoardSizeToolStripMenuItem.Name = "changeBoardSizeToolStripMenuItem";
-            this.changeBoardSizeToolStripMenuItem.Size = new System.Drawing.Size(196, 22);
-            this.changeBoardSizeToolStripMenuItem.Text = "Change Board Size...";
+            this.deleteElementsToolStripMenuItem.Enabled = false;
+            this.deleteElementsToolStripMenuItem.Name = "deleteElementsToolStripMenuItem";
+            this.deleteElementsToolStripMenuItem.Size = new System.Drawing.Size(233, 22);
+            this.deleteElementsToolStripMenuItem.Text = "Delete Element(s)";
+            this.deleteElementsToolStripMenuItem.Click += new System.EventHandler(this.DeleteElementsToolStripMenuItem_Click);
             // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1093, 745);
+            this.ClientSize = new System.Drawing.Size(1082, 641);
+            this.Controls.Add(this.puzzlePropertyLabel);
             this.Controls.Add(this.tetrisTemplatePictureBox);
             this.Controls.Add(this.ToolkitListView);
             this.Controls.Add(this.button2);
@@ -327,6 +358,9 @@
         private System.Windows.Forms.ToolStripSeparator toolStripMenuItem1;
         private System.Windows.Forms.ToolStripMenuItem copyToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem changeBoardSizeToolStripMenuItem;
+        private System.Windows.Forms.Label puzzlePropertyLabel;
+        private System.Windows.Forms.ToolStripMenuItem clearDecorationsToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem deleteElementsToolStripMenuItem;
     }
 }
 

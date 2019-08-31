@@ -40,7 +40,7 @@ namespace WitnessVisualizer
                     }
                     else
                     {
-                        DrawDecorator(graphics, face.Decorator, screenPosition, view.Scale * (1 - graph.MetaData.EdgeWidth), view.Graph.MetaData);
+                        DrawDecorator(graphics, face.Decorator, screenPosition, view.Scale * (1 - graph.MetaData.EdgeWidth) * graph.MetaData.FaceDecorationScale, view.Graph.MetaData);
                     }
 
 
@@ -254,6 +254,19 @@ namespace WitnessVisualizer
                         new Vector(endDecorator.DirX,endDecorator.DirY).MapToScreen(scale/metaData.EdgeWidth, centerPosition).ToPoint());
                 }
             }
+            else if(decorator is PuzzleGraph.Decorators.BrokenDecorator) // Only for illustration purpose
+            {
+                using (Pen pen = new Pen(metaData.ForegroundColor, (float)scale))
+                {
+                    graphics.DrawLine(pen,
+                        new Vector(-0.5, 0.0).MapToScreen(scale / metaData.EdgeWidth, centerPosition).ToPoint(),
+                        new Vector(-0.1, 0.0).MapToScreen(scale / metaData.EdgeWidth, centerPosition).ToPoint());
+                    graphics.DrawLine(pen,
+                        new Vector(0.5, 0.0).MapToScreen(scale / metaData.EdgeWidth, centerPosition).ToPoint(),
+                        new Vector(0.1, 0.0).MapToScreen(scale / metaData.EdgeWidth, centerPosition).ToPoint());
+
+                }
+            }
         }
 
         void DrawTetris(Graphics graphics, Decorator decorator, Vector centerPosition, double scale, MetaData metaData)
@@ -264,14 +277,14 @@ namespace WitnessVisualizer
             bool isHollow;
             if (decorator is PuzzleGraph.Decorators.TetrisDecorator tetrisDecorator)
             {
-                angle = tetrisDecorator.Angel;
+                angle = tetrisDecorator.Angle;
                 indexes = tetrisDecorator.Indexes;
                 color = tetrisDecorator.Color;
                 isHollow = false;
             }
             else if (decorator is PuzzleGraph.Decorators.HollowTetrisDecorator hollowTetrisDecorator)
             {
-                angle = hollowTetrisDecorator.Angel;
+                angle = hollowTetrisDecorator.Angle;
                 indexes = hollowTetrisDecorator.Indexes;
                 color = hollowTetrisDecorator.Color;
                 isHollow = true;
@@ -295,7 +308,7 @@ namespace WitnessVisualizer
                 }
             }
             Vector selfBias = new Vector((minX + maxX) / 2, (minY + maxY) / 2);
-            double totalScale = metaData.TetrisSize * scale;
+            double totalScale = metaData.TetrisScale * scale;
             double border = 0.142857;
             double hollowThickness = 0.190476;
             float compoundPercent = (float)(1 - (hollowThickness + border / 2) / (2 * (hollowThickness + border)));

@@ -15,11 +15,7 @@ namespace PuzzleGraph
         public Color ForegroundColor { get; set; } = Color.DarkGray;
         public double EdgeWidth { get; set; } = 0.2;
         public TetrisTemplate TetrisTemplate { get; set; } = new TetrisTemplate();
-        public double TetrisSize { get; set; } = 0.2;
+        public double TetrisScale { get; set; } = 0.2;
+        public double FaceDecorationScale { get; set; } = 1.0;
     }
-    /*[XmlInclude(typeof(Color)), XmlInclude(typeof(Point))]
-    public class NewObjectClass
-    {
-        public object Object { get; set; }
-    }*/
 }

@@ -12,7 +12,7 @@ namespace PuzzleGraph.Decorators
     {
         [XmlElement(Type = typeof(XmlColor))]
         public Color Color { get; set; } = Color.Yellow;
-        public double Angel { get; set; } = 0.0;
+        public double Angle { get; set; } = 0.0;
         public List<int> Indexes { get; set; } = new List<int>();
     }
 }

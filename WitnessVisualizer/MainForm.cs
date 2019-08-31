@@ -65,8 +65,19 @@ namespace WitnessVisualizer
             }
             else
             {
-                puzzlePropertyGrid.SelectedObject = editView.Graph.MetaData;
+                if(editView.SampleDecorator!=null)
+                {
+                    puzzlePropertyGrid.SelectedObject = editView.SampleDecorator;
+                }
+                else
+                {
+                    puzzlePropertyGrid.SelectedObject = editView.Graph.MetaData;
+                }
             }
+            if (puzzlePropertyGrid.SelectedObject is null)
+                puzzlePropertyLabel.Text = "Nothing Selected.";
+            else
+                puzzlePropertyLabel.Text = puzzlePropertyGrid.SelectedObject.GetType().Name;
         }
         #region test
         Graph TestCreateTestGraph()
@@ -131,7 +142,7 @@ namespace WitnessVisualizer
             edges[10].Decorator = new PuzzleGraph.Decorators.BrokenDecorator();
             edges[12].Decorator = new PuzzleGraph.Decorators.StartDecorator();
             nodes[24].Decorator = new PuzzleGraph.Decorators.EndDecorator();
-            faces[7].Decorator = new PuzzleGraph.Decorators.TetrisDecorator() { Indexes = new List<int>() { 0, 1, 2, 3, 6 }, Angel = 30 };
+            faces[7].Decorator = new PuzzleGraph.Decorators.TetrisDecorator() { Indexes = new List<int>() { 0, 1, 2, 3, 6 }, Angle = 30 };
             faces[8].Decorator = new PuzzleGraph.Decorators.HollowTetrisDecorator() { Indexes = new List<int>() { 0, 1, 3, 5 } };
             return graph;
         }
@@ -174,6 +185,16 @@ namespace WitnessVisualizer
             ToolkitListView.LargeImageList = imageList;
             ToolkitListView.Items.Add("abc", 0);
         }
+
+        private void Button2_Click(object sender, EventArgs e)
+        {
+            editView.SelectedObjects.Clear();
+            foreach (var node in editView.Graph.Faces)
+            {
+                editView.SelectedObjects.Add(node);
+            }
+            UpdateGraphDrawing();
+        }
         #endregion
         #region toolkit
         void PrepareToolkitListView()
@@ -189,7 +210,30 @@ namespace WitnessVisualizer
             foreach (PuzzleToolkitItem item in toolkit.Items)
             {
                 imageList.Images.Add(item.GetImage(toolkitIconSize, toolkitIconSize));
-                ToolkitListView.Items.Add(item.Name, imageList.Images.Count - 1);
+                ListViewItem listViewItem = new ListViewItem(item.Name, imageList.Images.Count - 1);
+                listViewItem.Tag = item;
+                ToolkitListView.Items.Add(listViewItem);
+            }
+        }
+        private void ToolkitListView_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (ToolkitListView.SelectedIndices.Count == 0)
+                return;
+            if (editView != null)
+            {
+                int index = ToolkitListView.SelectedIndices[0];
+                if (index == 0)
+                {
+                    editView.ChooseSampleDecorator(null);
+                }
+                else // Decorator
+                {
+                    PuzzleToolkitDecoratorItem item = ToolkitListView.Items[index].Tag as PuzzleToolkitDecoratorItem;
+                    editView.ChooseSampleDecorator(item.Decorator);
+                    UpdatePropertyGridBinding();
+                    UpdateGraphDrawing();
+                    UpdateTetrisTemplateDrawing();
+                }
             }
         }
         #endregion
@@ -220,6 +264,7 @@ namespace WitnessVisualizer
                 editView.MouseDown(e.X, e.Y, e.Button);
                 UpdateGraphDrawing();
                 UpdatePropertyGridBinding();
+                UpdateTetrisTemplateDrawing();
             }
         }
 
@@ -245,29 +290,10 @@ namespace WitnessVisualizer
             if (editView != null)
             {
                 editView.TetrisTemplateClick(e.X, e.Y, e.Button);
+                UpdateGraphDrawing();
                 UpdateTetrisTemplateDrawing();
             }
 
-        }
-
-        private void Button2_Click(object sender, EventArgs e)
-        {
-            editView.SelectedObjects.Clear();
-            foreach(var node in editView.Graph.Faces)
-            {
-                editView.SelectedObjects.Add(node);
-            }
-            UpdateGraphDrawing();
-        }
-
-        private void ListView1_DrawColumnHeader(object sender, DrawListViewColumnHeaderEventArgs e)
-        {
-            e.Graphics.FillEllipse(Brushes.Red, e.Bounds);
-        }
-
-        private void ListView1_DrawItem(object sender, DrawListViewItemEventArgs e)
-        {
-            e.Graphics.FillEllipse(Brushes.Red, e.Bounds);
         }
 
         private void PuzzlePropertyGrid_PropertyValueChanged(object s, PropertyValueChangedEventArgs e)
@@ -322,17 +348,26 @@ namespace WitnessVisualizer
             UpdateTetrisTemplateDrawing();
         }
 
+        private void DeleteElementsToolStripMenuItem_Click(object sender, EventArgs e)
+        {
 
+        }
 
-        #endregion
+        private void ClearDecorationsToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (editView != null)
+            {
+                UpdateGraphDrawing();
+                UpdateTetrisTemplateDrawing();
+                editView.ClearSelectedDecorations();
+            }
+        }
+
         private void AboutToolStripMenuItem1_Click(object sender, EventArgs e)
         {
             MessageBox.Show("The Witness Puzzle Designer\ninstr3.github.com");
         }
 
-        private void ListView1_DrawSubItem(object sender, DrawListViewSubItemEventArgs e)
-        {
-            e.Graphics.FillEllipse(Brushes.Red, e.Bounds);
-        }
+        #endregion
     }
 }

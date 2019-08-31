@@ -90,7 +90,7 @@ namespace MathHelper
             return Math.Sqrt(dx * dx + dy * dy);
         }
 
-        public static double GetAngel(Vector a, Vector b)
+        public static double GetAngle(Vector a, Vector b)
         {
             double lengthProduct = a.Length() * b.Length();
             if (lengthProduct < 1e-10)

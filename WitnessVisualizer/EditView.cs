@@ -19,6 +19,7 @@ namespace WitnessVisualizer
         Vector mouseDownPosition;
         Vector editorSize;
         Vector tetrisTemplateEditorSize;
+        public Decorator SampleDecorator { get; private set; }
         public List<GraphElement> SelectedObjects { get; private set; } = new List<GraphElement>();
         public List<GraphElement> HoveredObjects { get; private set; } = new List<GraphElement>();
         public bool[] SelectedTetrisShapes { get; private set; }
@@ -88,8 +89,22 @@ namespace WitnessVisualizer
                     }
                 }
                 SelectedObjects.Clear();
-                SelectedObjects.AddRange(objectToKeep);
+                if(SampleDecorator is null) // Selection mode
+                {
+                    SelectedObjects.AddRange(objectToKeep);
+                }
+                else // Applying mode
+                {
+                    foreach(GraphElement element in objectToKeep)
+                    {
+                        ApplyDecoratorToObject(SampleDecorator,element);
+                    }
+                }
                 HoveredObjects.Clear();
+                if(SelectedObjects.Count>0)
+                {
+                    TetrisIndexToTemplateView(SelectedObjects[0].Decorator);
+                }
             }
             else
             {
@@ -97,6 +112,17 @@ namespace WitnessVisualizer
                 isDragging = true;
             }
 
+        }
+
+        private void ApplyDecoratorToObject(Decorator decorator, GraphElement element)
+        {
+            bool okay = (element is Node && decorator is INodeDecorable) ||
+                (element is Edge && decorator is IEdgeDecorable) ||
+                (element is Face && decorator is IFaceDecorable);
+            if(okay)
+            {
+                element.Decorator = decorator.Clone() as Decorator;
+            }
         }
 
         internal void MouseMove(int x, int y)
@@ -172,16 +198,16 @@ namespace WitnessVisualizer
             for (int k = 0; k < template.Shapes.Count; ++k)
             {
                 List<Node> shape = template.Shapes[k];
-                double totalAngel = 0.0;
+                double totalAngle = 0.0;
                 for(int i=0;i<shape.Count;++i)
                 {
                     Node p0 = shape[i == 0 ? shape.Count - 1 : i - 1];
                     Node p1 = shape[i];
                     Vector v0 = new Vector(p0.X, p0.Y);
                     Vector v1 = new Vector(p1.X, p1.Y);
-                    totalAngel += Vector.GetAngel(v0 - query, v1 - query);
+                    totalAngle += Vector.GetAngle(v0 - query, v1 - query);
                 }
-                if (totalAngel + 1e-6 >= 2 * Math.PI)
+                if (totalAngle + 1e-6 >= 2 * Math.PI)
                     return k;
             }
             return -1;
@@ -193,8 +219,100 @@ namespace WitnessVisualizer
             if(tetrisTemplatePosition>=0)
             {
                 SelectedTetrisShapes[tetrisTemplatePosition] = !SelectedTetrisShapes[tetrisTemplatePosition];
+                if (SelectedObjects.Count>0)
+                {
+                    TemplateViewToTetrisIndex(SelectedObjects[0].Decorator);
+                }
+                else if(SampleDecorator!=null)
+                {
+                    TemplateViewToTetrisIndex(SampleDecorator);
+                }
             }
         }
+
+        internal void TetrisIndexToTemplateView(Decorator decorator)
+        {
+            List<int> indexes;
+            if (decorator is PuzzleGraph.Decorators.HollowTetrisDecorator hollowTetrisDecorator)
+                indexes = hollowTetrisDecorator.Indexes;
+            else if (decorator is PuzzleGraph.Decorators.TetrisDecorator tetrisDecorator)
+                indexes = tetrisDecorator.Indexes;
+            else
+                return;
+            SelectedTetrisShapes = new bool[SelectedTetrisShapes.Length];
+            foreach (int index in indexes)
+            {
+                if (index < SelectedTetrisShapes.Length)
+                    SelectedTetrisShapes[index] = true;
+
+            }
+        }
+        internal void TemplateViewToTetrisIndex(Decorator decorator)
+        {
+            List<int> indexes;
+            if (decorator is PuzzleGraph.Decorators.HollowTetrisDecorator hollowTetrisDecorator)
+                indexes = hollowTetrisDecorator.Indexes;
+            else if (decorator is PuzzleGraph.Decorators.TetrisDecorator tetrisDecorator)
+                indexes = tetrisDecorator.Indexes;
+            else
+                return;
+            indexes.Clear();
+            for(int i=0;i<SelectedTetrisShapes.Length;++i)
+            {
+                if (SelectedTetrisShapes[i])
+                    indexes.Add(i);
+            }
+
+        }
         #endregion
+        internal void ChooseSampleDecorator(Decorator decorator)
+        {
+            SelectedObjects.Clear();
+            if(decorator is null)
+            {
+                SampleDecorator = null;
+            }
+            else
+            {
+                SampleDecorator = decorator.Clone() as Decorator;
+                TemplateViewToTetrisIndex(SampleDecorator);
+            }
+        }
+
+        internal void ClearSelectedDecorations()
+        {
+            foreach(GraphElement element in SelectedObjects)
+            {
+                element.Decorator = null;
+            }
+        }
+        internal void DeleteElements()
+        {
+            throw new NotImplementedException();
+            List<GraphElement> toDelete = new List<GraphElement>();
+            toDelete.AddRange(SelectedObjects);
+            foreach(Edge edge in Graph.Edges)
+            {
+                if(toDelete.Contains(edge.Start) || toDelete.Contains(edge.End))
+                {
+                    if (!toDelete.Contains(edge)) toDelete.Add(edge);
+                }
+            }
+            foreach (Face face in Graph.Faces)
+            {
+                foreach(Node node in Graph.Nodes)
+                {
+                    if (toDelete.Contains(node))
+                    {
+                        if (!toDelete.Contains(face)) toDelete.Add(face);
+                        break;
+                    }
+                }
+            }
+            foreach (GraphElement element in SelectedObjects)
+            {
+                element.Decorator = null;
+            }
+        }
     }
 }
