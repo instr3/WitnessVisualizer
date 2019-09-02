@@ -9,7 +9,7 @@ namespace TemplateGenerator
 {
     class HexagonTemplateGenerator
     {
-        public Graph Generate(int X, int Y, int tetrisTemplateSize)
+        public Graph Generate(int X, int Y, int tetrisTemplateSize, bool roundShape, bool roundShapeTetris)
         {
             double sqrt3 = Math.Sqrt(3.0);
             double scale = 0.75;
@@ -49,17 +49,34 @@ namespace TemplateGenerator
             graph.Nodes.AddRange(nodes);
             graph.Edges.AddRange(edges);
             graph.Faces.AddRange(faces);
-            GenerateTetrisTemplate(graph, tetrisTemplateSize);
-            graph.MetaData.PuzzleTitle = string.Format("HexPuzzle_{0}x{1}", X, Y);
+            if(roundShape)
+            {
+                List<Node> toDelete = new List<Node>();
+                double limit = ((int)X / 2 + 1.1) * 1.5 * scale;
+                foreach(Node node in graph.Nodes)
+                {
+                    if (node.X < -limit || node.X > limit)
+                        toDelete.Add(node);
+                }
+                foreach (Node node in toDelete)
+                    graph.RemoveElement(node);
+                graph.MetaData.PuzzleTitle = string.Format("HexRound/HexRoundPuzzle_{0}x{1}", X, Y);
+            }
+            else
+            {
+                graph.MetaData.PuzzleTitle = string.Format("Hex/HexPuzzle_{0}x{1}", X, Y);
+            }
+            GenerateTetrisTemplate(graph, tetrisTemplateSize,roundShapeTetris);
             return graph;
         }
-        void GenerateTetrisTemplate(Graph graph,int tetrisTemplateSize)
+        void GenerateTetrisTemplate(Graph graph,int tetrisTemplateSize,bool roundShape)
         {
             double sqrt3 = Math.Sqrt(3.0);
             double scale = 0.75;
             Node[,] dict1 = new Node[tetrisTemplateSize + 1, tetrisTemplateSize + 1];
             Node[,] dict2 = new Node[tetrisTemplateSize + 1, tetrisTemplateSize + 1];
             List<List<Node>> result = new List<List<Node>>();
+            List<List<Node>> toDelete = new List<List<Node>>();
             for (int i = 0; i <= tetrisTemplateSize; ++i)
             {
                 for (int j = 0; j <= tetrisTemplateSize; ++j)
@@ -75,7 +92,20 @@ namespace TemplateGenerator
                     result.Add(new List<Node>() { dict1[i - 1, j - 1], dict2[i - 1, j - 1], dict1[i - 1, j], dict2[i, j], dict1[i, j], dict2[i, j - 1] });
                 }
             }
-            graph.MetaData.TetrisTemplate.Shapes.AddRange(result);
+            if (roundShape)
+            {
+                double limit = ((int)tetrisTemplateSize / 2 + 1.1) * 1.5 * scale;
+                foreach (List<Node> shape in result)
+                {
+                    foreach(Node node in shape)
+                    {
+                        if (node.X < -limit || node.X > limit - 1.1) // todo: why
+                            toDelete.Add(shape);
+                        break;
+                    }
+                }
+            }
+            graph.MetaData.TetrisTemplate.Shapes.AddRange(result.Except(toDelete));
             
         }
     }

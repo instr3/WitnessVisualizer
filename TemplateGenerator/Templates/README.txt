@@ -1,1 +1,0 @@
-﻿This folder stores all the template. DO NOT OVERWRITE THEM.

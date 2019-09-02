@@ -43,10 +43,12 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Decorators\BrokenDecorator.cs" />
+    <Compile Include="Decorators\CircleDecorator.cs" />
     <Compile Include="Decorators\EliminatorDecorator.cs" />
     <Compile Include="Decorators\EndDecorator.cs" />
     <Compile Include="Decorators\HollowTetrisDecorator.cs" />
     <Compile Include="Decorators\PointDecorator.cs" />
+    <Compile Include="Decorators\RingDecorator.cs" />
     <Compile Include="Decorators\SquareDecorator.cs" />
     <Compile Include="Decorators\StarDecorator.cs" />
     <Compile Include="Decorators\StartDecorator.cs" />

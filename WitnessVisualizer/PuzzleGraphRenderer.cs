@@ -36,7 +36,8 @@ namespace WitnessVisualizer
                     Vector screenPosition = (sum / face.Nodes.Count).MapToScreen(view.Scale, view.Origin);
                     if (face.Decorator is null)
                     {
-                        graphics.FillEllipse(pointBrush, new RectangleF((float)screenPosition.X - faceCircleSize / 2, (float)screenPosition.Y - faceCircleSize / 2, faceCircleSize, faceCircleSize));
+                        if(view.IsDragging) // Debug paint
+                            graphics.FillEllipse(pointBrush, new RectangleF((float)screenPosition.X - faceCircleSize / 2, (float)screenPosition.Y - faceCircleSize / 2, faceCircleSize, faceCircleSize));
                     }
                     else
                     {
@@ -233,6 +234,27 @@ namespace WitnessVisualizer
             {
                 DrawTetris(graphics, decorator, centerPosition, scale, metaData);
             }
+            else if (decorator is PuzzleGraph.Decorators.CircleDecorator circleDecorator)
+            {
+                double radius = 0.35;
+                using (Brush brush = new SolidBrush(circleDecorator.Color))
+                {
+                    graphics.FillEllipse(brush, centerPosition.ToCircleBoundingBox(radius * scale));
+                }
+            }
+            else if (decorator is PuzzleGraph.Decorators.RingDecorator ringDecorator)
+            {
+                double radius = 0.35;
+                double innerRadius = 0.25;
+                using (Brush brush = new SolidBrush(ringDecorator.Color))
+                {
+                    graphics.FillEllipse(brush, centerPosition.ToCircleBoundingBox(radius * scale));
+                }
+                using (Brush brush = new SolidBrush(metaData.BackgroundColor))
+                {
+                    graphics.FillEllipse(brush, centerPosition.ToCircleBoundingBox(innerRadius * scale));
+                }
+            }
             else if(decorator is PuzzleGraph.Decorators.PointDecorator pointDecorator)
             {
                 double radius = 0.375;
@@ -263,8 +285,9 @@ namespace WitnessVisualizer
             {
                 using (Pen pen = new Pen(metaData.ForegroundColor, (float)scale) { EndCap = System.Drawing.Drawing2D.LineCap.Round })
                 {
+                    double angle = endDecorator.Angle / 180 * Math.PI;
                     graphics.DrawLine(pen, centerPosition.ToPoint(),
-                        new Vector(endDecorator.DirX,endDecorator.DirY).MapToScreen(scale/metaData.EdgeWidth, centerPosition).ToPoint());
+                        new Vector(endDecorator.Length*Math.Cos(angle), endDecorator.Length * Math.Sin(angle)).MapToScreen(scale/metaData.EdgeWidth, centerPosition).ToPoint());
                 }
             }
             else if(decorator is PuzzleGraph.Decorators.BrokenDecorator) // Only for illustration purpose
@@ -329,7 +352,7 @@ namespace WitnessVisualizer
             // Inset & CompoundArray both have rendering issues in this case, but CompoundArray is better
             // Inset will cause antialiasing to go away & CompoundArray will cause strage random lines in the corner
             using (Pen pen = new Pen(color, (float)((hollowThickness + border) * totalScale)) {
-                CompoundArray = new float[] { compoundPercent, 1.0f},LineJoin=System.Drawing.Drawing2D.LineJoin.MiterClipped})
+                CompoundArray = new float[] { compoundPercent, 1.0f}})
             using (Brush brush = new SolidBrush(color))
             {
                 foreach (int index in indexes)

@@ -28,12 +28,11 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.ListViewItem listViewItem4 = new System.Windows.Forms.ListViewItem("test2", 0);
+            System.Windows.Forms.ListViewItem listViewItem1 = new System.Windows.Forms.ListViewItem("test2", 0);
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
             this.editorPictureBox = new System.Windows.Forms.PictureBox();
-            this.button1 = new System.Windows.Forms.Button();
             this.puzzlePropertyGrid = new System.Windows.Forms.PropertyGrid();
             this.resetPropertyButton = new System.Windows.Forms.Button();
-            this.button2 = new System.Windows.Forms.Button();
             this.ToolkitListView = new System.Windows.Forms.ListView();
             this.columnHeader1 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnHeader2 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
@@ -45,6 +44,7 @@
             this.openToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.saveToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.saveAsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.exportToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.editToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.undoToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.redoToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -53,12 +53,15 @@
             this.changeBoardSizeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.clearDecorationsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.deleteElementsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItem2 = new System.Windows.Forms.ToolStripSeparator();
+            this.bestViewToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.aboutToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.openInfoFileDialog = new System.Windows.Forms.OpenFileDialog();
             this.saveInfoFileDialog = new System.Windows.Forms.SaveFileDialog();
             this.createFileDialog = new System.Windows.Forms.OpenFileDialog();
             this.puzzlePropertyLabel = new System.Windows.Forms.Label();
+            this.exportFileDialog = new System.Windows.Forms.SaveFileDialog();
             ((System.ComponentModel.ISupportInitialize)(this.editorPictureBox)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.tetrisTemplatePictureBox)).BeginInit();
             this.menuStrip.SuspendLayout();
@@ -79,17 +82,6 @@
             this.editorPictureBox.MouseMove += new System.Windows.Forms.MouseEventHandler(this.EditorPictureBox_MouseMove);
             this.editorPictureBox.MouseUp += new System.Windows.Forms.MouseEventHandler(this.EditorPictureBox_MouseUp);
             this.editorPictureBox.Resize += new System.EventHandler(this.EditorPictureBox_Resize);
-            // 
-            // button1
-            // 
-            this.button1.Location = new System.Drawing.Point(174, 22);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(75, 23);
-            this.button1.TabIndex = 1;
-            this.button1.Text = "update";
-            this.button1.UseVisualStyleBackColor = true;
-            this.button1.Visible = false;
-            this.button1.Click += new System.EventHandler(this.Button1_Click);
             // 
             // puzzlePropertyGrid
             // 
@@ -113,17 +105,6 @@
             this.resetPropertyButton.UseVisualStyleBackColor = true;
             this.resetPropertyButton.Click += new System.EventHandler(this.ResetPropertyButton_Click);
             // 
-            // button2
-            // 
-            this.button2.Location = new System.Drawing.Point(174, 51);
-            this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(75, 23);
-            this.button2.TabIndex = 4;
-            this.button2.Text = "select";
-            this.button2.UseVisualStyleBackColor = true;
-            this.button2.Visible = false;
-            this.button2.Click += new System.EventHandler(this.Button2_Click);
-            // 
             // ToolkitListView
             // 
             this.ToolkitListView.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
@@ -134,9 +115,9 @@
             this.columnHeader3});
             this.ToolkitListView.GridLines = true;
             this.ToolkitListView.HideSelection = false;
-            listViewItem4.StateImageIndex = 0;
+            listViewItem1.StateImageIndex = 0;
             this.ToolkitListView.Items.AddRange(new System.Windows.Forms.ListViewItem[] {
-            listViewItem4});
+            listViewItem1});
             this.ToolkitListView.Location = new System.Drawing.Point(12, 28);
             this.ToolkitListView.Name = "ToolkitListView";
             this.ToolkitListView.Size = new System.Drawing.Size(249, 601);
@@ -174,7 +155,8 @@
             this.newToolStripMenuItem,
             this.openToolStripMenuItem,
             this.saveToolStripMenuItem,
-            this.saveAsToolStripMenuItem});
+            this.saveAsToolStripMenuItem,
+            this.exportToolStripMenuItem});
             this.filesToolStripMenuItem.Name = "filesToolStripMenuItem";
             this.filesToolStripMenuItem.Size = new System.Drawing.Size(45, 21);
             this.filesToolStripMenuItem.Text = "Files";
@@ -211,6 +193,13 @@
             this.saveAsToolStripMenuItem.Text = "Save As...";
             this.saveAsToolStripMenuItem.Click += new System.EventHandler(this.SaveAsToolStripMenuItem_Click);
             // 
+            // exportToolStripMenuItem
+            // 
+            this.exportToolStripMenuItem.Name = "exportToolStripMenuItem";
+            this.exportToolStripMenuItem.Size = new System.Drawing.Size(208, 22);
+            this.exportToolStripMenuItem.Text = "Export...";
+            this.exportToolStripMenuItem.Click += new System.EventHandler(this.ExportToolStripMenuItem_Click);
+            // 
             // editToolStripMenuItem
             // 
             this.editToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
@@ -220,7 +209,9 @@
             this.copyToolStripMenuItem,
             this.changeBoardSizeToolStripMenuItem,
             this.clearDecorationsToolStripMenuItem,
-            this.deleteElementsToolStripMenuItem});
+            this.deleteElementsToolStripMenuItem,
+            this.toolStripMenuItem2,
+            this.bestViewToolStripMenuItem});
             this.editToolStripMenuItem.Name = "editToolStripMenuItem";
             this.editToolStripMenuItem.Size = new System.Drawing.Size(42, 21);
             this.editToolStripMenuItem.Text = "Edit";
@@ -230,7 +221,7 @@
             this.undoToolStripMenuItem.Enabled = false;
             this.undoToolStripMenuItem.Name = "undoToolStripMenuItem";
             this.undoToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Z)));
-            this.undoToolStripMenuItem.Size = new System.Drawing.Size(233, 22);
+            this.undoToolStripMenuItem.Size = new System.Drawing.Size(256, 22);
             this.undoToolStripMenuItem.Text = "Undo";
             // 
             // redoToolStripMenuItem
@@ -238,19 +229,19 @@
             this.redoToolStripMenuItem.Enabled = false;
             this.redoToolStripMenuItem.Name = "redoToolStripMenuItem";
             this.redoToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Y)));
-            this.redoToolStripMenuItem.Size = new System.Drawing.Size(233, 22);
+            this.redoToolStripMenuItem.Size = new System.Drawing.Size(256, 22);
             this.redoToolStripMenuItem.Text = "Redo";
             // 
             // toolStripMenuItem1
             // 
             this.toolStripMenuItem1.Name = "toolStripMenuItem1";
-            this.toolStripMenuItem1.Size = new System.Drawing.Size(230, 6);
+            this.toolStripMenuItem1.Size = new System.Drawing.Size(253, 6);
             // 
             // copyToolStripMenuItem
             // 
             this.copyToolStripMenuItem.Name = "copyToolStripMenuItem";
             this.copyToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.C)));
-            this.copyToolStripMenuItem.Size = new System.Drawing.Size(233, 22);
+            this.copyToolStripMenuItem.Size = new System.Drawing.Size(256, 22);
             this.copyToolStripMenuItem.Text = "Copy";
             this.copyToolStripMenuItem.Click += new System.EventHandler(this.CopyToolStripMenuItem_Click);
             // 
@@ -258,24 +249,37 @@
             // 
             this.changeBoardSizeToolStripMenuItem.Enabled = false;
             this.changeBoardSizeToolStripMenuItem.Name = "changeBoardSizeToolStripMenuItem";
-            this.changeBoardSizeToolStripMenuItem.Size = new System.Drawing.Size(233, 22);
+            this.changeBoardSizeToolStripMenuItem.Size = new System.Drawing.Size(256, 22);
             this.changeBoardSizeToolStripMenuItem.Text = "Change Board Size...";
             // 
             // clearDecorationsToolStripMenuItem
             // 
             this.clearDecorationsToolStripMenuItem.Name = "clearDecorationsToolStripMenuItem";
             this.clearDecorationsToolStripMenuItem.ShortcutKeys = System.Windows.Forms.Keys.Delete;
-            this.clearDecorationsToolStripMenuItem.Size = new System.Drawing.Size(233, 22);
+            this.clearDecorationsToolStripMenuItem.Size = new System.Drawing.Size(256, 22);
             this.clearDecorationsToolStripMenuItem.Text = "Clear Decoration(s)";
             this.clearDecorationsToolStripMenuItem.Click += new System.EventHandler(this.ClearDecorationsToolStripMenuItem_Click);
             // 
             // deleteElementsToolStripMenuItem
             // 
-            this.deleteElementsToolStripMenuItem.Enabled = false;
             this.deleteElementsToolStripMenuItem.Name = "deleteElementsToolStripMenuItem";
-            this.deleteElementsToolStripMenuItem.Size = new System.Drawing.Size(233, 22);
+            this.deleteElementsToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Shift | System.Windows.Forms.Keys.Delete)));
+            this.deleteElementsToolStripMenuItem.Size = new System.Drawing.Size(256, 22);
             this.deleteElementsToolStripMenuItem.Text = "Delete Element(s)";
             this.deleteElementsToolStripMenuItem.Click += new System.EventHandler(this.DeleteElementsToolStripMenuItem_Click);
+            // 
+            // toolStripMenuItem2
+            // 
+            this.toolStripMenuItem2.Name = "toolStripMenuItem2";
+            this.toolStripMenuItem2.Size = new System.Drawing.Size(253, 6);
+            // 
+            // bestViewToolStripMenuItem
+            // 
+            this.bestViewToolStripMenuItem.Name = "bestViewToolStripMenuItem";
+            this.bestViewToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.B)));
+            this.bestViewToolStripMenuItem.Size = new System.Drawing.Size(256, 22);
+            this.bestViewToolStripMenuItem.Text = "Best View";
+            this.bestViewToolStripMenuItem.Click += new System.EventHandler(this.BestViewToolStripMenuItem_Click);
             // 
             // aboutToolStripMenuItem
             // 
@@ -316,6 +320,11 @@
             this.puzzlePropertyLabel.TabIndex = 8;
             this.puzzlePropertyLabel.Text = "No Property Shown";
             // 
+            // exportFileDialog
+            // 
+            this.exportFileDialog.DefaultExt = "png";
+            this.exportFileDialog.Filter = "PNG Files|*.png";
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
@@ -324,15 +333,14 @@
             this.Controls.Add(this.puzzlePropertyLabel);
             this.Controls.Add(this.tetrisTemplatePictureBox);
             this.Controls.Add(this.ToolkitListView);
-            this.Controls.Add(this.button2);
             this.Controls.Add(this.resetPropertyButton);
             this.Controls.Add(this.puzzlePropertyGrid);
-            this.Controls.Add(this.button1);
             this.Controls.Add(this.editorPictureBox);
             this.Controls.Add(this.menuStrip);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MainMenuStrip = this.menuStrip;
             this.Name = "MainForm";
-            this.Text = "Form1";
+            this.Text = "Editor";
             this.Load += new System.EventHandler(this.MainForm_Load);
             ((System.ComponentModel.ISupportInitialize)(this.editorPictureBox)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.tetrisTemplatePictureBox)).EndInit();
@@ -346,10 +354,8 @@
         #endregion
 
         private System.Windows.Forms.PictureBox editorPictureBox;
-        private System.Windows.Forms.Button button1;
         private System.Windows.Forms.PropertyGrid puzzlePropertyGrid;
         private System.Windows.Forms.Button resetPropertyButton;
-        private System.Windows.Forms.Button button2;
         private System.Windows.Forms.ListView ToolkitListView;
         private System.Windows.Forms.ColumnHeader columnHeader1;
         private System.Windows.Forms.ColumnHeader columnHeader2;
@@ -375,6 +381,10 @@
         private System.Windows.Forms.Label puzzlePropertyLabel;
         private System.Windows.Forms.ToolStripMenuItem clearDecorationsToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem deleteElementsToolStripMenuItem;
+        private System.Windows.Forms.ToolStripSeparator toolStripMenuItem2;
+        private System.Windows.Forms.ToolStripMenuItem bestViewToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem exportToolStripMenuItem;
+        private System.Windows.Forms.SaveFileDialog exportFileDialog;
     }
 }
 

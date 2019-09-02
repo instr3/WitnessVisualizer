@@ -57,5 +57,38 @@ namespace PuzzleGraph
                 xml.Serialize(fs, new SaveState(this));
             }
         }
+
+        public void RemoveElement(GraphElement element)
+        {
+            if(element is Node node)
+            {
+                List<GraphElement> elementsToDelete = new List<GraphElement>();
+                foreach(Edge edge in Edges)
+                {
+                    if(edge.Start== node || edge.End==node)
+                    {
+                        elementsToDelete.Add(edge);
+                    }
+                }
+                foreach (Face face in Faces)
+                {
+                    if (face.Nodes.Contains(node))
+                    {
+                        elementsToDelete.Add(face);
+                    }
+                }
+                foreach (GraphElement newElement in elementsToDelete)
+                    RemoveElement(newElement);
+                Nodes.Remove(node);
+            }
+            else if(element is Edge edge)
+            {
+                Edges.Remove(edge);
+            }
+            else if(element is Face face)
+            {
+                Faces.Remove(face);
+            }
+        }
     }
 }

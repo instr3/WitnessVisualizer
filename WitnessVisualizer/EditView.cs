@@ -3,6 +3,7 @@ using PuzzleGraph;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Drawing.Imaging;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -15,7 +16,7 @@ namespace WitnessVisualizer
         public Graph Graph { get; private set; }
         public double Scale { get; set; } = 100.0;
         public Vector Origin { get; set; } = Vector.Zero;
-        bool isDragging;
+        public bool IsDragging { get; private set; }
         Vector mouseDownPosition;
         Vector editorSize;
         Vector tetrisTemplateEditorSize;
@@ -31,6 +32,7 @@ namespace WitnessVisualizer
             Graph = inputGraph;
             CalculateTetrisTemplateScaleAndOrigin(Graph.MetaData.TetrisTemplate);
             SelectedTetrisShapes = new bool[Graph.MetaData.TetrisTemplate.Shapes.Count];
+            SwitchToBestView();
         }
         public void Resize(int inputEditorWidth, int inputEditorHeight, int inputTetrisTemplateWidth, int inputTetrisTemplateHeight)
         {
@@ -85,7 +87,7 @@ namespace WitnessVisualizer
         internal bool MouseDown(int x, int y, MouseButtons button) // Return true if copy operation is performed
         {
             bool copyPerformed = false;
-            if (HoveredObjects.Count > 0)
+            if (HoveredObjects.Count > 0 &&  button != MouseButtons.Middle)
             {
                 List<GraphElement> objectToKeep = new List<GraphElement>();
                 foreach (GraphElement havoredObject in HoveredObjects)
@@ -104,7 +106,7 @@ namespace WitnessVisualizer
                         copyPerformed = true;
                     }
                 }
-                else if (button == MouseButtons.Left)
+                else
                 {
                     if (!PasteMode) // Selection mode
                     {
@@ -127,7 +129,7 @@ namespace WitnessVisualizer
             else
             {
                 mouseDownPosition = new Vector(x, y);
-                isDragging = true;
+                IsDragging = true;
             }
             return copyPerformed;
         }
@@ -152,7 +154,7 @@ namespace WitnessVisualizer
         {
             HoveredObjects.Clear();
             Vector mousePosition = new Vector(x, y);
-            if (isDragging)
+            if (IsDragging)
             {
                 Vector deltaPosition = mousePosition - mouseDownPosition;
                 Origin += deltaPosition;
@@ -171,12 +173,12 @@ namespace WitnessVisualizer
         internal void MouseUp(int x, int y, MouseButtons button)
         {
             Vector mousePosition = new Vector(x, y);
-            if (isDragging)
+            if (IsDragging)
             {
                 Vector deltaPosition = mousePosition - mouseDownPosition;
                 Origin += deltaPosition;
                 mouseDownPosition = mousePosition;
-                isDragging = false;
+                IsDragging = false;
             }
             else
             {
@@ -211,7 +213,8 @@ namespace WitnessVisualizer
                 }
             }
             TetrisTemplateScale = Math.Min((tetrisTemplateEditorSize.Y - marginSize * 2) / (maxY - minY), (tetrisTemplateEditorSize.X - marginSize * 2) / (maxX - minX));
-            TetrisTemplateOrigin = new Vector(-minX * TetrisTemplateScale + marginSize, -minY * TetrisTemplateScale + marginSize);
+            TetrisTemplateOrigin = new Vector(-(minX + maxX) / 2 * TetrisTemplateScale + tetrisTemplateEditorSize.X / 2, -(minY + maxY) / 2 * TetrisTemplateScale + tetrisTemplateEditorSize.Y / 2);
+
 
         }
 
@@ -313,33 +316,35 @@ namespace WitnessVisualizer
                 element.Decorator = null;
             }
         }
-        internal void DeleteElements()
+        internal void SwitchToBestView()
         {
-            throw new NotImplementedException();
-            List<GraphElement> toDelete = new List<GraphElement>();
-            toDelete.AddRange(SelectedObjects);
-            foreach(Edge edge in Graph.Edges)
+            if (Graph.Nodes.Count == 0)
+                return;
+            double minX = double.PositiveInfinity, minY = double.PositiveInfinity;
+            double maxX = double.NegativeInfinity, maxY = double.NegativeInfinity;
+            foreach (Node node in Graph.Nodes)
             {
-                if(toDelete.Contains(edge.Start) || toDelete.Contains(edge.End))
-                {
-                    if (!toDelete.Contains(edge)) toDelete.Add(edge);
-                }
+                minX = Math.Min(minX, node.X);
+                minY = Math.Min(minY, node.Y);
+                maxX = Math.Max(maxX, node.X);
+                maxY = Math.Max(maxY, node.Y);
             }
-            foreach (Face face in Graph.Faces)
-            {
-                foreach(Node node in Graph.Nodes)
-                {
-                    if (toDelete.Contains(node))
-                    {
-                        if (!toDelete.Contains(face)) toDelete.Add(face);
-                        break;
-                    }
-                }
-            }
-            foreach (GraphElement element in SelectedObjects)
-            {
-                element.Decorator = null;
-            }
+            double marginSize = editorSize.X > 150 && editorSize.Y > 150 ? 70 : 0;
+            double bestScale = Math.Min((editorSize.X - marginSize * 2) / (maxX - minX), (editorSize.Y - marginSize * 2) / (maxY - minY));
+            Vector bestOrigin = new Vector(-(minX + maxX) / 2 * bestScale + editorSize.X / 2, -(minY + maxY) / 2 * bestScale + editorSize.Y / 2);
+            Scale = bestScale;
+            Origin = bestOrigin;
+        }
+
+        internal void ExportToFile(string savePath)
+        {
+            EditView exportView = new EditView(Graph, Graph.MetaData.ExportWidth, Graph.MetaData.ExportHeight, (int)tetrisTemplateEditorSize.X, (int)tetrisTemplateEditorSize.Y);
+            Bitmap bitmap = new Bitmap(Convert.ToInt32(Graph.MetaData.ExportWidth), Convert.ToInt32(Graph.MetaData.ExportHeight), System.Drawing.Imaging.PixelFormat.Format32bppArgb);
+            Graphics g = Graphics.FromImage(bitmap);
+            PuzzleGraphRenderer renderer = new PuzzleGraphRenderer(g);
+            renderer.Draw(exportView);
+            bitmap.Save(savePath, ImageFormat.Png);
+
         }
     }
 }

@@ -17,5 +17,7 @@ namespace PuzzleGraph
         public TetrisTemplate TetrisTemplate { get; set; } = new TetrisTemplate();
         public double TetrisScale { get; set; } = 0.2;
         public double FaceDecorationScale { get; set; } = 1.0;
+        public int ExportWidth { get; set; } = 768;
+        public int ExportHeight { get; set; } = 768;
     }
 }

@@ -57,14 +57,14 @@ namespace WitnessVisualizer
         }
         void UpdatePropertyGridBinding()
         {
-            if(editView.SelectedObjects.Count==1)
+            if (editView.SelectedObjects.Count == 1)
             {
                 GraphElement element = editView.SelectedObjects[0];
                 puzzlePropertyGrid.SelectedObject = element.Decorator;
             }
             else
             {
-                if(editView.SampleDecorator!=null)
+                if (editView.SampleDecorator != null)
                 {
                     puzzlePropertyGrid.SelectedObject = editView.SampleDecorator;
                 }
@@ -78,123 +78,7 @@ namespace WitnessVisualizer
             else
                 puzzlePropertyLabel.Text = puzzlePropertyGrid.SelectedObject.GetType().Name;
         }
-        #region test
-        Graph TestCreateTestGraph()
-        {
-            Graph graph = new Graph();
-            Node a = new Node(1.0, 1.0);
-            Node b = new Node(1.0, 2.0);
-            Node d = new Node(2.0, 1.0);
-            Node c = new Node(2.0, 3.0);
-            Edge e1 = new Edge(a, b);
-            Edge e2 = new Edge(a, d);
-            Edge e3 = new Edge(b, c);
-            Edge e4 = new Edge(c, d);
-            Face face = new Face(new List<Node>() { a, d, c, b });
-            face.Decorator = new PuzzleGraph.Decorators.EliminatorDecorator();
-            graph.Nodes.AddRange(new List<Node>() { a, b, c, d });
-            graph.Edges.AddRange(new List<Edge>() { e1, e2, e3, e4 });
-            graph.Faces.AddRange(new List<Face>() { face });
-            return graph;
-        }
 
-        Graph TestCreateRectGraph()
-        {
-            Graph graph = new Graph();
-            int size = 4;
-            List<Node> nodes = new List<Node>();
-            Node[,] dict = new Node[5, 5];
-            for (int i = 0; i <= size; ++i)
-            {
-                for (int j = 0; j <= size; ++j)
-                {
-                    dict[i, j] = new Node(i + 1, j + 1);
-                    nodes.Add(dict[i, j]);
-                }
-            }
-            List<Edge> edges = new List<Edge>();
-            for (int i = 1; i <= size; ++i)
-                for (int j = 0; j <= size; ++j)
-                    edges.Add(new Edge(dict[i - 1, j], dict[i, j]));
-            for (int i = 0; i <= size; ++i)
-                for (int j = 1; j <= size; ++j)
-                    edges.Add(new Edge(dict[i, j - 1], dict[i, j]));
-            List<Face> faces = new List<Face>();
-            for (int i = 1; i <= size; ++i)
-                for (int j = 1; j <= size; ++j)
-                    faces.Add(new Face(new List<Node>() { dict[i - 1, j - 1], dict[i - 1, j], dict[i, j], dict[i, j - 1] }));
-            graph.Nodes.AddRange(nodes);
-            graph.Edges.AddRange(edges);
-            graph.Faces.AddRange(faces);
-            faces[0].Decorator = new PuzzleGraph.Decorators.EliminatorDecorator();
-            faces[1].Decorator = new PuzzleGraph.Decorators.SquareDecorator();
-            faces[2].Decorator = new PuzzleGraph.Decorators.StarDecorator() { Color = Color.Orange };
-            faces[3].Decorator = new PuzzleGraph.Decorators.StarDecorator() { Color = Color.Black };
-            faces[4].Decorator = new PuzzleGraph.Decorators.TriangleDecorator() { Count = 1 };
-            faces[5].Decorator = new PuzzleGraph.Decorators.TriangleDecorator() { Count = 2 };
-            faces[6].Decorator = new PuzzleGraph.Decorators.TriangleDecorator() { Count = 3 };
-            nodes[0].Decorator = new PuzzleGraph.Decorators.PointDecorator();
-            nodes[1].Decorator = new PuzzleGraph.Decorators.StartDecorator();
-            nodes[2].Decorator = new PuzzleGraph.Decorators.StartDecorator();
-            edges[0].Decorator = new PuzzleGraph.Decorators.PointDecorator();
-            edges[1].Decorator = new PuzzleGraph.Decorators.BrokenDecorator();
-            edges[10].Decorator = new PuzzleGraph.Decorators.BrokenDecorator();
-            edges[12].Decorator = new PuzzleGraph.Decorators.StartDecorator();
-            nodes[24].Decorator = new PuzzleGraph.Decorators.EndDecorator();
-            faces[7].Decorator = new PuzzleGraph.Decorators.TetrisDecorator() { Indexes = new List<int>() { 0, 1, 2, 3, 6 }, Angle = 30 };
-            faces[8].Decorator = new PuzzleGraph.Decorators.HollowTetrisDecorator() { Indexes = new List<int>() { 0, 1, 3, 5 } };
-            return graph;
-        }
-        void createTetrisTemplate(Graph graph)
-        {
-            int size = 5;
-            List<List<Node>> result = new List<List<Node>>();
-            for (int i = 1; i <= size; ++i)
-            {
-                for (int j = 1; j <= size; ++j)
-                {
-                    result.Add(new List<Node>() { new Node(i, j), new Node(i + 1, j), new Node(i + 1, j + 1), new Node(i, j + 1) });
-                }
-            }
-            graph.MetaData.TetrisTemplate.Shapes.AddRange(result);
-        }
-        private void Button1_Click(object sender, EventArgs e)
-        {
-            Graph graph = TestCreateRectGraph();
-            createTetrisTemplate(graph);
-            graph = new Graph(graph.ToString());
-            editView = new EditView(graph, editorPictureBox.Width, editorPictureBox.Height, tetrisTemplatePictureBox.Width, tetrisTemplatePictureBox.Height);
-            graph.MetaData.PuzzleTitle = "abc";
-            UpdateGraphDrawing();
-            UpdateTetrisTemplateDrawing();
-            ImagePrepare();
-        }
-        void ImagePrepare()
-        {
-            Image image = new Bitmap(16, 16);
-            using (Graphics g = Graphics.FromImage(image))
-            {
-                g.FillRectangle(Brushes.Black, 0, 0, 16, 16);
-            }
-
-            ImageList imageList = new ImageList();
-            imageList.ColorDepth = ColorDepth.Depth32Bit;
-            imageList.ImageSize = new Size(16, 16);
-            imageList.Images.Add("key", image);;
-            ToolkitListView.LargeImageList = imageList;
-            ToolkitListView.Items.Add("abc", 0);
-        }
-
-        private void Button2_Click(object sender, EventArgs e)
-        {
-            editView.SelectedObjects.Clear();
-            foreach (var node in editView.Graph.Faces)
-            {
-                editView.SelectedObjects.Add(node);
-            }
-            UpdateGraphDrawing();
-        }
-        #endregion
         #region toolkit
         void PrepareToolkitListView()
         {
@@ -238,6 +122,8 @@ namespace WitnessVisualizer
             }
         }
         #endregion
+
+        #region picturebox
         private void EditorPictureBox_MouseWheel(object sender, MouseEventArgs e)
         {
             if(editView != null)
@@ -245,17 +131,6 @@ namespace WitnessVisualizer
                 editView.Scroll(e.X, e.Y, e.Delta);
                 UpdateGraphDrawing();
             }
-        }
-        private void MainForm_Load(object sender, EventArgs e)
-        {
-            
-        }
-
-        private void ResetPropertyButton_Click(object sender, EventArgs e)
-        {
-            PropertyDescriptor pd = puzzlePropertyGrid.SelectedGridItem.PropertyDescriptor;
-            pd.ResetValue(puzzlePropertyGrid.SelectedObject);
-            puzzlePropertyGrid.Refresh();
         }
 
         private void EditorPictureBox_MouseDown(object sender, MouseEventArgs e)
@@ -297,12 +172,23 @@ namespace WitnessVisualizer
             }
 
         }
+        #endregion
+
+        #region propertygrid
 
         private void PuzzlePropertyGrid_PropertyValueChanged(object s, PropertyValueChangedEventArgs e)
         {
             UpdateGraphDrawing();
             UpdateTetrisTemplateDrawing();
         }
+        private void ResetPropertyButton_Click(object sender, EventArgs e)
+        {
+            PropertyDescriptor pd = puzzlePropertyGrid.SelectedGridItem.PropertyDescriptor;
+            pd.ResetValue(puzzlePropertyGrid.SelectedObject);
+            puzzlePropertyGrid.Refresh();
+        }
+
+        #endregion
 
         #region menu
         private void NewToolStripMenuItem_Click(object sender, EventArgs e)
@@ -355,6 +241,12 @@ namespace WitnessVisualizer
 
         private void DeleteElementsToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            if (editView != null)
+            {
+                foreach (GraphElement element in editView.SelectedObjects)
+                    editView.Graph.RemoveElement(element);
+                editView.SelectedObjects.Clear();
+            }
 
         }
 
@@ -393,11 +285,39 @@ namespace WitnessVisualizer
             }
         }
 
+        private void BestViewToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if(editView!=null)
+            {
+                editView.SwitchToBestView();
+                UpdateGraphDrawing();
+            }
+        }
+
+        private void ExportToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            exportFileDialog.InitialDirectory = Path.Combine(Application.StartupPath, "Images");
+            if (editView != null)
+            {
+                editView.SwitchToBestView();
+                if (exportFileDialog.ShowDialog() == DialogResult.Cancel)
+                    return;
+                savePath = exportFileDialog.FileName;
+                editView.ExportToFile(savePath);
+            }
+
+        }
+
         private void AboutToolStripMenuItem1_Click(object sender, EventArgs e)
         {
             MessageBox.Show("The Witness Puzzle Designer\ninstr3.github.com");
         }
 
         #endregion
+
+        private void MainForm_Load(object sender, EventArgs e)
+        {
+
+        }
     }
 }

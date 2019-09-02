@@ -18,6 +18,8 @@ namespace PuzzleGraph
         XmlInclude(typeof(StartDecorator)),
         XmlInclude(typeof(TetrisDecorator)),
         XmlInclude(typeof(TriangleDecorator)),
+        XmlInclude(typeof(CircleDecorator)),
+        XmlInclude(typeof(RingDecorator)),
     ]
     public abstract class Decorator : ICloneable
     {
