@@ -46,6 +46,7 @@
     <Compile Include="HexagonTemplateGenerator.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="PyramidHexagonTemplateGenerator.cs" />
     <Compile Include="RightTriangleTemplateGenerator.cs" />
     <Compile Include="SquareTemplateGenerator.cs" />
   </ItemGroup>

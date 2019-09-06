@@ -90,5 +90,109 @@ namespace PuzzleGraph
                 Faces.Remove(face);
             }
         }
+
+        public enum FlipType
+        {
+            XY=0,
+            Horizontal=1,
+            Vertical=2,
+            Rotate=3
+        }
+        private static Node TransformNode(Node node,FlipType flipType,double angle=0)
+        {
+            if (flipType == FlipType.XY)
+                return new Node(node.Y, node.X);
+            else if (flipType == FlipType.Horizontal)
+                return new Node(-node.X, node.Y);
+            else if (flipType == FlipType.Vertical)
+                return new Node(node.X, -node.Y);
+            else if (flipType == FlipType.Rotate)
+            {
+                double cosValue = Math.Cos(angle), sinValue = Math.Sin(angle);
+                return new Node(cosValue * node.X - sinValue * node.Y, sinValue * node.X + cosValue * node.Y);
+            }
+            else throw new NotSupportedException();
+        }
+        public static Graph FlipGraph(Graph graph, FlipType flipType)
+        {
+            Graph graphClone = new Graph(graph.ToString());
+            Graph newGraph = new Graph();
+            Dictionary<Node, Node> mapping = new Dictionary<Node, Node>();
+            foreach (Node node in graphClone.Nodes)
+            {
+                mapping[node] = TransformNode(node, flipType);
+                mapping[node].Decorator = node.Decorator;
+            }
+            foreach (Node node in graphClone.Nodes)
+            {
+                newGraph.Nodes.Add(mapping[node]);
+            }
+            foreach (Edge edge in graphClone.Edges)
+            {
+                Edge newEdge = new Edge(mapping[edge.Start], mapping[edge.End]);
+                newEdge.Decorator = edge.Decorator;
+                newGraph.Edges.Add(newEdge);
+            }
+            foreach (Face face in graphClone.Faces)
+            {
+                List<Node> nodes = new List<Node>();
+                nodes.AddRange(face.Nodes);
+                nodes.Reverse();
+                Face newFace = new Face(nodes.Select(node => mapping[node]).ToList());
+                newFace.Decorator = face.Decorator;
+                newGraph.Faces.Add(newFace);
+            }
+            TetrisTemplate oldTetrisTemplate = graphClone.MetaData.TetrisTemplate;
+            newGraph.MetaData = graphClone.MetaData;
+            newGraph.MetaData.TetrisTemplate = new TetrisTemplate();
+            foreach (List<Node> shape in oldTetrisTemplate.Shapes)
+            {
+                List<Node> newShape = new List<Node>();
+                newShape.AddRange(shape);
+                newShape.Reverse();
+                newGraph.MetaData.TetrisTemplate.Shapes.Add(newShape.Select(node => TransformNode(node, flipType)).ToList());
+            }
+            return newGraph;
+        }
+        public static Graph RotateGraph(Graph graph, double angle)
+        {
+            Graph graphClone = new Graph(graph.ToString());
+            Graph newGraph = new Graph();
+            Dictionary<Node, Node> mapping = new Dictionary<Node, Node>();
+            foreach (Node node in graphClone.Nodes)
+            {
+                mapping[node] = TransformNode(node, FlipType.Rotate, angle);
+                mapping[node].Decorator = node.Decorator;
+            }
+            foreach (Node node in graphClone.Nodes)
+            {
+                newGraph.Nodes.Add(mapping[node]);
+            }
+            foreach (Edge edge in graphClone.Edges)
+            {
+                Edge newEdge = new Edge(mapping[edge.Start], mapping[edge.End]);
+                newEdge.Decorator = edge.Decorator;
+                newGraph.Edges.Add(newEdge);
+            }
+            foreach (Face face in graphClone.Faces)
+            {
+                List<Node> nodes = new List<Node>();
+                nodes.AddRange(face.Nodes);
+                Face newFace = new Face(nodes.Select(node => mapping[node]).ToList());
+                newFace.Decorator = face.Decorator;
+                newGraph.Faces.Add(newFace);
+            }
+            TetrisTemplate oldTetrisTemplate = graphClone.MetaData.TetrisTemplate;
+            newGraph.MetaData = graphClone.MetaData;
+            newGraph.MetaData.TetrisTemplate = new TetrisTemplate();
+            foreach (List<Node> shape in oldTetrisTemplate.Shapes)
+            {
+                List<Node> newShape = new List<Node>();
+                newShape.AddRange(shape);
+                newGraph.MetaData.TetrisTemplate.Shapes.Add(newShape.Select(node => TransformNode(node, FlipType.Rotate, angle)).ToList());
+            }
+            return newGraph;
+
+        }
     }
 }

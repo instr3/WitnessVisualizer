@@ -247,7 +247,65 @@ namespace WitnessVisualizer
                     editView.Graph.RemoveElement(element);
                 editView.SelectedObjects.Clear();
             }
+        }
+        private void FlipXYToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (editView != null)
+            {
+                Graph graph = Graph.FlipGraph(editView.Graph,Graph.FlipType.XY);
+                editView = new EditView(graph, editorPictureBox.Width, editorPictureBox.Height, tetrisTemplatePictureBox.Width, tetrisTemplatePictureBox.Height);
+                UpdateGraphDrawing();
+                UpdateTetrisTemplateDrawing();
+                ToolkitListView.SelectedItems.Clear();
+            }
+        }
+        private void FlipHorizontallyToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (editView != null)
+            {
+                Graph graph = Graph.FlipGraph(editView.Graph, Graph.FlipType.Horizontal);
+                editView = new EditView(graph, editorPictureBox.Width, editorPictureBox.Height, tetrisTemplatePictureBox.Width, tetrisTemplatePictureBox.Height);
+                UpdateGraphDrawing();
+                UpdateTetrisTemplateDrawing();
+                ToolkitListView.SelectedItems.Clear();
+            }
+        }
+        private void FlipVerticallyToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (editView != null)
+            {
+                Graph graph = Graph.FlipGraph(editView.Graph, Graph.FlipType.Vertical);
+                editView = new EditView(graph, editorPictureBox.Width, editorPictureBox.Height, tetrisTemplatePictureBox.Width, tetrisTemplatePictureBox.Height);
+                UpdateGraphDrawing();
+                UpdateTetrisTemplateDrawing();
+                ToolkitListView.SelectedItems.Clear();
+            }
+        }
 
+        private void RotateBoardToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (editView != null)
+            {
+                while(true)
+                {
+                    string result = Prompt.ShowDialog("Enter the angle (clockwise) in degrees:", "Hint");
+                    if (string.IsNullOrWhiteSpace(result)) break;
+                    double angle;
+                    if(double.TryParse(result,out angle))
+                    {
+                        if (angle == 0.0) break;
+                        if(!double.IsNaN(angle) && !double.IsInfinity(angle))
+                        {
+                            Graph graph = Graph.RotateGraph(editView.Graph, angle * Math.PI / 180);
+                            editView = new EditView(graph, editorPictureBox.Width, editorPictureBox.Height, tetrisTemplatePictureBox.Width, tetrisTemplatePictureBox.Height);
+                            UpdateGraphDrawing();
+                            UpdateTetrisTemplateDrawing();
+                            ToolkitListView.SelectedItems.Clear();
+                            break;
+                        }
+                    }
+                }
+            }
         }
 
         private void ClearDecorationsToolStripMenuItem_Click(object sender, EventArgs e)
@@ -308,12 +366,15 @@ namespace WitnessVisualizer
 
         }
 
+
+
         private void AboutToolStripMenuItem1_Click(object sender, EventArgs e)
         {
             MessageBox.Show("The Witness Puzzle Designer\ninstr3.github.com");
         }
 
         #endregion
+
 
         private void MainForm_Load(object sender, EventArgs e)
         {
