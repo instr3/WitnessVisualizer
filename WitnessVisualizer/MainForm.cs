@@ -60,7 +60,15 @@ namespace WitnessVisualizer
             if (editView.SelectedObjects.Count == 1)
             {
                 GraphElement element = editView.SelectedObjects[0];
-                puzzlePropertyGrid.SelectedObject = element.Decorator;
+                if(element is Node)
+                {
+                    puzzlePropertyGrid.SelectedObject = element;
+                    puzzlePropertyGrid.ExpandAllGridItems();
+                }
+                else
+                {
+                    puzzlePropertyGrid.SelectedObject = element.Decorator;
+                }
             }
             else
             {
@@ -105,19 +113,18 @@ namespace WitnessVisualizer
             if (editView != null)
             {
                 int index = ToolkitListView.SelectedIndices[0];
-                if (index == 0)
+                if (ToolkitListView.Items[index].Tag is PuzzleToolkitDecoratorItem item) // Decorator
                 {
-                    editView.ChooseSampleDecorator(null, false);
-                    UpdatePropertyGridBinding();
-                    editView.PasteMode = false;
-                }
-                else // Decorator
-                {
-                    PuzzleToolkitDecoratorItem item = ToolkitListView.Items[index].Tag as PuzzleToolkitDecoratorItem;
                     editView.ChooseSampleDecorator(item.Decorator, false);
                     UpdatePropertyGridBinding();
                     UpdateGraphDrawing();
                     UpdateTetrisTemplateDrawing();
+                }
+                else
+                {
+                    editView.ChooseSampleDecorator(null, false);
+                    UpdatePropertyGridBinding();
+                    editView.PasteMode = false;
                 }
             }
         }
@@ -246,6 +253,7 @@ namespace WitnessVisualizer
                 foreach (GraphElement element in editView.SelectedObjects)
                     editView.Graph.RemoveElement(element);
                 editView.SelectedObjects.Clear();
+                UpdateGraphDrawing();
             }
         }
         private void FlipXYToolStripMenuItem_Click(object sender, EventArgs e)
@@ -364,6 +372,38 @@ namespace WitnessVisualizer
                 editView.ExportToFile(savePath);
             }
 
+        }
+
+        private void RegularPolygonToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            List<object> menuItems = new List<object>() { null, null, null, regularTriangleToolStripMenuItem, regularSquareToolStripMenuItem, regularPentagonToolStripMenuItem, regularHexagonToolStripMenuItem };
+
+            if (editView != null)
+            {
+                Graph graph = editView.Graph;
+                int edges = menuItems.IndexOf(sender);
+                if (editView.SelectedObjects.Count > 0 && editView.SelectedObjects[0] is Edge edge)
+                {
+                    GraphManipulation.TryAddShapeWithBaseSegment(graph, edge, GraphManipulation.CreateRegularPolygon(edges));
+                    UpdateGraphDrawing();
+                }
+                else
+                {
+                    MessageBox.Show("Error: Please select an edge first.");
+                }
+            }
+        }
+        private void RegenerateFromGraphToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (editView != null)
+            {
+                editView.Graph.MetaData.TetrisTemplate.Shapes.Clear();
+                editView.Graph.MetaData.TetrisTemplate.Shapes.AddRange(
+                    editView.Graph.Faces.Select(face => face.Nodes.Select(node => new Node(node.X, node.Y)).ToList()));
+                editView.CalculateTetrisTemplateScaleAndOrigin(editView.Graph.MetaData.TetrisTemplate);
+                UpdateTetrisTemplateDrawing();
+
+            }
         }
 
 

@@ -54,6 +54,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="EditView.cs" />
+    <Compile Include="GraphManipulation.cs" />
     <Compile Include="MainForm.cs">
       <SubType>Form</SubType>
     </Compile>

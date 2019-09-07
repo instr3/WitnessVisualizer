@@ -32,7 +32,7 @@ namespace TemplateGenerator
             List<Face> faces = new List<Face>();
             for (int i = 1; i <= X; ++i)
                 for (int j = 1; j <= Y; ++j)
-                    faces.Add(new Face(new List<Node>() { dict[i - 1, j - 1], dict[i - 1, j], dict[i, j], dict[i, j - 1] }));
+                    faces.Add(new Face(new List<Node>() { dict[i - 1, j - 1], dict[i, j - 1], dict[i, j], dict[i - 1, j] }));
             graph.Nodes.AddRange(nodes);
             graph.Edges.AddRange(edges);
             graph.Faces.AddRange(faces);
