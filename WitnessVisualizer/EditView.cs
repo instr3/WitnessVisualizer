@@ -17,6 +17,9 @@ namespace WitnessVisualizer
         public double Scale { get; set; } = 100.0;
         public Vector Origin { get; set; } = Vector.Zero;
         public bool IsDragging { get; private set; }
+        public bool IsCreatingMode { get; private set; }
+        public List<Node> CreatingNodes { get; private set; } = new List<Node>();
+        public Node HoveredCreatingNode { get; private set; }
         Vector mouseDownPosition;
         Vector editorSize;
         Vector tetrisTemplateEditorSize;
@@ -25,6 +28,7 @@ namespace WitnessVisualizer
         public List<GraphElement> SelectedObjects { get; private set; } = new List<GraphElement>();
         public List<GraphElement> HoveredObjects { get; private set; } = new List<GraphElement>();
         public bool[] SelectedTetrisShapes { get; private set; }
+        public EditManager<Graph> GraphEditManager { get; private set; }
         public EditView(Graph inputGraph, int inputEditorWidth, int inputEditorHeight, int inputTetrisTemplateWidth, int inputTetrisTemplateHeight)
         {
             editorSize = new Vector(inputEditorWidth, inputEditorHeight);
@@ -33,6 +37,7 @@ namespace WitnessVisualizer
             CalculateTetrisTemplateScaleAndOrigin(Graph.MetaData.TetrisTemplate);
             SelectedTetrisShapes = new bool[Graph.MetaData.TetrisTemplate.Shapes.Count];
             SwitchToBestView();
+            GraphEditManager = new EditManager<Graph>();
         }
         public void Resize(int inputEditorWidth, int inputEditorHeight, int inputTetrisTemplateWidth, int inputTetrisTemplateHeight)
         {
@@ -87,7 +92,42 @@ namespace WitnessVisualizer
         internal bool MouseDown(int x, int y, MouseButtons button) // Return true if copy operation is performed
         {
             bool copyPerformed = false;
-            if (HoveredObjects.Count > 0 &&  button != MouseButtons.Middle)
+            if(IsCreatingMode)
+            {
+                if(button == MouseButtons.Left) // Add
+                {
+                    Node addNode;
+                    if (HoveredObjects.Count > 0 && HoveredObjects[0] is Node node)
+                    {
+                        if (CreatingNodes.Contains(node))
+                        {
+                            if (CreatingNodes.Last() == node)
+                            {
+                                CreatingNodes.RemoveAt(CreatingNodes.Count - 1);
+                            }
+                            else if(CreatingNodes.First() == node)
+                            {
+                                SubmitCreatingNodes();
+                            }
+                            return false;
+                        }
+                        addNode = node;
+                    }
+                    else
+                    {
+                        Vector pos = new Vector(x, y).MapFromScreen(Scale,Origin);
+                        addNode = new Node(pos.X, pos.Y);
+                    }
+                    CreatingNodes.Add(addNode);
+                    return false;
+                }
+                else if (button == MouseButtons.Right) // Exit
+                {
+                    SubmitCreatingNodes();
+                    return false;
+                }
+            }
+            if (HoveredObjects.Count > 0 && button != MouseButtons.Middle)
             {
                 List<GraphElement> objectToKeep = new List<GraphElement>();
                 foreach (GraphElement havoredObject in HoveredObjects)
@@ -138,6 +178,7 @@ namespace WitnessVisualizer
         {
             if(decorator is null)
             {
+                GraphEditManager.BeforePreformEdit(Graph, "Remove Decorator");
                 element.Decorator = null;
                 return;
             }
@@ -146,6 +187,7 @@ namespace WitnessVisualizer
                 (element is Face && decorator is IFaceDecorable);
             if(okay)
             {
+                GraphEditManager.BeforePreformEdit(Graph, "Apply Decorator");
                 element.Decorator = decorator.Clone() as Decorator;
             }
         }
@@ -162,10 +204,22 @@ namespace WitnessVisualizer
             }
             else
             {
-                GraphElement havoredObject = QueryPosition(mousePosition.MapFromScreen(Scale, Origin));
+                Vector query = mousePosition.MapFromScreen(Scale, Origin);
+                GraphElement havoredObject = QueryPosition(query);
                 if(havoredObject != null)
                 {
                     HoveredObjects.Add(havoredObject);
+                }
+                if (IsCreatingMode)
+                {
+                    if(havoredObject is Node node)
+                    {
+                        HoveredCreatingNode = node;
+                    }
+                    else
+                    {
+                        HoveredCreatingNode = new Node(query.X, query.Y);
+                    }
                 }
             }
         }
@@ -179,10 +233,6 @@ namespace WitnessVisualizer
                 Origin += deltaPosition;
                 mouseDownPosition = mousePosition;
                 IsDragging = false;
-            }
-            else
-            {
-
             }
         }
         #endregion
@@ -247,6 +297,7 @@ namespace WitnessVisualizer
                 SelectedTetrisShapes[tetrisTemplatePosition] = !SelectedTetrisShapes[tetrisTemplatePosition];
                 if (SelectedObjects.Count>0)
                 {
+                    GraphEditManager.BeforePreformEdit(Graph, "Tetris Decorator");
                     TemplateViewToTetrisIndex(SelectedObjects[0].Decorator);
                 }
                 else if(PasteMode)
@@ -345,6 +396,38 @@ namespace WitnessVisualizer
             renderer.Draw(exportView);
             bitmap.Save(savePath, ImageFormat.Png);
 
+        }
+        void SubmitCreatingNodes()
+        {
+            GraphEditManager.BeforePreformEdit(Graph, "Create Graph Elements");
+            GraphManipulation.AddShape(Graph, CreatingNodes);
+            ExitCreatingMode();
+            EnterCreatingMode();
+        }
+
+        internal void EnterCreatingMode()
+        {
+            SelectedObjects.Clear();
+            CreatingNodes.Clear();
+            HoveredCreatingNode = null;
+            PasteMode = false;
+            IsCreatingMode = true;
+        }
+        internal void ExitCreatingMode()
+        {
+            SelectedObjects.Clear();
+            CreatingNodes.Clear();
+            HoveredCreatingNode = null;
+            IsCreatingMode = false;
+        }
+
+        internal void SetNewGraph(Graph graph)
+        {
+            SelectedObjects.Clear();
+            HoveredObjects.Clear();
+            CreatingNodes.Clear();
+            HoveredCreatingNode = null;
+            Graph = graph;
         }
     }
 }

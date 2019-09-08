@@ -45,10 +45,29 @@ namespace WitnessVisualizer
             }
             return null;
         }
-
+        private static List<Node> OrientedPolygon(List<Node> shape)
+        {
+            // Algorithm from https://stackoverflow.com/a/1165943
+            if (shape.Count <= 2) return shape;
+            double total = 0;
+            for (int i = 0; i < shape.Count; ++i)
+            {
+                Node node1 = shape[i == 0 ? shape.Count - 1 : i - 1];
+                Node node2 = shape[i];
+                total += (node2.X - node1.X) * (node2.Y + node1.Y);
+            }
+            if(total>0)
+            {
+                List<Node> result = new List<Node>();
+                result.AddRange(shape);
+                result.Reverse();
+                return result;
+            }
+            return shape;
+        }
         private static List<Node> MappingShapesToNewPosition(List<Node> shape, Node node0, Node node1)
         {
-            if(shape.Count<2)
+            if (shape.Count < 2)
             {
                 throw new NotSupportedException("The shape has too few nodes.");
             }
@@ -61,7 +80,7 @@ namespace WitnessVisualizer
             double l1 = v1.X * v1.X + v1.Y * v1.Y;
             double l2 = v2.X * v2.X + v2.Y * v2.Y;
             List<Node> newShape = new List<Node>(shape.Count);
-            foreach(Node node in shape)
+            foreach (Node node in shape)
             {
                 Vector pos = new Vector(node.X, node.Y) - o1;
                 double uCoord = (pos ^ u1) / l1;
@@ -71,32 +90,39 @@ namespace WitnessVisualizer
             }
             return newShape;
         }
-        public static void AddShapeWithBaseDirectedSegment(Graph graph, Node node0, Node node1, List<Node> shape)
+        public static void AddShape(Graph graph,List<Node> shape)
         {
-            List<Node> mappedShape = MappingShapesToNewPosition(shape, node0, node1);
-            List<Node> existNodes = mappedShape.Select(node => QueryNearByNodes(graph, new Vector(node.X, node.Y))).ToList();
-            List<Node> faceNodes = new List<Node>(mappedShape.Count);
-            for (int i = 0; i < mappedShape.Count; ++i)
+            shape = OrientedPolygon(shape);
+            List<Node> existNodes = shape.Select(node => QueryNearByNodes(graph, new Vector(node.X, node.Y))).ToList();
+            List<Node> faceNodes = new List<Node>(shape.Count);
+            for (int i = 0; i < shape.Count; ++i)
             {
                 if (existNodes[i] is null)
                 {
-                    graph.Nodes.Add(mappedShape[i]);
-                    faceNodes.Add(mappedShape[i]);
+                    graph.Nodes.Add(shape[i]);
+                    faceNodes.Add(shape[i]);
                 }
                 else
                 {
                     faceNodes.Add(existNodes[i]);
                 }
             }
-            for (int i = 0; i < mappedShape.Count; ++i)
+            for (int i = 0; i < shape.Count; ++i)
             {
-                int prev = i == 0 ? mappedShape.Count - 1 : i - 1;
+                int prev = i == 0 ? shape.Count - 1 : i - 1;
                 if (QueryEdge(graph, faceNodes[prev], faceNodes[i]) is null)
                 {
                     graph.Edges.Add(new Edge(faceNodes[prev], faceNodes[i]));
                 }
             }
-            graph.Faces.Add(new Face(faceNodes));
+            if (faceNodes.Count > 2)
+                graph.Faces.Add(new Face(faceNodes));
+
+        }
+        public static void AddShapeWithBaseDirectedSegment(Graph graph, Node node0, Node node1, List<Node> shape)
+        {
+            List<Node> mappedShape = MappingShapesToNewPosition(shape, node0, node1);
+            AddShape(graph, mappedShape);
         }
         public static List<Node> CreateRegularPolygon(int edges)
         {

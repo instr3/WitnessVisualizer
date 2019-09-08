@@ -384,6 +384,7 @@ namespace WitnessVisualizer
                 int edges = menuItems.IndexOf(sender);
                 if (editView.SelectedObjects.Count > 0 && editView.SelectedObjects[0] is Edge edge)
                 {
+                    editView.GraphEditManager.BeforePreformEdit(editView.Graph, "Draw Regular Polygon");
                     GraphManipulation.TryAddShapeWithBaseSegment(graph, edge, GraphManipulation.CreateRegularPolygon(edges));
                     UpdateGraphDrawing();
                 }
@@ -397,6 +398,7 @@ namespace WitnessVisualizer
         {
             if (editView != null)
             {
+                editView.GraphEditManager.BeforePreformEdit(editView.Graph, "Regenerate Tetris Templates");
                 editView.Graph.MetaData.TetrisTemplate.Shapes.Clear();
                 editView.Graph.MetaData.TetrisTemplate.Shapes.AddRange(
                     editView.Graph.Faces.Select(face => face.Nodes.Select(node => new Node(node.X, node.Y)).ToList()));
@@ -406,6 +408,25 @@ namespace WitnessVisualizer
             }
         }
 
+        private void CreatingModeToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if(editView != null)
+            {
+                editView.EnterCreatingMode();
+                ToolkitListView.SelectedItems.Clear();
+                ToolkitListView.Items[0].Selected = true;
+            }
+        }
+        private void ExitCreatingModeToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (editView != null)
+            {
+                editView.ExitCreatingMode();
+                ToolkitListView.SelectedItems.Clear();
+                ToolkitListView.Items[0].Selected = true;
+            }
+
+        }
 
 
         private void AboutToolStripMenuItem1_Click(object sender, EventArgs e)
@@ -413,12 +434,61 @@ namespace WitnessVisualizer
             MessageBox.Show("The Witness Puzzle Designer\ninstr3.github.com");
         }
 
+
+        private void EditToolStripMenuItem_DropDownOpening(object sender, EventArgs e)
+        {
+            if(editView != null)
+            {
+                undoToolStripMenuItem.Enabled = editView.GraphEditManager.CanUndo;
+                redoToolStripMenuItem.Enabled = editView.GraphEditManager.CanRedo;
+                undoToolStripMenuItem.Text = "Undo " + editView.GraphEditManager.LastUndoInfo;
+                redoToolStripMenuItem.Text = "Redo " + editView.GraphEditManager.LastRedoInfo;
+            }
+            else
+            {
+                undoToolStripMenuItem.Enabled = false;
+                redoToolStripMenuItem.Enabled = false;
+                undoToolStripMenuItem.Text = "Undo";
+                redoToolStripMenuItem.Text = "Redo";
+            }
+        }
+        private void UndoToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (editView != null && editView.GraphEditManager.CanUndo)
+            {
+                Graph graph = editView.GraphEditManager.Undo(editView.Graph);
+                editView.SetNewGraph(graph);
+                UpdateGraphDrawing();
+                UpdatePropertyGridBinding();
+                UpdateTetrisTemplateDrawing();
+            }
+        }
+
+        private void RedoToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (editView != null && editView.GraphEditManager.CanRedo)
+            {
+                Graph graph = editView.GraphEditManager.Redo();
+                editView.SetNewGraph(graph);
+                UpdateGraphDrawing();
+                UpdatePropertyGridBinding();
+                UpdateTetrisTemplateDrawing();
+            }
+        }
+
         #endregion
 
+
+        private void ToolkitListView_Click(object sender, EventArgs e)
+        {
+            if (editView.IsCreatingMode)
+                editView.ExitCreatingMode();
+        }
 
         private void MainForm_Load(object sender, EventArgs e)
         {
 
         }
+
     }
 }

@@ -89,7 +89,13 @@ namespace WitnessVisualizer
             DrawSelectionBoxes(view, view.HoveredObjects, Color.LightGreen);
             DrawSelectionBoxes(view, view.SelectedObjects, Color.DarkGoldenrod, true);
             DrawSelectionBoxes(view, view.SelectedObjects, Color.Yellow);
+            if (view.IsCreatingMode)
+            {
+                DrawCreatingModeLines(view, Color.DarkRed, false);
+                DrawCreatingModeLines(view, Color.Red, false);
+            }
         }
+
         public void DrawSelectionBoxes(EditView view, List<GraphElement> selectedObjects, Color color, bool skew=false)
         {
             Vector skewVector = skew ? new Vector(2.0, 2.0) : Vector.Zero;
@@ -334,6 +340,8 @@ namespace WitnessVisualizer
             double maxX = double.NegativeInfinity, maxY = double.NegativeInfinity;
             foreach (int index in indexes)
             {
+                if (index > metaData.TetrisTemplate.Shapes.Count)
+                    continue;
                 List<Node> shape = metaData.TetrisTemplate.Shapes[index];
                 foreach (Node node in shape)
                 {
@@ -357,6 +365,8 @@ namespace WitnessVisualizer
             {
                 foreach (int index in indexes)
                 {
+                    if (index > metaData.TetrisTemplate.Shapes.Count)
+                        continue;
                     List<Node> shape = metaData.TetrisTemplate.Shapes[index];
                     PointF[] points = shape.Select(node => (new Vector(node.X, node.Y) - selfBias).Rotate(angle / 180 * Math.PI)
                     .MapToScreen(totalScale, centerPosition).ToPoint()).ToArray();
@@ -370,11 +380,45 @@ namespace WitnessVisualizer
             {
                 foreach (int index in indexes)
                 {
+                    if (index > metaData.TetrisTemplate.Shapes.Count)
+                        continue;
                     List<Node> shape = metaData.TetrisTemplate.Shapes[index];
                     PointF[] points = shape.Select(node => (new Vector(node.X, node.Y) - selfBias).Rotate(angle / 180 * Math.PI)
                         .MapToScreen(totalScale, centerPosition).ToPoint()).ToArray();
                     graphics.DrawClosedCurve(pen, points, 0.0f, System.Drawing.Drawing2D.FillMode.Alternate);
 
+                }
+            }
+        }
+
+        private void DrawCreatingModeLines(EditView view, Color color, bool skew)
+        {
+            Vector skewVector = skew ? new Vector(2.0, 2.0) : Vector.Zero;
+            float width = skew ? 2.5f : 2f;
+            float selectionIconSize = 5;
+            List<Node> drawNodes = new List<Node>();
+            drawNodes.AddRange(view.CreatingNodes);
+            if (view.HoveredCreatingNode != null)
+                drawNodes.Add(view.HoveredCreatingNode);
+            PointF[] points = drawNodes.Select(node => (new Vector(node.X, node.Y).MapToScreen(view.Scale, view.Origin) + skewVector).ToPoint()).ToArray();
+
+            using (Pen pen = new Pen(color, width) { LineJoin = System.Drawing.Drawing2D.LineJoin.Round })
+            {
+                foreach(Node node in drawNodes)
+                {
+                    RectangleF boundingBox = (new Vector(node.X, node.Y).MapToScreen(view.Scale, view.Origin) + skewVector).ToCircleBoundingBox(selectionIconSize);
+                    graphics.DrawEllipse(pen, boundingBox);
+                }
+                if (points.Length > 1)
+                {
+                    graphics.DrawPolygon(pen, points);
+                }
+            }
+            if (points.Length > 2 && !skew)
+            {
+                using (Brush brush = new SolidBrush(Color.FromArgb(50, color)))
+                {
+                    graphics.FillPolygon(brush, points);
                 }
             }
         }

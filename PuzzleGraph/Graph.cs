@@ -7,7 +7,7 @@ using System.Linq;
 
 namespace PuzzleGraph
 {
-    public class Graph
+    public class Graph : ICloneable
     {
         public List<Node> Nodes { get; private set; }
         public List<Edge> Edges { get; private set; }
@@ -193,6 +193,11 @@ namespace PuzzleGraph
             }
             return newGraph;
 
+        }
+
+        public object Clone()
+        {
+            return new Graph(ToString());
         }
     }
 }

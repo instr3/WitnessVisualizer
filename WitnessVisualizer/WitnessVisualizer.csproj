@@ -53,6 +53,7 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="EditManager.cs" />
     <Compile Include="EditView.cs" />
     <Compile Include="GraphManipulation.cs" />
     <Compile Include="MainForm.cs">
