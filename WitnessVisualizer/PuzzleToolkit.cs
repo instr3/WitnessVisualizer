@@ -41,6 +41,9 @@ namespace WitnessVisualizer
             Toolkit.Items.Add(new PuzzleToolkitDecoratorItem("EndLD", new PuzzleGraph.Decorators.EndDecorator() { Angle = 135 }, 0.25));
             Toolkit.Items.Add(new PuzzleToolkitDecoratorItem("EndLU", new PuzzleGraph.Decorators.EndDecorator() { Angle = -135 }, 0.25));
             Toolkit.Items.Add(new PuzzleToolkitDecoratorItem("EndRU", new PuzzleGraph.Decorators.EndDecorator() { Angle = -45 }, 0.25));
+            Toolkit.Items.Add(new PuzzleToolkitDecoratorItem("Text", new PuzzleGraph.Decorators.TextDecorator() { Font = SystemFonts.MessageBoxFont, Text = "A" }));
+            Toolkit.Items.Add(new PuzzleToolkitDecoratorItem("Symbol", new PuzzleGraph.Decorators.TextDecorator() { Font = SystemFonts.MessageBoxFont, Text = "\u2460" }));
+            Toolkit.Items.Add(new PuzzleToolkitDecoratorItem("Emoji", new PuzzleGraph.Decorators.TextDecorator() { Font = new Font("Segoe UI Emoji",9), Text = "\U0001F600" }));
             return Toolkit;
         }
     }

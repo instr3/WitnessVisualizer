@@ -3,6 +3,7 @@ using PuzzleGraph;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Drawing.Text;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -259,6 +260,24 @@ namespace WitnessVisualizer
                 using (Brush brush = new SolidBrush(metaData.BackgroundColor))
                 {
                     graphics.FillEllipse(brush, centerPosition.ToCircleBoundingBox(innerRadius * scale));
+                }
+            }
+            else if (decorator is PuzzleGraph.Decorators.TextDecorator textDecorator)
+            {
+                graphics.TextRenderingHint = TextRenderingHint.AntiAlias;
+                using (Brush brush=new SolidBrush(textDecorator.Color))
+                {
+                    Font originalFont = textDecorator.Font;
+                    using (Font font = new Font(originalFont.FontFamily, (float)(originalFont.Size * scale / 20),
+                        originalFont.Style, originalFont.Unit, originalFont.GdiCharSet, originalFont.GdiVerticalFont))
+                    {
+                        SizeF size = graphics.MeasureString(textDecorator.Text, font);
+                        graphics.TranslateTransform((float)centerPosition.X, (float)centerPosition.Y);
+                        graphics.RotateTransform((float)textDecorator.Angle);
+                        graphics.DrawString(textDecorator.Text, font, brush,
+                             - size.Width / 2, - size.Height / 2);
+                        graphics.ResetTransform();
+                    }
                 }
             }
             else if(decorator is PuzzleGraph.Decorators.PointDecorator pointDecorator)

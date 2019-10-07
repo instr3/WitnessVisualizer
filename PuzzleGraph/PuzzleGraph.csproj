@@ -53,6 +53,7 @@
     <Compile Include="Decorators\StarDecorator.cs" />
     <Compile Include="Decorators\StartDecorator.cs" />
     <Compile Include="Decorators\TetrisDecorator.cs" />
+    <Compile Include="Decorators\TextDecorator.cs" />
     <Compile Include="Decorators\TriangleDecorator.cs" />
     <Compile Include="Edge.cs" />
     <Compile Include="Face.cs" />
@@ -66,8 +67,10 @@
     <Compile Include="Decorator.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SaveState.cs" />
+    <Compile Include="SerializableFont.cs" />
     <Compile Include="TetrisTemplate.cs" />
     <Compile Include="XmlColor.cs" />
+    <Compile Include="XmlFont.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

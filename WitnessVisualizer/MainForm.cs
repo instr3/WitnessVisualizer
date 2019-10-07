@@ -460,6 +460,7 @@ namespace WitnessVisualizer
                 editView.SetNewGraph(graph);
                 UpdateGraphDrawing();
                 UpdatePropertyGridBinding();
+                editView.CalculateTetrisTemplateScaleAndOrigin(editView.Graph.MetaData.TetrisTemplate);
                 UpdateTetrisTemplateDrawing();
             }
         }
@@ -472,6 +473,7 @@ namespace WitnessVisualizer
                 editView.SetNewGraph(graph);
                 UpdateGraphDrawing();
                 UpdatePropertyGridBinding();
+                editView.CalculateTetrisTemplateScaleAndOrigin(editView.Graph.MetaData.TetrisTemplate);
                 UpdateTetrisTemplateDrawing();
             }
         }
@@ -481,8 +483,11 @@ namespace WitnessVisualizer
 
         private void ToolkitListView_Click(object sender, EventArgs e)
         {
-            if (editView.IsCreatingMode)
-                editView.ExitCreatingMode();
+            if(editView!=null)
+            {
+                if (editView.IsCreatingMode)
+                    editView.ExitCreatingMode();
+            }
         }
 
         private void MainForm_Load(object sender, EventArgs e)
