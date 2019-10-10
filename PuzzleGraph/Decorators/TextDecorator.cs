@@ -13,7 +13,7 @@ namespace PuzzleGraph.Decorators
     {
         // [XmlElement(Type = typeof(XmlFont))]
         [XmlIgnore()]
-        public Font Font { get { return SerializableFont.ToFont(); }
+        public Font Font { get { return SerializableFont?.ToFont(); }
             set { SerializableFont = new SerializableFont(value); }
         }
         [Browsable(false)]

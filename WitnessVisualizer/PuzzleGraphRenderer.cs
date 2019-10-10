@@ -17,7 +17,27 @@ namespace WitnessVisualizer
         {
             graphics = inputGraphics;
         }
-
+        void DrawNode(EditView view, Node node, Brush brush, float lineWidth)
+        {
+            Vector screenPosition = new Vector(node.X, node.Y).MapToScreen(view.Scale, view.Origin);
+            graphics.FillEllipse(brush, new RectangleF((float)screenPosition.X - lineWidth / 2, (float)screenPosition.Y - lineWidth / 2, lineWidth, lineWidth));
+        }
+        void DrawEdge(EditView view, Edge edge, Pen pen)
+        {
+            Vector screenPosition1 = new Vector(edge.Start.X, edge.Start.Y).MapToScreen(view.Scale, view.Origin);
+            Vector screenPosition2 = new Vector(edge.End.X, edge.End.Y).MapToScreen(view.Scale, view.Origin);
+            if (edge.Decorator is PuzzleGraph.Decorators.BrokenDecorator)
+            {
+                Vector screenPosition3 = screenPosition1 * 0.6 + screenPosition2 * 0.4;
+                Vector screenPosition4 = screenPosition1 * 0.4 + screenPosition2 * 0.6;
+                graphics.DrawLine(pen, (float)screenPosition1.X, (float)screenPosition1.Y, (float)screenPosition3.X, (float)screenPosition3.Y);
+                graphics.DrawLine(pen, (float)screenPosition2.X, (float)screenPosition2.Y, (float)screenPosition4.X, (float)screenPosition4.Y);
+            }
+            else
+            {
+                graphics.DrawLine(pen, (float)screenPosition1.X, (float)screenPosition1.Y, (float)screenPosition2.X, (float)screenPosition2.Y);
+            }
+        }
         public void Draw(EditView view)
         {
             Graph graph = view.Graph;
@@ -35,6 +55,14 @@ namespace WitnessVisualizer
                         sum += new Vector(node.X, node.Y);
                     }
                     Vector screenPosition = (sum / face.Nodes.Count).MapToScreen(view.Scale, view.Origin);
+                    if(face.GraphElementColor!=Color.Transparent)
+                    {
+                        using(Brush brush=new SolidBrush(face.GraphElementColor))
+                        {
+                            graphics.FillPolygon(brush, face.Nodes.Select(node =>
+                                new Vector(node.X, node.Y).MapToScreen(view.Scale, view.Origin).ToPoint()).ToArray());
+                        }
+                    }
                     if (face.Decorator is null)
                     {
                         if(view.IsDragging) // Debug paint
@@ -44,35 +72,22 @@ namespace WitnessVisualizer
                     {
                         DrawDecorator(graphics, face.Decorator, screenPosition, view.Scale * (1 - graph.MetaData.EdgeWidth) * graph.MetaData.FaceDecorationScale, view.Graph.MetaData);
                     }
-
-
                 }
-                // edgePen.EndCap = System.Drawing.Drawing2D.LineCap.Round;
                 foreach (Node node in graph.Nodes)
                 {
-                    Vector screenPosition = new Vector(node.X, node.Y).MapToScreen(view.Scale, view.Origin);
-                    graphics.FillEllipse(pointBrush, new RectangleF((float)screenPosition.X - lineWidth / 2, (float)screenPosition.Y - lineWidth / 2, lineWidth, lineWidth));
+                    DrawNode(view, node, pointBrush, lineWidth);
                 }
                 foreach (Edge edge in graph.Edges)
                 {
-                    Vector screenPosition1 = new Vector(edge.Start.X, edge.Start.Y).MapToScreen(view.Scale, view.Origin);
-                    Vector screenPosition2 = new Vector(edge.End.X, edge.End.Y).MapToScreen(view.Scale, view.Origin);
-                    if (edge.Decorator is PuzzleGraph.Decorators.BrokenDecorator)
+                    if(edge.GraphElementColor==Color.Transparent)
                     {
-                        Vector screenPosition3 = screenPosition1 * 0.6 + screenPosition2 * 0.4;
-                        Vector screenPosition4 = screenPosition1 * 0.4 + screenPosition2 * 0.6;
-                        graphics.DrawLine(edgePen, (float)screenPosition1.X, (float)screenPosition1.Y, (float)screenPosition3.X, (float)screenPosition3.Y);
-                        graphics.DrawLine(edgePen, (float)screenPosition2.X, (float)screenPosition2.Y, (float)screenPosition4.X, (float)screenPosition4.Y);
-                    }
-                    else
-                    {
-                        graphics.DrawLine(edgePen, (float)screenPosition1.X, (float)screenPosition1.Y, (float)screenPosition2.X, (float)screenPosition2.Y);
+                        DrawEdge(view, edge, edgePen);
                     }
                 }
             }
             foreach (Node node in graph.Nodes)
             {
-                if (node.Decorator != null)
+                if (node.Decorator is PuzzleGraph.Decorators.StartDecorator || node.Decorator is PuzzleGraph.Decorators.EndDecorator)
                 {
                     Vector screenPosition = new Vector(node.X, node.Y).MapToScreen(view.Scale, view.Origin);
                     DrawDecorator(graphics, node.Decorator, screenPosition, view.Scale * graph.MetaData.EdgeWidth, view.Graph.MetaData);
@@ -80,12 +95,43 @@ namespace WitnessVisualizer
             }
             foreach (Edge edge in graph.Edges)
             {
-                if(edge.Decorator != null && !(edge.Decorator is PuzzleGraph.Decorators.BrokenDecorator))
+                if (edge.Decorator is PuzzleGraph.Decorators.StartDecorator || edge.Decorator is PuzzleGraph.Decorators.EndDecorator)
                 {
                     Vector screenPosition = new Vector((edge.Start.X + edge.End.X) / 2, (edge.Start.Y + edge.End.Y) / 2).MapToScreen(view.Scale, view.Origin);
                     DrawDecorator(graphics, edge.Decorator, screenPosition, view.Scale * graph.MetaData.EdgeWidth, view.Graph.MetaData);
                 }
             }
+            // Draw solutions
+            foreach (Edge edge in graph.Edges)
+            {
+                if(edge.GraphElementColor != Color.Transparent)
+                {
+                    using (Pen edgePen = new Pen(edge.GraphElementColor, lineWidth))
+                    using (Brush pointBrush = new SolidBrush(edge.GraphElementColor))
+                    {
+                        DrawEdge(view, edge, edgePen);
+                        DrawNode(view, edge.Start, pointBrush, lineWidth);
+                        DrawNode(view, edge.End, pointBrush, lineWidth);
+                    }
+                }
+            }
+            foreach (Node node in graph.Nodes)
+            {
+                if (node.Decorator != null && !(node.Decorator is PuzzleGraph.Decorators.StartDecorator) && !(node.Decorator is PuzzleGraph.Decorators.EndDecorator))
+                {
+                    Vector screenPosition = new Vector(node.X, node.Y).MapToScreen(view.Scale, view.Origin);
+                    DrawDecorator(graphics, node.Decorator, screenPosition, view.Scale * graph.MetaData.EdgeWidth, view.Graph.MetaData);
+                }
+            }
+            foreach (Edge edge in graph.Edges)
+            {
+                if (edge.Decorator != null && !(edge.Decorator is PuzzleGraph.Decorators.BrokenDecorator) && !(edge.Decorator is PuzzleGraph.Decorators.StartDecorator) && !(edge.Decorator is PuzzleGraph.Decorators.EndDecorator))
+                {
+                    Vector screenPosition = new Vector((edge.Start.X + edge.End.X) / 2, (edge.Start.Y + edge.End.Y) / 2).MapToScreen(view.Scale, view.Origin);
+                    DrawDecorator(graphics, edge.Decorator, screenPosition, view.Scale * graph.MetaData.EdgeWidth, view.Graph.MetaData);
+                }
+            }
+
             DrawSelectionBoxes(view, view.HoveredObjects, Color.DarkGreen, true);
             DrawSelectionBoxes(view, view.HoveredObjects, Color.LightGreen);
             DrawSelectionBoxes(view, view.SelectedObjects, Color.DarkGoldenrod, true);
@@ -268,6 +314,10 @@ namespace WitnessVisualizer
                 using (Brush brush=new SolidBrush(textDecorator.Color))
                 {
                     Font originalFont = textDecorator.Font;
+                    if(originalFont is null)
+                    {
+                        originalFont = SystemFonts.DefaultFont;
+                    }
                     using (Font font = new Font(originalFont.FontFamily, (float)(originalFont.Size * scale / 20),
                         originalFont.Style, originalFont.Unit, originalFont.GdiCharSet, originalFont.GdiVerticalFont))
                     {
@@ -298,17 +348,23 @@ namespace WitnessVisualizer
                         new Vector(-x2, -radius / 2).MapToScreen(scale, centerPosition).ToPoint());
                 }
             }
-            else if(decorator is PuzzleGraph.Decorators.StartDecorator)
+            else if(decorator is PuzzleGraph.Decorators.StartDecorator startDecorator)
             {
                 double radius = 2.55 / 2;
-                using (Brush brush=new SolidBrush(metaData.ForegroundColor))
+                using (Brush brush = new SolidBrush(
+                    startDecorator.Color != Color.Transparent ? startDecorator.Color : metaData.ForegroundColor))
                 {
                     graphics.FillEllipse(brush, centerPosition.ToCircleBoundingBox(radius * scale));
                 }
             }
             else if (decorator is PuzzleGraph.Decorators.EndDecorator endDecorator)
             {
-                using (Pen pen = new Pen(metaData.ForegroundColor, (float)scale) { EndCap = System.Drawing.Drawing2D.LineCap.Round })
+                using (Pen pen = new Pen(
+                    endDecorator.Color != Color.Transparent ? endDecorator.Color : metaData.ForegroundColor, (float)scale)
+                {
+                    EndCap = System.Drawing.Drawing2D.LineCap.Round,
+                    StartCap = System.Drawing.Drawing2D.LineCap.Round
+                })
                 {
                     double angle = endDecorator.Angle / 180 * Math.PI;
                     graphics.DrawLine(pen, centerPosition.ToPoint(),

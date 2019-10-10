@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml.Serialization;
 
 namespace PuzzleGraph
 {
@@ -13,11 +15,15 @@ namespace PuzzleGraph
             public int Start { get; set; }
             public int End { get; set; }
             public Decorator Decorator { get; set; }
+            [XmlElement(Type = typeof(XmlColor))]
+            public Color GraphElementColor { get; set; } = Color.Transparent;
         }
         public class SaveFace
         {
             public List<int> Nodes { get; set; }
             public Decorator Decorator { get; set; }
+            [XmlElement(Type = typeof(XmlColor))]
+            public Color GraphElementColor { get; set; } = Color.Transparent;
         }
 
         public List<Node> Nodes { get; set; }
@@ -38,13 +44,16 @@ namespace PuzzleGraph
             for(int i=0;i<graph.Edges.Count;++i)
             {
                 Edge edge = graph.Edges[i];
-                EdgesID.Add(new SaveEdge() { Start = nodeIDs[edge.Start], End = nodeIDs[edge.End], Decorator = edge.Decorator });
+                EdgesID.Add(new SaveEdge() { Start = nodeIDs[edge.Start], End = nodeIDs[edge.End],
+                    Decorator = edge.Decorator, GraphElementColor = edge.GraphElementColor});
             }
             FacesID = new List<SaveFace>(graph.Faces.Count);
             for(int i=0;i<graph.Faces.Count;++i)
             {
                 Face face = graph.Faces[i];
-                FacesID.Add(new SaveFace() { Nodes = face.Nodes.Select(node => nodeIDs[node]).ToList(), Decorator = face.Decorator });
+                FacesID.Add(new SaveFace() { Nodes = face.Nodes.Select(node => nodeIDs[node]).ToList(),
+                    Decorator = face.Decorator, GraphElementColor = face.GraphElementColor
+                });
             }
             MetaData = graph.MetaData;
         }

@@ -25,6 +25,8 @@ namespace WitnessVisualizer
         Vector tetrisTemplateEditorSize;
         public Decorator SampleDecorator { get; private set; }
         public bool PasteMode { get; set; }
+        public bool ColorPaintingMode { get; set; }
+        public PaintingModeControl PaintingModeControl { get; private set; }
         public List<GraphElement> SelectedObjects { get; private set; } = new List<GraphElement>();
         public List<GraphElement> HoveredObjects { get; private set; } = new List<GraphElement>();
         public bool[] SelectedTetrisShapes { get; private set; }
@@ -38,6 +40,7 @@ namespace WitnessVisualizer
             SelectedTetrisShapes = new bool[Graph.MetaData.TetrisTemplate.Shapes.Count];
             SwitchToBestView();
             GraphEditManager = new EditManager<Graph>();
+            PaintingModeControl = new PaintingModeControl();
         }
         public void Resize(int inputEditorWidth, int inputEditorHeight, int inputTetrisTemplateWidth, int inputTetrisTemplateHeight)
         {
@@ -138,7 +141,51 @@ namespace WitnessVisualizer
                     }
                 }
                 SelectedObjects.Clear();
-                if(button==MouseButtons.Right)
+                if (ColorPaintingMode) // Paint mode
+                {
+                    void PaintModeOperation(ref Color color)
+                    {
+                        if (button == MouseButtons.Right) // Color picking
+                            PaintingModeControl.Color = color;
+                        else // Apply color
+                            color = PaintingModeControl.Color;
+                    }
+                    foreach (GraphElement element in objectToKeep)
+                    {
+                        if (element is Node)
+                        {
+                            if (element.Decorator is PuzzleGraph.Decorators.StartDecorator startDecorator)
+                            {
+                                if (button == MouseButtons.Right) // Color picking
+                                    PaintingModeControl.Color = startDecorator.Color;
+                                else // Apply color
+                                    startDecorator.Color = PaintingModeControl.Color;
+                            }
+                            else if (element.Decorator is PuzzleGraph.Decorators.EndDecorator endDecorator)
+                            {
+                                if (button == MouseButtons.Right) // Color picking
+                                    PaintingModeControl.Color = endDecorator.Color;
+                                else // Apply color
+                                    endDecorator.Color = PaintingModeControl.Color;
+                            }
+                        }
+                        else if (element is Face face)
+                        {
+                            if (button == MouseButtons.Right) // Color picking
+                                PaintingModeControl.Color = face.GraphElementColor;
+                            else // Apply color
+                                face.GraphElementColor = PaintingModeControl.Color;
+                        }
+                        else if (element is Edge edge)
+                        {
+                            if (button == MouseButtons.Right) // Color picking
+                                PaintingModeControl.Color = edge.GraphElementColor;
+                            else // Apply color
+                                edge.GraphElementColor = PaintingModeControl.Color;
+                        }
+                    }
+                }
+                else if (button==MouseButtons.Right) // Copy
                 {
                     if(objectToKeep.Count>0)
                     {
@@ -358,6 +405,7 @@ namespace WitnessVisualizer
                     TemplateViewToTetrisIndex(SampleDecorator);
             }
             PasteMode = true;
+            ColorPaintingMode = false;
         }
 
         internal void ClearSelectedDecorations()
@@ -412,6 +460,7 @@ namespace WitnessVisualizer
             HoveredCreatingNode = null;
             PasteMode = false;
             IsCreatingMode = true;
+            ColorPaintingMode = false;
         }
         internal void ExitCreatingMode()
         {

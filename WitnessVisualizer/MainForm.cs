@@ -60,19 +60,16 @@ namespace WitnessVisualizer
             if (editView.SelectedObjects.Count == 1)
             {
                 GraphElement element = editView.SelectedObjects[0];
-                if(element is Node)
-                {
-                    puzzlePropertyGrid.SelectedObject = element;
-                    puzzlePropertyGrid.ExpandAllGridItems();
-                }
-                else
-                {
-                    puzzlePropertyGrid.SelectedObject = element.Decorator;
-                }
+                puzzlePropertyGrid.SelectedObject = element;
+                puzzlePropertyGrid.ExpandAllGridItems();
             }
             else
             {
-                if (editView.SampleDecorator != null)
+                if(editView.ColorPaintingMode)
+                {
+                    puzzlePropertyGrid.SelectedObject = editView.PaintingModeControl;
+                }
+                else if (editView.SampleDecorator != null)
                 {
                     puzzlePropertyGrid.SelectedObject = editView.SampleDecorator;
                 }
@@ -120,12 +117,20 @@ namespace WitnessVisualizer
                     UpdateGraphDrawing();
                     UpdateTetrisTemplateDrawing();
                 }
-                else
+                else if (ToolkitListView.Items[index].Text == "Pointer")
                 {
                     editView.ChooseSampleDecorator(null, false);
-                    UpdatePropertyGridBinding();
                     editView.PasteMode = false;
+                    editView.ColorPaintingMode = false;
+                    UpdatePropertyGridBinding();
                 }
+                else if (ToolkitListView.Items[index].Text == "Painter")
+                {
+                    editView.PasteMode = false;
+                    editView.ColorPaintingMode = true;
+                    UpdatePropertyGridBinding();
+                }
+                else throw new NotImplementedException();
             }
         }
         #endregion

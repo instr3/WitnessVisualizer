@@ -23,8 +23,8 @@ namespace PuzzleGraph
         private Graph(SaveState state)
         {
             Nodes = state.Nodes;
-            Edges = state.EdgesID.Select(edgeID => new Edge(Nodes[edgeID.Start], Nodes[edgeID.End]) { Decorator = edgeID.Decorator }).ToList();
-            Faces = state.FacesID.Select(faceID => new Face(faceID.Nodes.Select(id => Nodes[id]).ToList()) { Decorator = faceID.Decorator }).ToList();
+            Edges = state.EdgesID.Select(edgeID => new Edge(Nodes[edgeID.Start], Nodes[edgeID.End]) { Decorator = edgeID.Decorator, GraphElementColor=edgeID.GraphElementColor }).ToList();
+            Faces = state.FacesID.Select(faceID => new Face(faceID.Nodes.Select(id => Nodes[id]).ToList()) { Decorator = faceID.Decorator, GraphElementColor = faceID.GraphElementColor }).ToList();
             MetaData = state.MetaData;
         }
         public override string ToString()
