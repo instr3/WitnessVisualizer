@@ -404,10 +404,7 @@ namespace WitnessVisualizer
             if (editView != null)
             {
                 editView.GraphEditManager.BeforePreformEdit(editView.Graph, "Regenerate Tetris Templates");
-                editView.Graph.MetaData.TetrisTemplate.Shapes.Clear();
-                editView.Graph.MetaData.TetrisTemplate.Shapes.AddRange(
-                    editView.Graph.Faces.Select(face => face.Nodes.Select(node => new Node(node.X, node.Y)).ToList()));
-                editView.CalculateTetrisTemplateScaleAndOrigin(editView.Graph.MetaData.TetrisTemplate);
+                editView.RegenerateTetrisTemplates();
                 UpdateTetrisTemplateDrawing();
 
             }

@@ -408,6 +408,15 @@ namespace WitnessVisualizer
             ColorPaintingMode = false;
         }
 
+        internal void RegenerateTetrisTemplates()
+        {
+            Graph.MetaData.TetrisTemplate.Shapes.Clear();
+            Graph.MetaData.TetrisTemplate.Shapes.AddRange(
+                Graph.Faces.Select(face => face.Nodes.Select(node => new Node(node.X, node.Y)).ToList()));
+            CalculateTetrisTemplateScaleAndOrigin(Graph.MetaData.TetrisTemplate);
+            SelectedTetrisShapes = new bool[Graph.MetaData.TetrisTemplate.Shapes.Count];
+        }
+
         internal void ClearSelectedDecorations()
         {
             foreach(GraphElement element in SelectedObjects)
