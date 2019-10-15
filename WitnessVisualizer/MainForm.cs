@@ -255,6 +255,7 @@ namespace WitnessVisualizer
         {
             if (editView != null)
             {
+                editView.GraphEditManager.BeforePreformEdit(editView.Graph, "Delete Graph Elements");
                 foreach (GraphElement element in editView.SelectedObjects)
                     editView.Graph.RemoveElement(element);
                 editView.SelectedObjects.Clear();
@@ -265,6 +266,7 @@ namespace WitnessVisualizer
         {
             if (editView != null)
             {
+                editView.GraphEditManager.BeforePreformEdit(editView.Graph, "Flip X/Y");
                 Graph graph = Graph.FlipGraph(editView.Graph,Graph.FlipType.XY);
                 editView = new EditView(graph, editorPictureBox.Width, editorPictureBox.Height, tetrisTemplatePictureBox.Width, tetrisTemplatePictureBox.Height);
                 UpdateGraphDrawing();
@@ -276,6 +278,7 @@ namespace WitnessVisualizer
         {
             if (editView != null)
             {
+                editView.GraphEditManager.BeforePreformEdit(editView.Graph, "Flip Horizontally");
                 Graph graph = Graph.FlipGraph(editView.Graph, Graph.FlipType.Horizontal);
                 editView = new EditView(graph, editorPictureBox.Width, editorPictureBox.Height, tetrisTemplatePictureBox.Width, tetrisTemplatePictureBox.Height);
                 UpdateGraphDrawing();
@@ -287,6 +290,7 @@ namespace WitnessVisualizer
         {
             if (editView != null)
             {
+                editView.GraphEditManager.BeforePreformEdit(editView.Graph, "Flip Vertically");
                 Graph graph = Graph.FlipGraph(editView.Graph, Graph.FlipType.Vertical);
                 editView = new EditView(graph, editorPictureBox.Width, editorPictureBox.Height, tetrisTemplatePictureBox.Width, tetrisTemplatePictureBox.Height);
                 UpdateGraphDrawing();
@@ -309,6 +313,7 @@ namespace WitnessVisualizer
                         if (angle == 0.0) break;
                         if(!double.IsNaN(angle) && !double.IsInfinity(angle))
                         {
+                            editView.GraphEditManager.BeforePreformEdit(editView.Graph, "Rotate Graph");
                             Graph graph = Graph.RotateGraph(editView.Graph, angle * Math.PI / 180);
                             editView = new EditView(graph, editorPictureBox.Width, editorPictureBox.Height, tetrisTemplatePictureBox.Width, tetrisTemplatePictureBox.Height);
                             UpdateGraphDrawing();
@@ -462,7 +467,7 @@ namespace WitnessVisualizer
                 editView.SetNewGraph(graph);
                 UpdateGraphDrawing();
                 UpdatePropertyGridBinding();
-                editView.CalculateTetrisTemplateScaleAndOrigin(editView.Graph.MetaData.TetrisTemplate);
+                editView.UpdateTetrisTemplateScaleAndOrigin(editView.Graph.MetaData.TetrisTemplate);
                 UpdateTetrisTemplateDrawing();
             }
         }
@@ -475,7 +480,7 @@ namespace WitnessVisualizer
                 editView.SetNewGraph(graph);
                 UpdateGraphDrawing();
                 UpdatePropertyGridBinding();
-                editView.CalculateTetrisTemplateScaleAndOrigin(editView.Graph.MetaData.TetrisTemplate);
+                editView.UpdateTetrisTemplateScaleAndOrigin(editView.Graph.MetaData.TetrisTemplate);
                 UpdateTetrisTemplateDrawing();
             }
         }

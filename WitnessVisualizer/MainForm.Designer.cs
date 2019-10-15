@@ -90,9 +90,10 @@
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.editorPictureBox.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.editorPictureBox.Location = new System.Drawing.Point(267, 28);
+            this.editorPictureBox.Location = new System.Drawing.Point(356, 35);
+            this.editorPictureBox.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.editorPictureBox.Name = "editorPictureBox";
-            this.editorPictureBox.Size = new System.Drawing.Size(624, 674);
+            this.editorPictureBox.Size = new System.Drawing.Size(831, 842);
             this.editorPictureBox.TabIndex = 0;
             this.editorPictureBox.TabStop = false;
             this.editorPictureBox.MouseDown += new System.Windows.Forms.MouseEventHandler(this.EditorPictureBox_MouseDown);
@@ -104,9 +105,10 @@
             // 
             this.puzzlePropertyGrid.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.puzzlePropertyGrid.Location = new System.Drawing.Point(897, 235);
+            this.puzzlePropertyGrid.Location = new System.Drawing.Point(1196, 294);
+            this.puzzlePropertyGrid.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.puzzlePropertyGrid.Name = "puzzlePropertyGrid";
-            this.puzzlePropertyGrid.Size = new System.Drawing.Size(177, 438);
+            this.puzzlePropertyGrid.Size = new System.Drawing.Size(236, 548);
             this.puzzlePropertyGrid.TabIndex = 2;
             this.puzzlePropertyGrid.ToolbarVisible = false;
             this.puzzlePropertyGrid.PropertyValueChanged += new System.Windows.Forms.PropertyValueChangedEventHandler(this.PuzzlePropertyGrid_PropertyValueChanged);
@@ -114,9 +116,10 @@
             // resetPropertyButton
             // 
             this.resetPropertyButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.resetPropertyButton.Location = new System.Drawing.Point(897, 679);
+            this.resetPropertyButton.Location = new System.Drawing.Point(1196, 849);
+            this.resetPropertyButton.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.resetPropertyButton.Name = "resetPropertyButton";
-            this.resetPropertyButton.Size = new System.Drawing.Size(177, 23);
+            this.resetPropertyButton.Size = new System.Drawing.Size(236, 29);
             this.resetPropertyButton.TabIndex = 3;
             this.resetPropertyButton.Text = "Reset Value";
             this.resetPropertyButton.UseVisualStyleBackColor = true;
@@ -135,9 +138,10 @@
             listViewItem1.StateImageIndex = 0;
             this.ToolkitListView.Items.AddRange(new System.Windows.Forms.ListViewItem[] {
             listViewItem1});
-            this.ToolkitListView.Location = new System.Drawing.Point(12, 28);
+            this.ToolkitListView.Location = new System.Drawing.Point(16, 35);
+            this.ToolkitListView.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.ToolkitListView.Name = "ToolkitListView";
-            this.ToolkitListView.Size = new System.Drawing.Size(249, 674);
+            this.ToolkitListView.Size = new System.Drawing.Size(331, 842);
             this.ToolkitListView.TabIndex = 5;
             this.ToolkitListView.UseCompatibleStateImageBehavior = false;
             this.ToolkitListView.SelectedIndexChanged += new System.EventHandler(this.ToolkitListView_SelectedIndexChanged);
@@ -147,9 +151,10 @@
             // 
             this.tetrisTemplatePictureBox.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.tetrisTemplatePictureBox.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.tetrisTemplatePictureBox.Location = new System.Drawing.Point(897, 28);
+            this.tetrisTemplatePictureBox.Location = new System.Drawing.Point(1196, 35);
+            this.tetrisTemplatePictureBox.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.tetrisTemplatePictureBox.Name = "tetrisTemplatePictureBox";
-            this.tetrisTemplatePictureBox.Size = new System.Drawing.Size(177, 183);
+            this.tetrisTemplatePictureBox.Size = new System.Drawing.Size(235, 228);
             this.tetrisTemplatePictureBox.TabIndex = 6;
             this.tetrisTemplatePictureBox.TabStop = false;
             this.tetrisTemplatePictureBox.MouseDown += new System.Windows.Forms.MouseEventHandler(this.TetrisTemplatePictureBox_MouseDown);
@@ -163,8 +168,8 @@
             this.aboutToolStripMenuItem});
             this.menuStrip.Location = new System.Drawing.Point(0, 0);
             this.menuStrip.Name = "menuStrip";
-            this.menuStrip.Padding = new System.Windows.Forms.Padding(4, 2, 0, 2);
-            this.menuStrip.Size = new System.Drawing.Size(1082, 25);
+            this.menuStrip.Padding = new System.Windows.Forms.Padding(5, 2, 0, 2);
+            this.menuStrip.Size = new System.Drawing.Size(1443, 25);
             this.menuStrip.TabIndex = 7;
             this.menuStrip.Text = "menuStrip1";
             // 
@@ -470,7 +475,8 @@
             this.puzzlePropertyLabel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.puzzlePropertyLabel.AutoSize = true;
             this.puzzlePropertyLabel.Font = new System.Drawing.Font("宋体", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.puzzlePropertyLabel.Location = new System.Drawing.Point(898, 220);
+            this.puzzlePropertyLabel.Location = new System.Drawing.Point(1197, 275);
+            this.puzzlePropertyLabel.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.puzzlePropertyLabel.Name = "puzzlePropertyLabel";
             this.puzzlePropertyLabel.Size = new System.Drawing.Size(124, 12);
             this.puzzlePropertyLabel.TabIndex = 8;
@@ -483,9 +489,9 @@
             // 
             // MainForm
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1082, 714);
+            this.ClientSize = new System.Drawing.Size(1443, 892);
             this.Controls.Add(this.puzzlePropertyLabel);
             this.Controls.Add(this.tetrisTemplatePictureBox);
             this.Controls.Add(this.ToolkitListView);
@@ -495,6 +501,7 @@
             this.Controls.Add(this.menuStrip);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MainMenuStrip = this.menuStrip;
+            this.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.Name = "MainForm";
             this.Text = "Editor";
             this.Load += new System.EventHandler(this.MainForm_Load);

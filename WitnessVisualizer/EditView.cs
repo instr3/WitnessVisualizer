@@ -36,8 +36,7 @@ namespace WitnessVisualizer
             editorSize = new Vector(inputEditorWidth, inputEditorHeight);
             tetrisTemplateEditorSize = new Vector(inputTetrisTemplateWidth, inputTetrisTemplateHeight);
             Graph = inputGraph;
-            CalculateTetrisTemplateScaleAndOrigin(Graph.MetaData.TetrisTemplate);
-            SelectedTetrisShapes = new bool[Graph.MetaData.TetrisTemplate.Shapes.Count];
+            UpdateTetrisTemplateScaleAndOrigin(Graph.MetaData.TetrisTemplate);
             SwitchToBestView();
             GraphEditManager = new EditManager<Graph>();
             PaintingModeControl = new PaintingModeControl();
@@ -143,15 +142,16 @@ namespace WitnessVisualizer
                 SelectedObjects.Clear();
                 if (ColorPaintingMode) // Paint mode
                 {
-                    void PaintModeOperation(ref Color color)
-                    {
-                        if (button == MouseButtons.Right) // Color picking
-                            PaintingModeControl.Color = color;
-                        else // Apply color
-                            color = PaintingModeControl.Color;
-                    }
                     foreach (GraphElement element in objectToKeep)
                     {
+                        Color TryApplyColor(Color oldColor, Color newColor, string hint)
+                        {
+                            if(oldColor!=newColor)
+                            {
+                                GraphEditManager.BeforePreformEdit(Graph, "Paint " + hint + " with " + newColor.ToString());
+                            }
+                            return newColor;
+                        }
                         if (element is Node)
                         {
                             if (element.Decorator is PuzzleGraph.Decorators.StartDecorator startDecorator)
@@ -159,14 +159,14 @@ namespace WitnessVisualizer
                                 if (button == MouseButtons.Right) // Color picking
                                     PaintingModeControl.Color = startDecorator.Color;
                                 else // Apply color
-                                    startDecorator.Color = PaintingModeControl.Color;
+                                    startDecorator.Color = TryApplyColor(startDecorator.Color, PaintingModeControl.Color, "start point");
                             }
                             else if (element.Decorator is PuzzleGraph.Decorators.EndDecorator endDecorator)
                             {
                                 if (button == MouseButtons.Right) // Color picking
                                     PaintingModeControl.Color = endDecorator.Color;
                                 else // Apply color
-                                    endDecorator.Color = PaintingModeControl.Color;
+                                    endDecorator.Color = TryApplyColor(endDecorator.Color, PaintingModeControl.Color, "end point");
                             }
                         }
                         else if (element is Face face)
@@ -174,14 +174,14 @@ namespace WitnessVisualizer
                             if (button == MouseButtons.Right) // Color picking
                                 PaintingModeControl.Color = face.GraphElementColor;
                             else // Apply color
-                                face.GraphElementColor = PaintingModeControl.Color;
+                                face.GraphElementColor = TryApplyColor(face.GraphElementColor, PaintingModeControl.Color, "face");
                         }
                         else if (element is Edge edge)
                         {
                             if (button == MouseButtons.Right) // Color picking
                                 PaintingModeControl.Color = edge.GraphElementColor;
                             else // Apply color
-                                edge.GraphElementColor = PaintingModeControl.Color;
+                                edge.GraphElementColor = TryApplyColor(edge.GraphElementColor, PaintingModeControl.Color, "edge");
                         }
                     }
                 }
@@ -289,8 +289,9 @@ namespace WitnessVisualizer
         public double TetrisTemplateScale { get; private set; }
         public Vector TetrisTemplateOrigin { get; private set; }
 
-        public void CalculateTetrisTemplateScaleAndOrigin(TetrisTemplate template)
+        public void UpdateTetrisTemplateScaleAndOrigin(TetrisTemplate template)
         {
+            SelectedTetrisShapes = new bool[template.Shapes.Count];
             double marginSize = 10;
             if (template.Shapes.Count == 0)
             {
@@ -413,8 +414,7 @@ namespace WitnessVisualizer
             Graph.MetaData.TetrisTemplate.Shapes.Clear();
             Graph.MetaData.TetrisTemplate.Shapes.AddRange(
                 Graph.Faces.Select(face => face.Nodes.Select(node => new Node(node.X, node.Y)).ToList()));
-            CalculateTetrisTemplateScaleAndOrigin(Graph.MetaData.TetrisTemplate);
-            SelectedTetrisShapes = new bool[Graph.MetaData.TetrisTemplate.Shapes.Count];
+            UpdateTetrisTemplateScaleAndOrigin(Graph.MetaData.TetrisTemplate);
         }
 
         internal void ClearSelectedDecorations()
