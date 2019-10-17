@@ -8,17 +8,31 @@ using System.Threading.Tasks;
 
 namespace WitnessVisualizer
 {
-    class PuzzleToolkitMiscItem : PuzzleToolkitItem
+    public class PuzzleToolkitMiscItem : PuzzleToolkitItem
     {
+        public string IconPath { get; set; }
         Image icon;
-        public PuzzleToolkitMiscItem(string inputName,Image inputIcon)
+        public PuzzleToolkitMiscItem(string inputName,string inputIconPath)
         {
             Name = inputName;
-            icon = inputIcon;
+            IconPath = inputIconPath;
         }
+
+        private PuzzleToolkitMiscItem() { }
 
         public override Image GetImage(int width, int height)
         {
+            if(icon==null)
+            {
+                try
+                {
+                    icon = Image.FromFile(IconPath);
+                }
+                catch
+                {
+                    return null;
+                }
+            }
             return icon;
         }
     }

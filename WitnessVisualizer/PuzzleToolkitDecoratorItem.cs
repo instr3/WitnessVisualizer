@@ -10,11 +10,12 @@ using System.Drawing.Drawing2D;
 
 namespace WitnessVisualizer
 {
-    class PuzzleToolkitDecoratorItem : PuzzleToolkitItem
+    public class PuzzleToolkitDecoratorItem : PuzzleToolkitItem
     {
-        public Decorator Decorator { get; private set; }
+        public Decorator Decorator { get; set; }
         private static MetaData metaData;
-        private double additionalScale;
+        public double AdditionalScale { get; set; }
+        Image image;
         static PuzzleToolkitDecoratorItem()
         {
             metaData = new MetaData();
@@ -34,26 +35,31 @@ namespace WitnessVisualizer
         {
             Name = inputName;
             Decorator = inputDecorator;
-            additionalScale = inputAdditionalScale;
+            AdditionalScale = inputAdditionalScale;
         }
+
+        private PuzzleToolkitDecoratorItem() { }
 
         public void Draw(Graphics graphics, int width, int height)
         {
             PuzzleGraphRenderer renderer = new PuzzleGraphRenderer(graphics);
-            renderer.DrawDecorator(graphics, Decorator, new Vector(width / 2.0, height / 2.0), width * additionalScale, metaData, metaData.BackgroundColor);
+            renderer.DrawDecorator(graphics, Decorator, new Vector(width / 2.0, height / 2.0), width * AdditionalScale, metaData, metaData.BackgroundColor);
         }
         public override Image GetImage(int width, int height)
         {
-            Image image = new Bitmap(width, height);
-            using (Graphics g = Graphics.FromImage(image))
+            if(image==null)
             {
-                using (Pen pen = new Pen(Color.Gray, 3))
+                image = new Bitmap(width, height);
+                using (Graphics g = Graphics.FromImage(image))
                 {
-                    g.Clear(metaData.BackgroundColor);
-                    g.DrawRectangle(pen, 0.0f, 0.0f, width - 1, height - 1);
+                    using (Pen pen = new Pen(Color.Gray, 3))
+                    {
+                        g.Clear(metaData.BackgroundColor);
+                        g.DrawRectangle(pen, 0.0f, 0.0f, width - 1, height - 1);
+                    }
+                    g.SmoothingMode = SmoothingMode.AntiAlias;
+                    Draw(g, width, height);
                 }
-                g.SmoothingMode = SmoothingMode.AntiAlias;
-                Draw(g, width, height);
             }
             return image;
         }

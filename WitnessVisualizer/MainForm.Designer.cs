@@ -79,6 +79,19 @@
             this.createFileDialog = new System.Windows.Forms.OpenFileDialog();
             this.puzzlePropertyLabel = new System.Windows.Forms.Label();
             this.exportFileDialog = new System.Windows.Forms.SaveFileDialog();
+            this.toolkitAdd = new System.Windows.Forms.Button();
+            this.toolkitRemove = new System.Windows.Forms.Button();
+            this.toolkitLeft = new System.Windows.Forms.Button();
+            this.toolkitRight = new System.Windows.Forms.Button();
+            this.toolkitTextBox = new System.Windows.Forms.TextBox();
+            this.toolkitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.saveSchemeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.loadSchemeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.resetToDefaultToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItem7 = new System.Windows.Forms.ToolStripSeparator();
+            this.mergeSchemeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.openToolkitFileDialog = new System.Windows.Forms.OpenFileDialog();
+            this.saveToolkitFileDialog = new System.Windows.Forms.SaveFileDialog();
             ((System.ComponentModel.ISupportInitialize)(this.editorPictureBox)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.tetrisTemplatePictureBox)).BeginInit();
             this.menuStrip.SuspendLayout();
@@ -93,7 +106,7 @@
             this.editorPictureBox.Location = new System.Drawing.Point(356, 35);
             this.editorPictureBox.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.editorPictureBox.Name = "editorPictureBox";
-            this.editorPictureBox.Size = new System.Drawing.Size(831, 842);
+            this.editorPictureBox.Size = new System.Drawing.Size(583, 631);
             this.editorPictureBox.TabIndex = 0;
             this.editorPictureBox.TabStop = false;
             this.editorPictureBox.MouseDown += new System.Windows.Forms.MouseEventHandler(this.EditorPictureBox_MouseDown);
@@ -105,10 +118,10 @@
             // 
             this.puzzlePropertyGrid.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.puzzlePropertyGrid.Location = new System.Drawing.Point(1196, 294);
+            this.puzzlePropertyGrid.Location = new System.Drawing.Point(948, 294);
             this.puzzlePropertyGrid.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.puzzlePropertyGrid.Name = "puzzlePropertyGrid";
-            this.puzzlePropertyGrid.Size = new System.Drawing.Size(236, 548);
+            this.puzzlePropertyGrid.Size = new System.Drawing.Size(236, 337);
             this.puzzlePropertyGrid.TabIndex = 2;
             this.puzzlePropertyGrid.ToolbarVisible = false;
             this.puzzlePropertyGrid.PropertyValueChanged += new System.Windows.Forms.PropertyValueChangedEventHandler(this.PuzzlePropertyGrid_PropertyValueChanged);
@@ -116,7 +129,7 @@
             // resetPropertyButton
             // 
             this.resetPropertyButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.resetPropertyButton.Location = new System.Drawing.Point(1196, 849);
+            this.resetPropertyButton.Location = new System.Drawing.Point(948, 638);
             this.resetPropertyButton.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.resetPropertyButton.Name = "resetPropertyButton";
             this.resetPropertyButton.Size = new System.Drawing.Size(236, 29);
@@ -141,7 +154,7 @@
             this.ToolkitListView.Location = new System.Drawing.Point(16, 35);
             this.ToolkitListView.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.ToolkitListView.Name = "ToolkitListView";
-            this.ToolkitListView.Size = new System.Drawing.Size(331, 842);
+            this.ToolkitListView.Size = new System.Drawing.Size(331, 596);
             this.ToolkitListView.TabIndex = 5;
             this.ToolkitListView.UseCompatibleStateImageBehavior = false;
             this.ToolkitListView.SelectedIndexChanged += new System.EventHandler(this.ToolkitListView_SelectedIndexChanged);
@@ -151,7 +164,7 @@
             // 
             this.tetrisTemplatePictureBox.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.tetrisTemplatePictureBox.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.tetrisTemplatePictureBox.Location = new System.Drawing.Point(1196, 35);
+            this.tetrisTemplatePictureBox.Location = new System.Drawing.Point(948, 35);
             this.tetrisTemplatePictureBox.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.tetrisTemplatePictureBox.Name = "tetrisTemplatePictureBox";
             this.tetrisTemplatePictureBox.Size = new System.Drawing.Size(235, 228);
@@ -165,11 +178,12 @@
             this.menuStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.filesToolStripMenuItem,
             this.editToolStripMenuItem,
+            this.toolkitToolStripMenuItem,
             this.aboutToolStripMenuItem});
             this.menuStrip.Location = new System.Drawing.Point(0, 0);
             this.menuStrip.Name = "menuStrip";
             this.menuStrip.Padding = new System.Windows.Forms.Padding(5, 2, 0, 2);
-            this.menuStrip.Size = new System.Drawing.Size(1443, 25);
+            this.menuStrip.Size = new System.Drawing.Size(1195, 25);
             this.menuStrip.TabIndex = 7;
             this.menuStrip.Text = "menuStrip1";
             // 
@@ -453,7 +467,7 @@
             // aboutToolStripMenuItem1
             // 
             this.aboutToolStripMenuItem1.Name = "aboutToolStripMenuItem1";
-            this.aboutToolStripMenuItem1.Size = new System.Drawing.Size(120, 22);
+            this.aboutToolStripMenuItem1.Size = new System.Drawing.Size(180, 22);
             this.aboutToolStripMenuItem1.Text = "About...";
             this.aboutToolStripMenuItem1.Click += new System.EventHandler(this.AboutToolStripMenuItem1_Click);
             // 
@@ -475,7 +489,7 @@
             this.puzzlePropertyLabel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.puzzlePropertyLabel.AutoSize = true;
             this.puzzlePropertyLabel.Font = new System.Drawing.Font("宋体", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.puzzlePropertyLabel.Location = new System.Drawing.Point(1197, 275);
+            this.puzzlePropertyLabel.Location = new System.Drawing.Point(949, 275);
             this.puzzlePropertyLabel.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.puzzlePropertyLabel.Name = "puzzlePropertyLabel";
             this.puzzlePropertyLabel.Size = new System.Drawing.Size(124, 12);
@@ -487,11 +501,126 @@
             this.exportFileDialog.DefaultExt = "png";
             this.exportFileDialog.Filter = "PNG Files|*.png";
             // 
+            // toolkitAdd
+            // 
+            this.toolkitAdd.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.toolkitAdd.Location = new System.Drawing.Point(118, 639);
+            this.toolkitAdd.Name = "toolkitAdd";
+            this.toolkitAdd.Size = new System.Drawing.Size(28, 28);
+            this.toolkitAdd.TabIndex = 9;
+            this.toolkitAdd.Text = "+";
+            this.toolkitAdd.UseVisualStyleBackColor = true;
+            this.toolkitAdd.Click += new System.EventHandler(this.ToolkitAdd_Click);
+            // 
+            // toolkitRemove
+            // 
+            this.toolkitRemove.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.toolkitRemove.Location = new System.Drawing.Point(84, 639);
+            this.toolkitRemove.Name = "toolkitRemove";
+            this.toolkitRemove.Size = new System.Drawing.Size(28, 28);
+            this.toolkitRemove.TabIndex = 10;
+            this.toolkitRemove.Text = "-";
+            this.toolkitRemove.UseVisualStyleBackColor = true;
+            this.toolkitRemove.Click += new System.EventHandler(this.ToolkitRemove_Click);
+            // 
+            // toolkitLeft
+            // 
+            this.toolkitLeft.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.toolkitLeft.Location = new System.Drawing.Point(16, 638);
+            this.toolkitLeft.Name = "toolkitLeft";
+            this.toolkitLeft.Size = new System.Drawing.Size(28, 28);
+            this.toolkitLeft.TabIndex = 11;
+            this.toolkitLeft.Text = "<";
+            this.toolkitLeft.UseVisualStyleBackColor = true;
+            this.toolkitLeft.Click += new System.EventHandler(this.ToolkitLeft_Click);
+            // 
+            // toolkitRight
+            // 
+            this.toolkitRight.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.toolkitRight.Location = new System.Drawing.Point(50, 638);
+            this.toolkitRight.Name = "toolkitRight";
+            this.toolkitRight.Size = new System.Drawing.Size(28, 28);
+            this.toolkitRight.TabIndex = 12;
+            this.toolkitRight.Text = ">";
+            this.toolkitRight.UseVisualStyleBackColor = true;
+            this.toolkitRight.Click += new System.EventHandler(this.ToolkitRight_Click);
+            // 
+            // toolkitTextBox
+            // 
+            this.toolkitTextBox.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.toolkitTextBox.Location = new System.Drawing.Point(152, 641);
+            this.toolkitTextBox.Name = "toolkitTextBox";
+            this.toolkitTextBox.Size = new System.Drawing.Size(195, 25);
+            this.toolkitTextBox.TabIndex = 13;
+            this.toolkitTextBox.Click += new System.EventHandler(this.ToolkitTextBox_Click);
+            this.toolkitTextBox.TextChanged += new System.EventHandler(this.ToolkitTextBox_TextChanged);
+            // 
+            // toolkitToolStripMenuItem
+            // 
+            this.toolkitToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.saveSchemeToolStripMenuItem,
+            this.loadSchemeToolStripMenuItem,
+            this.resetToDefaultToolStripMenuItem,
+            this.toolStripMenuItem7,
+            this.mergeSchemeToolStripMenuItem});
+            this.toolkitToolStripMenuItem.Name = "toolkitToolStripMenuItem";
+            this.toolkitToolStripMenuItem.Size = new System.Drawing.Size(60, 21);
+            this.toolkitToolStripMenuItem.Text = "Toolkit";
+            // 
+            // saveSchemeToolStripMenuItem
+            // 
+            this.saveSchemeToolStripMenuItem.Name = "saveSchemeToolStripMenuItem";
+            this.saveSchemeToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.saveSchemeToolStripMenuItem.Text = "Save Scheme...";
+            this.saveSchemeToolStripMenuItem.Click += new System.EventHandler(this.SaveSchemeToolStripMenuItem_Click);
+            // 
+            // loadSchemeToolStripMenuItem
+            // 
+            this.loadSchemeToolStripMenuItem.Name = "loadSchemeToolStripMenuItem";
+            this.loadSchemeToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.loadSchemeToolStripMenuItem.Text = "Load Scheme...";
+            this.loadSchemeToolStripMenuItem.Click += new System.EventHandler(this.LoadSchemeToolStripMenuItem_Click);
+            // 
+            // resetToDefaultToolStripMenuItem
+            // 
+            this.resetToDefaultToolStripMenuItem.Name = "resetToDefaultToolStripMenuItem";
+            this.resetToDefaultToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.resetToDefaultToolStripMenuItem.Text = "Reset To Default";
+            this.resetToDefaultToolStripMenuItem.Click += new System.EventHandler(this.ResetToDefaultToolStripMenuItem_Click);
+            // 
+            // toolStripMenuItem7
+            // 
+            this.toolStripMenuItem7.Name = "toolStripMenuItem7";
+            this.toolStripMenuItem7.Size = new System.Drawing.Size(177, 6);
+            // 
+            // mergeSchemeToolStripMenuItem
+            // 
+            this.mergeSchemeToolStripMenuItem.Name = "mergeSchemeToolStripMenuItem";
+            this.mergeSchemeToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.mergeSchemeToolStripMenuItem.Text = "Merge Scheme...";
+            this.mergeSchemeToolStripMenuItem.Click += new System.EventHandler(this.MergeSchemeToolStripMenuItem_Click);
+            // 
+            // openToolkitFileDialog
+            // 
+            this.openToolkitFileDialog.DefaultExt = "toolkit";
+            this.openToolkitFileDialog.FileName = "openFileDialog1";
+            this.openToolkitFileDialog.Filter = "Toolkit Scheme|*.toolkit";
+            // 
+            // saveToolkitFileDialog
+            // 
+            this.saveToolkitFileDialog.DefaultExt = "toolkit";
+            this.saveToolkitFileDialog.Filter = "Toolkit Scheme|*.toolkit";
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1443, 892);
+            this.ClientSize = new System.Drawing.Size(1195, 681);
+            this.Controls.Add(this.toolkitTextBox);
+            this.Controls.Add(this.toolkitRight);
+            this.Controls.Add(this.toolkitLeft);
+            this.Controls.Add(this.toolkitRemove);
+            this.Controls.Add(this.toolkitAdd);
             this.Controls.Add(this.puzzlePropertyLabel);
             this.Controls.Add(this.tetrisTemplatePictureBox);
             this.Controls.Add(this.ToolkitListView);
@@ -565,6 +694,19 @@
         private System.Windows.Forms.ToolStripMenuItem creatingModeToolStripMenuItem;
         private System.Windows.Forms.ToolStripSeparator toolStripMenuItem6;
         private System.Windows.Forms.ToolStripMenuItem exitCreatingModeToolStripMenuItem;
+        private System.Windows.Forms.Button toolkitAdd;
+        private System.Windows.Forms.Button toolkitRemove;
+        private System.Windows.Forms.Button toolkitLeft;
+        private System.Windows.Forms.Button toolkitRight;
+        private System.Windows.Forms.TextBox toolkitTextBox;
+        private System.Windows.Forms.ToolStripMenuItem toolkitToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem saveSchemeToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem loadSchemeToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem resetToDefaultToolStripMenuItem;
+        private System.Windows.Forms.ToolStripSeparator toolStripMenuItem7;
+        private System.Windows.Forms.ToolStripMenuItem mergeSchemeToolStripMenuItem;
+        private System.Windows.Forms.OpenFileDialog openToolkitFileDialog;
+        private System.Windows.Forms.SaveFileDialog saveToolkitFileDialog;
     }
 }
 

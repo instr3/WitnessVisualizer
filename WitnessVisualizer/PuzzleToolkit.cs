@@ -1,21 +1,23 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml.Serialization;
 
 namespace WitnessVisualizer
 {
-    class PuzzleToolkit
+    public class PuzzleToolkit
     {
-        public List<PuzzleToolkitItem> Items { get; private set; } = new List<PuzzleToolkitItem>();
+        public List<PuzzleToolkitItem> Items { get; set; } = new List<PuzzleToolkitItem>();
 
         public static PuzzleToolkit CreateDefaultPuzzleToolkit()
         {
             PuzzleToolkit Toolkit = new PuzzleToolkit();
-            Toolkit.Items.Add(new PuzzleToolkitMiscItem("Pointer", Image.FromFile("Icons/Cursor.png")));
-            Toolkit.Items.Add(new PuzzleToolkitMiscItem("Painter", Image.FromFile("Icons/Paint.png")));
+            Toolkit.Items.Add(new PuzzleToolkitMiscItem("Pointer", "Icons/Cursor.png"));
+            Toolkit.Items.Add(new PuzzleToolkitMiscItem("Painter", "Icons/Paint.png"));
             // Toolkit.Items.Add(new PuzzleToolkitMiscItem("Color Picker", Image.FromFile("Icons/ColorPicker.png")));
             Toolkit.Items.Add(new PuzzleToolkitDecoratorItem("Empty", null));
             Toolkit.Items.Add(new PuzzleToolkitDecoratorItem("Eliminator", new PuzzleGraph.Decorators.EliminatorDecorator()));
@@ -47,6 +49,30 @@ namespace WitnessVisualizer
             Toolkit.Items.Add(new PuzzleToolkitDecoratorItem("Symbol", new PuzzleGraph.Decorators.TextDecorator() { Font = SystemFonts.MessageBoxFont, Text = "\u2460" }));
             Toolkit.Items.Add(new PuzzleToolkitDecoratorItem("Emoji", new PuzzleGraph.Decorators.TextDecorator() { Font = new Font("Segoe UI Emoji",9), Text = "\U0001F600" }));
             return Toolkit;
+        }
+        public static double GetSuggestedDecorationScale(PuzzleGraph.Decorator decorator)
+        {
+            if (decorator is PuzzleGraph.Decorators.StartDecorator) return 0.25;
+            if (decorator is PuzzleGraph.Decorators.BrokenDecorator) return 0.25;
+            if (decorator is PuzzleGraph.Decorators.EndDecorator) return 0.25;
+            if (decorator is PuzzleGraph.Decorators.PointDecorator) return 0.5;
+            return 1.0;
+        }
+        public void SaveToFile(string fileName)
+        {
+            XmlSerializer xml = new XmlSerializer(typeof(PuzzleToolkit));
+            using (FileStream fs = new FileStream(fileName, FileMode.Create))
+            {
+                xml.Serialize(fs, this);
+            }
+        }
+        public static PuzzleToolkit LoadFromFile(string fileName)
+        {
+            XmlSerializer xml = new XmlSerializer(typeof(PuzzleToolkit));
+            using (FileStream fs = new FileStream(fileName, FileMode.Open))
+            {
+                return xml.Deserialize(fs) as PuzzleToolkit;
+            }
         }
     }
 }

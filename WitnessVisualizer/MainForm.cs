@@ -19,6 +19,7 @@ namespace WitnessVisualizer
         TetrisTemplateRenderer tetrisTemplateRenderer;
         BufferedGraphics graphBuffer, tetrisTemplateBuffer;
         PuzzleToolkit toolkit;
+        List<ListViewItem> toolkitListViewItems;
         EditView editView;
         string savePath;
         int toolkitIconSize = 32;
@@ -37,7 +38,8 @@ namespace WitnessVisualizer
             tetrisTemplateRenderer = new TetrisTemplateRenderer(tetrisTemplateBuffer.Graphics);
             // Init other stuff
             editorPictureBox.MouseWheel += EditorPictureBox_MouseWheel;
-            PrepareToolkitListView();
+            InitToolkit();
+            UpdateToolkitListView();
         }
 
 
@@ -85,22 +87,50 @@ namespace WitnessVisualizer
         }
 
         #region toolkit
-        void PrepareToolkitListView()
+
+        void InitToolkit(PuzzleToolkit inputToolkit = null)
         {
-            toolkit = PuzzleToolkit.CreateDefaultPuzzleToolkit();
+            if (inputToolkit == null)
+            {
+                try
+                {
+                    inputToolkit = PuzzleToolkit.LoadFromFile("toolkit/current.toolkit");
+                }
+                catch
+                {
+                    inputToolkit = PuzzleToolkit.CreateDefaultPuzzleToolkit();
+                    if (MessageBox.Show("Corrupted Toolkit. Click YES to create a new one.", "Warning", MessageBoxButtons.YesNo) == DialogResult.Yes)
+                    {
+                        inputToolkit.SaveToFile("toolkit/current.toolkit");
+                    }
+                }
+            }
+            toolkit = inputToolkit;
             ImageList imageList = new ImageList
             {
                 ColorDepth = ColorDepth.Depth32Bit,
                 ImageSize = new Size(toolkitIconSize, toolkitIconSize)
             };
             ToolkitListView.LargeImageList = imageList;
-            ToolkitListView.Items.Clear();
+            toolkitListViewItems = new List<ListViewItem>();
             foreach (PuzzleToolkitItem item in toolkit.Items)
             {
                 imageList.Images.Add(item.GetImage(toolkitIconSize, toolkitIconSize));
                 ListViewItem listViewItem = new ListViewItem(item.Name, imageList.Images.Count - 1);
                 listViewItem.Tag = item;
-                ToolkitListView.Items.Add(listViewItem);
+                listViewItem.Name = item.Name;
+                toolkitListViewItems.Add(listViewItem);
+            }
+        }
+        void UpdateToolkitListView()
+        {
+            ToolkitListView.Items.Clear();
+            foreach (ListViewItem item in toolkitListViewItems)
+            {
+                if(item.Name.ToLower().Contains(toolkitTextBox.Text.ToLower().Trim()) || item.Tag is PuzzleToolkitMiscItem)
+                {
+                    ToolkitListView.Items.Add(item);
+                }
             }
         }
         private void ToolkitListView_SelectedIndexChanged(object sender, EventArgs e)
@@ -119,10 +149,13 @@ namespace WitnessVisualizer
                 }
                 else if (ToolkitListView.Items[index].Text == "Pointer")
                 {
-                    editView.ChooseSampleDecorator(null, false);
-                    editView.PasteMode = false;
-                    editView.ColorPaintingMode = false;
-                    UpdatePropertyGridBinding();
+                    if(editView.PasteMode || editView.ColorPaintingMode || editView.IsCreatingMode)
+                    {
+                        editView.ChooseSampleDecorator(null, false);
+                        editView.PasteMode = false;
+                        editView.ColorPaintingMode = false;
+                        UpdatePropertyGridBinding();
+                    }
                 }
                 else if (ToolkitListView.Items[index].Text == "Painter")
                 {
@@ -132,6 +165,160 @@ namespace WitnessVisualizer
                 }
                 else throw new NotImplementedException();
             }
+        }
+        private void ToolkitAdd_Click(object sender, EventArgs e)
+        {
+            if (editView != null)
+            {
+                if (editView.SelectedObjects.Count == 0)
+                {
+                    MessageBox.Show("Please first select some objects on your puzzle.");
+                    return;
+                }
+                Decorator decorator = editView.SelectedObjects[0].Decorator;
+                if (string.IsNullOrWhiteSpace(toolkitTextBox.Text))
+                {
+                    MessageBox.Show("Please name the object using the text box.");
+                    return;
+                }
+                // We cannot use tetris shapes in the graph, so this information is discarded and replaced by placeholders
+                if(decorator is PuzzleGraph.Decorators.TetrisDecorator tetrisDecorator)
+                {
+                    tetrisDecorator = tetrisDecorator.Clone() as PuzzleGraph.Decorators.TetrisDecorator;
+                    tetrisDecorator.Indexes = new List<int>() { 0, 1, 2, 3 };
+                    decorator = tetrisDecorator;
+                }
+                else if(decorator is PuzzleGraph.Decorators.HollowTetrisDecorator hollowTetrisDecorator)
+                {
+                    hollowTetrisDecorator = hollowTetrisDecorator.Clone() as PuzzleGraph.Decorators.HollowTetrisDecorator;
+                    hollowTetrisDecorator.Indexes = new List<int>() { 0, 1, 2, 3 };
+                    decorator = hollowTetrisDecorator;
+                }
+                string name = toolkitTextBox.Text;
+                toolkit.Items.Add(new PuzzleToolkitDecoratorItem(name, decorator));
+                InitToolkit(toolkit);
+                UpdateToolkitListView();
+            }
+        }
+
+        private void ToolkitTextBox_TextChanged(object sender, EventArgs e)
+        {
+            UpdateToolkitListView();
+        }
+        private void ToolkitTextBox_Click(object sender, EventArgs e)
+        {
+            toolkitTextBox.SelectAll();
+        }
+
+        private void ToolkitListView_Click(object sender, EventArgs e)
+        {
+            if (editView != null)
+            {
+                if (editView.IsCreatingMode)
+                    editView.ExitCreatingMode();
+            }
+        }
+
+        private void ToolkitRemove_Click(object sender, EventArgs e)
+        {
+            if (ToolkitListView.SelectedIndices.Count == 0)
+                return;
+            if (MessageBox.Show("Are you sure you want to delete " + ToolkitListView.SelectedItems[0].Name +
+                (ToolkitListView.SelectedIndices.Count > 1 ? "...?" : "?") +
+                Environment.NewLine + "You cannot undo this.", "Warning", MessageBoxButtons.YesNo) == DialogResult.Yes)
+            {
+                foreach (ListViewItem item in ToolkitListView.SelectedItems)
+                {
+                    toolkit.Items.Remove(item.Tag as PuzzleToolkitItem);
+                }
+                InitToolkit(toolkit);
+                UpdateToolkitListView();
+            }
+        }
+
+        private void ToolkitLeft_Click(object sender, EventArgs e)
+        {
+            if (ToolkitListView.SelectedIndices.Count == 0)
+                return;
+            int selectedIndex = ToolkitListView.SelectedIndices[0];
+            ToolkitListView.SelectedIndices.Clear();
+            if (selectedIndex > 0)
+            {
+                PuzzleToolkitItem swapItem = toolkit.Items[selectedIndex - 1];
+                toolkit.Items.RemoveAt(selectedIndex - 1);
+                toolkit.Items.Insert(selectedIndex, swapItem);
+                InitToolkit(toolkit);
+                UpdateToolkitListView();
+                ToolkitListView.SelectedIndices.Add(selectedIndex - 1);
+            }
+        }
+
+        private void ToolkitRight_Click(object sender, EventArgs e)
+        {
+            if (ToolkitListView.SelectedIndices.Count == 0)
+                return;
+            int selectedIndex = ToolkitListView.SelectedIndices[0];
+            ToolkitListView.SelectedIndices.Clear();
+            if (selectedIndex < ToolkitListView.Items.Count - 1)
+            {
+                PuzzleToolkitItem swapItem = toolkit.Items[selectedIndex + 1];
+                toolkit.Items.RemoveAt(selectedIndex + 1);
+                toolkit.Items.Insert(selectedIndex, swapItem);
+                InitToolkit(toolkit);
+                UpdateToolkitListView();
+                ToolkitListView.SelectedIndices.Add(selectedIndex + 1);
+            }
+
+        }
+
+        private void SaveSchemeToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            saveToolkitFileDialog.InitialDirectory = Path.Combine(Application.StartupPath, "Toolkit");
+            if (saveToolkitFileDialog.ShowDialog() == DialogResult.Cancel)
+                return;
+            toolkit.SaveToFile(saveToolkitFileDialog.FileName);
+        }
+        private void LoadSchemeToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            openToolkitFileDialog.InitialDirectory = Path.Combine(Application.StartupPath, "Toolkit");
+            if (openToolkitFileDialog.ShowDialog() == DialogResult.Cancel)
+                return;
+            toolkit = PuzzleToolkit.LoadFromFile(openToolkitFileDialog.FileName);
+            InitToolkit(toolkit);
+            UpdateToolkitListView();
+        }
+        private void MergeSchemeToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            openToolkitFileDialog.InitialDirectory = Path.Combine(Application.StartupPath, "Toolkit");
+            if (openToolkitFileDialog.ShowDialog() == DialogResult.Cancel)
+                return;
+            PuzzleToolkit mergeToolkit = PuzzleToolkit.LoadFromFile(openToolkitFileDialog.FileName);
+            Dictionary<string, PuzzleToolkitItem> dict = new Dictionary<string, PuzzleToolkitItem>();
+            foreach(PuzzleToolkitItem item in toolkit.Items)
+            {
+                if (!dict.ContainsKey(item.Name))
+                    dict.Add(item.Name, item);
+            }
+            int count = 0;
+            foreach(PuzzleToolkitItem item in mergeToolkit.Items)
+            {
+                if(!dict.ContainsKey(item.Name))
+                {
+                    dict.Add(item.Name, item);
+                    toolkit.Items.Add(item);
+                    count += 1;
+                }
+            }
+            MessageBox.Show("Added " + count + " items.");
+            InitToolkit(toolkit);
+            UpdateToolkitListView();
+
+        }
+
+        private void ResetToDefaultToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            InitToolkit();
+            UpdateToolkitListView();
         }
         #endregion
 
@@ -487,15 +674,6 @@ namespace WitnessVisualizer
 
         #endregion
 
-
-        private void ToolkitListView_Click(object sender, EventArgs e)
-        {
-            if(editView!=null)
-            {
-                if (editView.IsCreatingMode)
-                    editView.ExitCreatingMode();
-            }
-        }
 
         private void MainForm_Load(object sender, EventArgs e)
         {

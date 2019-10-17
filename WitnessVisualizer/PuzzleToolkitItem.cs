@@ -5,12 +5,17 @@ using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml.Serialization;
 
 namespace WitnessVisualizer
 {
-    abstract class PuzzleToolkitItem
+    [
+        XmlInclude(typeof(PuzzleToolkitMiscItem)),
+        XmlInclude(typeof(PuzzleToolkitDecoratorItem)),
+    ]
+    public abstract class PuzzleToolkitItem
     {
-        public string Name { get; protected set; }
+        public string Name { get; set; }
         public abstract Image GetImage(int width, int height);
     }
 }
