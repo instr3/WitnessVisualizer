@@ -24,9 +24,6 @@ namespace WitnessVisualizer
             metaData.TetrisTemplate = new TetrisTemplate()
             {
                 Shapes = new List<List<Node>>() {
-                    new List<Node>() { new Node(0.0,0.0),new Node(1.0,0.0),new Node(1.0,1.0),new Node(0.0,1.0)},
-                    new List<Node>() { new Node(0.0,1.0),new Node(1.0,1.0),new Node(1.0,2.0),new Node(0.0,2.0)},
-                    new List<Node>() { new Node(1.0,0.0),new Node(2.0,0.0),new Node(2.0,1.0),new Node(1.0,1.0)},
                     new List<Node>() { new Node(1.0,1.0), new Node(2.0, 1.0), new Node(2.0,2.0), new Node(1.0, 2.0) }
                 }
             };

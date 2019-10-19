@@ -91,7 +91,7 @@ namespace WitnessVisualizer
             Scale *= deltaScale;
         }
 
-        internal bool MouseDown(int x, int y, MouseButtons button) // Return true if copy operation is performed
+        internal bool MouseDown(int x, int y, MouseButtons button, bool ctrlKey) // Return true if copy operation is performed
         {
             bool copyPerformed = false;
             if(IsCreatingMode)
@@ -132,6 +132,16 @@ namespace WitnessVisualizer
             if (HoveredObjects.Count > 0 && button != MouseButtons.Middle)
             {
                 List<GraphElement> objectToKeep = new List<GraphElement>();
+                if(ctrlKey)
+                {
+                    foreach (GraphElement selectedObject in SelectedObjects)
+                    {
+                        if (!HoveredObjects.Contains(selectedObject))
+                        {
+                            objectToKeep.Add(selectedObject);
+                        }
+                    }
+                }
                 foreach (GraphElement havoredObject in HoveredObjects)
                 {
                     if(!SelectedObjects.Contains(havoredObject))
@@ -375,22 +385,33 @@ namespace WitnessVisualizer
         internal void TemplateViewToTetrisIndex(Decorator decorator)
         {
             List<int> indexes;
+            List<List<Node>> shapes;
             if (decorator is PuzzleGraph.Decorators.HollowTetrisDecorator hollowTetrisDecorator)
+            {
                 indexes = hollowTetrisDecorator.Indexes;
+                shapes = hollowTetrisDecorator.Shapes;
+            }
             else if (decorator is PuzzleGraph.Decorators.TetrisDecorator tetrisDecorator)
+            {
                 indexes = tetrisDecorator.Indexes;
-            else
-                return;
+                shapes = tetrisDecorator.Shapes;
+            }
+            else return;
             indexes.Clear();
+            shapes.Clear();
+            TetrisTemplate template = Graph.MetaData.TetrisTemplate;
             for(int i=0;i<SelectedTetrisShapes.Length;++i)
             {
-                if (SelectedTetrisShapes[i])
+                if (SelectedTetrisShapes[i] && i < template.Shapes.Count)
+                {
                     indexes.Add(i);
+                    shapes.Add(template.Shapes[i].Select(node => new Node(node.X, node.Y)).ToList());
+                }
             }
 
         }
         #endregion
-        internal void ChooseSampleDecorator(Decorator decorator, bool importTetris)
+        internal void ChooseSampleDecorator(Decorator decorator, bool alwaysImportTetris)
         {
             SelectedObjects.Clear();
             if(decorator is null)
@@ -400,10 +421,16 @@ namespace WitnessVisualizer
             else
             {
                 SampleDecorator = decorator.Clone() as Decorator;
+                bool importTetris = alwaysImportTetris || TetrisTransferHelper.TetrisCompatible(Graph, decorator);
                 if (importTetris)
+                {
                     TetrisIndexToTemplateView(SampleDecorator);
+                }
                 else
-                    TemplateViewToTetrisIndex(SampleDecorator);
+                {
+                    SelectedTetrisShapes = new bool[SelectedTetrisShapes.Length];
+                    TetrisTransferHelper.ClearTetrisIndex(SampleDecorator);
+                }
             }
             PasteMode = true;
             ColorPaintingMode = false;

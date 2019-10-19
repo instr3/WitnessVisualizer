@@ -131,6 +131,7 @@ namespace PuzzleGraph
             {
                 Edge newEdge = new Edge(mapping[edge.Start], mapping[edge.End]);
                 newEdge.Decorator = edge.Decorator;
+                newEdge.GraphElementColor = edge.GraphElementColor;
                 newGraph.Edges.Add(newEdge);
             }
             foreach (Face face in graphClone.Faces)
@@ -140,6 +141,7 @@ namespace PuzzleGraph
                 nodes.Reverse();
                 Face newFace = new Face(nodes.Select(node => mapping[node]).ToList());
                 newFace.Decorator = face.Decorator;
+                newFace.GraphElementColor = face.GraphElementColor;
                 newGraph.Faces.Add(newFace);
             }
             TetrisTemplate oldTetrisTemplate = graphClone.MetaData.TetrisTemplate;

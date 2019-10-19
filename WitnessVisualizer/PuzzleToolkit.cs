@@ -1,4 +1,5 @@
-﻿using System;
+﻿using PuzzleGraph;
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
@@ -15,6 +16,10 @@ namespace WitnessVisualizer
 
         public static PuzzleToolkit CreateDefaultPuzzleToolkit()
         {
+            List<List<Node>> exampleShapes = new List<List<Node>>() {
+                    new List<Node>() { new Node(1.0,1.0), new Node(2.0, 1.0), new Node(2.0,2.0), new Node(1.0, 2.0) }
+                };
+            List<int> exampleIndex = new List<int>() { 0 };
             PuzzleToolkit Toolkit = new PuzzleToolkit();
             Toolkit.Items.Add(new PuzzleToolkitMiscItem("Pointer", "Icons/Cursor.png"));
             Toolkit.Items.Add(new PuzzleToolkitMiscItem("Painter", "Icons/Paint.png"));
@@ -26,10 +31,10 @@ namespace WitnessVisualizer
             Toolkit.Items.Add(new PuzzleToolkitDecoratorItem("Triangle 3", new PuzzleGraph.Decorators.TriangleDecorator() { Count = 3 }));
             Toolkit.Items.Add(new PuzzleToolkitDecoratorItem("Triangle 4", new PuzzleGraph.Decorators.TriangleDecorator() { Count = 4 }));
             Toolkit.Items.Add(new PuzzleToolkitDecoratorItem("Triangle 5", new PuzzleGraph.Decorators.TriangleDecorator() { Count = 5 }));
-            Toolkit.Items.Add(new PuzzleToolkitDecoratorItem("Tetris", new PuzzleGraph.Decorators.TetrisDecorator() { Indexes=new List<int>() { 0, 1, 2, 3 } }));
-            Toolkit.Items.Add(new PuzzleToolkitDecoratorItem("Hollow Tetris", new PuzzleGraph.Decorators.HollowTetrisDecorator() { Indexes = new List<int>() { 0, 1, 2, 3 } }));
-            Toolkit.Items.Add(new PuzzleToolkitDecoratorItem("Skew Tetris", new PuzzleGraph.Decorators.TetrisDecorator() { Indexes = new List<int>() { 0, 1, 2, 3 }, Angle = -15 }));
-            Toolkit.Items.Add(new PuzzleToolkitDecoratorItem("Skew Hollow Tetris", new PuzzleGraph.Decorators.HollowTetrisDecorator() { Indexes = new List<int>() { 0, 1, 2, 3 }, Angle = -15 }));
+            Toolkit.Items.Add(new PuzzleToolkitDecoratorItem("Tetris", new PuzzleGraph.Decorators.TetrisDecorator() { Indexes = exampleIndex, Shapes = exampleShapes }));
+            Toolkit.Items.Add(new PuzzleToolkitDecoratorItem("Hollow Tetris", new PuzzleGraph.Decorators.HollowTetrisDecorator() { Indexes = exampleIndex, Shapes = exampleShapes }));
+            Toolkit.Items.Add(new PuzzleToolkitDecoratorItem("Skew Tetris", new PuzzleGraph.Decorators.TetrisDecorator() { Indexes = exampleIndex, Shapes = exampleShapes, Angle = -15 }));
+            Toolkit.Items.Add(new PuzzleToolkitDecoratorItem("Skew Hollow Tetris", new PuzzleGraph.Decorators.HollowTetrisDecorator() { Indexes = exampleIndex, Shapes = exampleShapes, Angle = -15 }));
             Toolkit.Items.Add(new PuzzleToolkitDecoratorItem("Star", new PuzzleGraph.Decorators.StarDecorator()));
             Toolkit.Items.Add(new PuzzleToolkitDecoratorItem("Square", new PuzzleGraph.Decorators.SquareDecorator()));
             Toolkit.Items.Add(new PuzzleToolkitDecoratorItem("Circle", new PuzzleGraph.Decorators.CircleDecorator()));

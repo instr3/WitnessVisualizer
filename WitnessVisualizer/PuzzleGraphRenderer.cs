@@ -392,35 +392,32 @@ namespace WitnessVisualizer
         void DrawTetris(Graphics graphics, Decorator decorator, Vector centerPosition, double scale, MetaData metaData, Color backgroudColor)
         {
             double angle;
-            List<int> indexes;
+            List<List<Node>> shapes;
             Color color;
             bool isHollow;
             if (decorator is PuzzleGraph.Decorators.TetrisDecorator tetrisDecorator)
             {
                 angle = tetrisDecorator.Angle;
-                indexes = tetrisDecorator.Indexes;
+                shapes = tetrisDecorator.Shapes;
                 color = tetrisDecorator.Color;
                 isHollow = false;
             }
             else if (decorator is PuzzleGraph.Decorators.HollowTetrisDecorator hollowTetrisDecorator)
             {
                 angle = hollowTetrisDecorator.Angle;
-                indexes = hollowTetrisDecorator.Indexes;
+                shapes = hollowTetrisDecorator.Shapes;
                 color = hollowTetrisDecorator.Color;
                 isHollow = true;
             }
             else throw new NotSupportedException();
-            if (indexes.Count == 0)
+            if (shapes.Count == 0)
             {
                 return;
             }
             double minX = double.PositiveInfinity, minY = double.PositiveInfinity;
             double maxX = double.NegativeInfinity, maxY = double.NegativeInfinity;
-            foreach (int index in indexes)
+            foreach (List<Node> shape in shapes)
             {
-                if (index > metaData.TetrisTemplate.Shapes.Count)
-                    continue;
-                List<Node> shape = metaData.TetrisTemplate.Shapes[index];
                 foreach (Node node in shape)
                 {
                     minX = Math.Min(minX, node.X);
@@ -441,11 +438,8 @@ namespace WitnessVisualizer
                 CompoundArray = new float[] { compoundPercent, 1.0f}})
             using (Brush brush = new SolidBrush(color))
             {
-                foreach (int index in indexes)
+                foreach (List<Node> shape in shapes)
                 {
-                    if (index > metaData.TetrisTemplate.Shapes.Count)
-                        continue;
-                    List<Node> shape = metaData.TetrisTemplate.Shapes[index];
                     PointF[] points = shape.Select(node => (new Vector(node.X, node.Y) - selfBias).Rotate(angle / 180 * Math.PI)
                     .MapToScreen(totalScale, centerPosition).ToPoint()).ToArray();
                     if (isHollow)
@@ -456,11 +450,8 @@ namespace WitnessVisualizer
             }
             using (Pen pen = new Pen(backgroudColor, (float)(border * totalScale)))
             {
-                foreach (int index in indexes)
+                foreach (List<Node> shape in shapes)
                 {
-                    if (index > metaData.TetrisTemplate.Shapes.Count)
-                        continue;
-                    List<Node> shape = metaData.TetrisTemplate.Shapes[index];
                     PointF[] points = shape.Select(node => (new Vector(node.X, node.Y) - selfBias).Rotate(angle / 180 * Math.PI)
                         .MapToScreen(totalScale, centerPosition).ToPoint()).ToArray();
                     graphics.DrawClosedCurve(pen, points, 0.0f, System.Drawing.Drawing2D.FillMode.Alternate);

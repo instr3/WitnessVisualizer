@@ -181,21 +181,9 @@ namespace WitnessVisualizer
                     MessageBox.Show("Please name the object using the text box.");
                     return;
                 }
-                // We cannot use tetris shapes in the graph, so this information is discarded and replaced by placeholders
-                if(decorator is PuzzleGraph.Decorators.TetrisDecorator tetrisDecorator)
-                {
-                    tetrisDecorator = tetrisDecorator.Clone() as PuzzleGraph.Decorators.TetrisDecorator;
-                    tetrisDecorator.Indexes = new List<int>() { 0, 1, 2, 3 };
-                    decorator = tetrisDecorator;
-                }
-                else if(decorator is PuzzleGraph.Decorators.HollowTetrisDecorator hollowTetrisDecorator)
-                {
-                    hollowTetrisDecorator = hollowTetrisDecorator.Clone() as PuzzleGraph.Decorators.HollowTetrisDecorator;
-                    hollowTetrisDecorator.Indexes = new List<int>() { 0, 1, 2, 3 };
-                    decorator = hollowTetrisDecorator;
-                }
                 string name = toolkitTextBox.Text;
-                toolkit.Items.Add(new PuzzleToolkitDecoratorItem(name, decorator));
+                double size = PuzzleToolkit.GetSuggestedDecorationScale(decorator);
+                toolkit.Items.Add(new PuzzleToolkitDecoratorItem(name, decorator, size));
                 InitToolkit(toolkit);
                 UpdateToolkitListView();
             }
@@ -317,7 +305,8 @@ namespace WitnessVisualizer
 
         private void ResetToDefaultToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            InitToolkit();
+            PuzzleToolkit inputToolkit = PuzzleToolkit.CreateDefaultPuzzleToolkit();
+            InitToolkit(inputToolkit);
             UpdateToolkitListView();
         }
         #endregion
@@ -336,7 +325,8 @@ namespace WitnessVisualizer
         {
             if (editView != null)
             {
-                if (editView.MouseDown(e.X, e.Y, e.Button))
+                bool controlPressed = (ModifierKeys & Keys.Control) == Keys.Control;
+                if (editView.MouseDown(e.X, e.Y, e.Button, controlPressed))
                     ToolkitListView.SelectedItems.Clear(); // Copy is performed
                 UpdateGraphDrawing();
                 UpdatePropertyGridBinding();
@@ -397,6 +387,10 @@ namespace WitnessVisualizer
                 return;
             savePath = null;
             Graph graph = Graph.LoadFromFile(createFileDialog.FileName);
+            if (ObsolateFormatFixer.FixObsoletedTetrisFormat(graph))
+            {
+                Console.WriteLine("[Info] We have automatically upgraded the obsoleted file format. Please remember to save.");
+            }
             editView = new EditView(graph, editorPictureBox.Width, editorPictureBox.Height, tetrisTemplatePictureBox.Width, tetrisTemplatePictureBox.Height);
             UpdateGraphDrawing();
             UpdateTetrisTemplateDrawing();
@@ -432,6 +426,10 @@ namespace WitnessVisualizer
                 return;
             savePath = openInfoFileDialog.FileName;
             Graph graph = Graph.LoadFromFile(savePath);
+            if(ObsolateFormatFixer.FixObsoletedTetrisFormat(graph))
+            {
+                Console.WriteLine("[Info] We have automatically upgraded the obsoleted file format. Please remember to save.");
+            }
             editView = new EditView(graph, editorPictureBox.Width, editorPictureBox.Height, tetrisTemplatePictureBox.Width, tetrisTemplatePictureBox.Height);
             UpdateGraphDrawing();
             UpdateTetrisTemplateDrawing();
