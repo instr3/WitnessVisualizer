@@ -15,5 +15,6 @@ namespace PuzzleGraph.Decorators
         public double Angle { get; set; } = 0.0;
         public List<List<Node>> Shapes { get; set; } = new List<List<Node>>();
         public List<int> Indexes { get; set; } = new List<int>();
+        public double MarginSize { get; set; } = 0.14;
     }
 }

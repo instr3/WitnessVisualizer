@@ -387,6 +387,11 @@ namespace WitnessVisualizer
 
                 }
             }
+            else if(decorator is PuzzleGraph.Decorators.CombinedDecorator combinedDecorator)
+            {
+                DrawDecorator(graphics, combinedDecorator.First, centerPosition, scale, metaData, backgroudColor);
+                DrawDecorator(graphics, combinedDecorator.Second, centerPosition, scale, metaData, backgroudColor);
+            }
         }
 
         void DrawTetris(Graphics graphics, Decorator decorator, Vector centerPosition, double scale, MetaData metaData, Color backgroudColor)
@@ -395,12 +400,16 @@ namespace WitnessVisualizer
             List<List<Node>> shapes;
             Color color;
             bool isHollow;
+            double margin;
+            double hollowThickness;
             if (decorator is PuzzleGraph.Decorators.TetrisDecorator tetrisDecorator)
             {
                 angle = tetrisDecorator.Angle;
                 shapes = tetrisDecorator.Shapes;
                 color = tetrisDecorator.Color;
                 isHollow = false;
+                margin = tetrisDecorator.MarginSize;
+                hollowThickness = 0.19;
             }
             else if (decorator is PuzzleGraph.Decorators.HollowTetrisDecorator hollowTetrisDecorator)
             {
@@ -408,6 +417,8 @@ namespace WitnessVisualizer
                 shapes = hollowTetrisDecorator.Shapes;
                 color = hollowTetrisDecorator.Color;
                 isHollow = true;
+                margin = hollowTetrisDecorator.MarginSize;
+                hollowThickness = hollowTetrisDecorator.BorderSize;
             }
             else throw new NotSupportedException();
             if (shapes.Count == 0)
@@ -428,13 +439,11 @@ namespace WitnessVisualizer
             }
             Vector selfBias = new Vector((minX + maxX) / 2, (minY + maxY) / 2);
             double totalScale = metaData.TetrisScale * scale;
-            double border = 0.142857;
-            double hollowThickness = 0.190476;
-            float compoundPercent = (float)(1 - (hollowThickness + border / 2) / (2 * (hollowThickness + border)));
+            float compoundPercent = (float)(1 - (hollowThickness + margin / 2) / (2 * (hollowThickness + margin)));
             // Well, there are really some strange things here, which I assume is Winform's bug
             // Inset & CompoundArray both have rendering issues in this case, but CompoundArray is better
             // Inset will cause antialiasing to go away & CompoundArray will cause strage random lines in the corner
-            using (Pen pen = new Pen(color, (float)((hollowThickness + border) * totalScale)) {
+            using (Pen pen = new Pen(color, (float)((hollowThickness + margin) * totalScale)) {
                 CompoundArray = new float[] { compoundPercent, 1.0f}})
             using (Brush brush = new SolidBrush(color))
             {
@@ -448,14 +457,17 @@ namespace WitnessVisualizer
                         graphics.FillClosedCurve(brush, points, System.Drawing.Drawing2D.FillMode.Alternate, 0.0f);
                 }
             }
-            using (Pen pen = new Pen(backgroudColor, (float)(border * totalScale)))
+            if (margin > 0)
             {
-                foreach (List<Node> shape in shapes)
+                using (Pen pen = new Pen(backgroudColor, (float)(margin * totalScale)))
                 {
-                    PointF[] points = shape.Select(node => (new Vector(node.X, node.Y) - selfBias).Rotate(angle / 180 * Math.PI)
-                        .MapToScreen(totalScale, centerPosition).ToPoint()).ToArray();
-                    graphics.DrawClosedCurve(pen, points, 0.0f, System.Drawing.Drawing2D.FillMode.Alternate);
+                    foreach (List<Node> shape in shapes)
+                    {
+                        PointF[] points = shape.Select(node => (new Vector(node.X, node.Y) - selfBias).Rotate(angle / 180 * Math.PI)
+                            .MapToScreen(totalScale, centerPosition).ToPoint()).ToArray();
+                        graphics.DrawClosedCurve(pen, points, 0.0f, System.Drawing.Drawing2D.FillMode.Alternate);
 
+                    }
                 }
             }
         }
