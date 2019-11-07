@@ -44,6 +44,7 @@
   <ItemGroup>
     <Compile Include="Decorators\BrokenDecorator.cs" />
     <Compile Include="Decorators\CircleDecorator.cs" />
+    <Compile Include="Decorators\CombinedDecorator.cs" />
     <Compile Include="Decorators\EliminatorDecorator.cs" />
     <Compile Include="Decorators\EndDecorator.cs" />
     <Compile Include="Decorators\HollowTetrisDecorator.cs" />

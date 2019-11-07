@@ -670,6 +670,49 @@ namespace WitnessVisualizer
             }
         }
 
+        private void CombineDecorationsToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (editView != null)
+            {
+                if (editView.SelectedObjects.Count == 2)
+                {
+                    bool result = editView.CombineDecorators(editView.SelectedObjects[0], editView.SelectedObjects[1]);
+                    if (result)
+                    {
+                        UpdateGraphDrawing();
+                        UpdatePropertyGridBinding();
+                        return;
+                    }
+                }
+                MessageBox.Show("Please (use Ctrl) to select two face decorations to combine them.");
+            }
+        }
+
+        private void MainForm_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Escape)
+            {
+                e.SuppressKeyPress = true;
+                if(editView!=null)
+                {
+                    if (editView.IsCreatingMode)
+                    {
+                        ExitCreatingModeToolStripMenuItem_Click(sender, e);
+                    }
+                    else
+                    {
+                        editView.SelectedObjects.Clear();
+                        ToolkitListView.SelectedItems.Clear();
+                        ToolkitListView.Items[0].Selected = true;
+                    }
+                    UpdateGraphDrawing();
+                    UpdatePropertyGridBinding();
+                    UpdateTetrisTemplateDrawing();
+                }
+            }
+            
+        }
+
         #endregion
 
 

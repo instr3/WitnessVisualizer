@@ -213,7 +213,10 @@ namespace WitnessVisualizer
                     {
                         foreach (GraphElement element in objectToKeep)
                         {
-                            ApplyDecoratorToObject(SampleDecorator, element);
+                            if(ctrlKey && element.Decorator!=null) // Combine mode
+                                CombineDecorators(SampleDecorator, element);
+                            else
+                                ApplyDecoratorToObject(SampleDecorator, element);
                         }
                     }
                 }
@@ -446,7 +449,8 @@ namespace WitnessVisualizer
 
         internal void ClearSelectedDecorations()
         {
-            foreach(GraphElement element in SelectedObjects)
+            GraphEditManager.BeforePreformEdit(Graph, "Clear Decorations");
+            foreach (GraphElement element in SelectedObjects)
             {
                 element.Decorator = null;
             }
@@ -513,6 +517,27 @@ namespace WitnessVisualizer
             CreatingNodes.Clear();
             HoveredCreatingNode = null;
             Graph = graph;
+        }
+
+        internal bool CombineDecorators(Decorator decorator, GraphElement graphElement)
+        {
+            if (!(decorator is IFaceDecorable))
+                return false;
+            GraphEditManager.BeforePreformEdit(Graph, "Combine decorators");
+            PuzzleGraph.Decorators.CombinedDecorator combinedDecorator = new PuzzleGraph.Decorators.CombinedDecorator();
+            combinedDecorator.Second = decorator.Clone() as Decorator;
+            combinedDecorator.First = graphElement.Decorator.Clone() as Decorator;
+            graphElement.Decorator = combinedDecorator;
+            return true;
+
+        }
+        internal bool CombineDecorators(GraphElement graphElement1, GraphElement graphElement2)
+        {
+            if(!(graphElement1 is Face && graphElement2 is Face))
+                return false;
+            if (graphElement1.Decorator == null || graphElement2.Decorator == null)
+                return false;
+            return CombineDecorators(graphElement1.Decorator, graphElement2);
         }
     }
 }
