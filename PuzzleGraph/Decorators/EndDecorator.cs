@@ -8,7 +8,7 @@ using System.Xml.Serialization;
 
 namespace PuzzleGraph.Decorators
 {
-    public class EndDecorator : Decorator, INodeDecorable
+    public class EndDecorator : Decorator, INodeDecorable, IEdgeDecorable
     {
         public double Length { get; set; } = 0.2;
         public double Angle { get; set; } = 135;
