@@ -518,12 +518,14 @@ namespace WitnessVisualizer
 
         internal bool CombineDecorators(Decorator decorator, GraphElement graphElement)
         {
-            GraphEditManager.BeforePreformEdit(Graph, "Combine decorators");
+            if (graphElement.Decorator == null || decorator == null)
+                return false;
             PuzzleGraph.Decorators.CombinedDecorator combinedDecorator = new PuzzleGraph.Decorators.CombinedDecorator();
             combinedDecorator.Second = decorator.Clone() as Decorator;
             combinedDecorator.First = graphElement.Decorator.Clone() as Decorator;
             if (combinedDecorator.IsDecorableFor(graphElement))
             {
+                GraphEditManager.BeforePreformEdit(Graph, "Combine decorators");
                 graphElement.Decorator = combinedDecorator;
                 return true;
             }
