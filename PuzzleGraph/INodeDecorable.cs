@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace PuzzleGraph
 {
-    public interface INodeDecorable
+    internal interface INodeDecorable
     {
     }
 }

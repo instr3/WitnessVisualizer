@@ -25,6 +25,16 @@ namespace PuzzleGraph
     ]
     public abstract class Decorator : ICloneable
     {
+        public virtual bool IsFaceDecorable() => this is IFaceDecorable;
+        public virtual bool IsEdgeDecorable() => this is IEdgeDecorable;
+        public virtual bool IsNodeDecorable() => this is INodeDecorable;
+
+        public bool IsDecorableFor(GraphElement element)
+        {
+            return (element is Node && IsNodeDecorable()) ||
+                (element is Edge && IsEdgeDecorable()) ||
+                (element is Face && IsFaceDecorable());
+        }
         public object Clone()
         {
             using (MemoryStream ms = new MemoryStream())

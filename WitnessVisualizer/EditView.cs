@@ -242,10 +242,7 @@ namespace WitnessVisualizer
                 element.Decorator = null;
                 return;
             }
-            bool okay = (element is Node && decorator is INodeDecorable) ||
-                (element is Edge && decorator is IEdgeDecorable) ||
-                (element is Face && decorator is IFaceDecorable);
-            if(okay)
+            if(decorator.IsDecorableFor(element))
             {
                 GraphEditManager.BeforePreformEdit(Graph, "Apply Decorator");
                 element.Decorator = decorator.Clone() as Decorator;
@@ -521,20 +518,20 @@ namespace WitnessVisualizer
 
         internal bool CombineDecorators(Decorator decorator, GraphElement graphElement)
         {
-            if (!(decorator is IFaceDecorable))
-                return false;
             GraphEditManager.BeforePreformEdit(Graph, "Combine decorators");
             PuzzleGraph.Decorators.CombinedDecorator combinedDecorator = new PuzzleGraph.Decorators.CombinedDecorator();
             combinedDecorator.Second = decorator.Clone() as Decorator;
             combinedDecorator.First = graphElement.Decorator.Clone() as Decorator;
-            graphElement.Decorator = combinedDecorator;
-            return true;
+            if (combinedDecorator.IsDecorableFor(graphElement))
+            {
+                graphElement.Decorator = combinedDecorator;
+                return true;
+            }
+            else return false;
 
         }
         internal bool CombineDecorators(GraphElement graphElement1, GraphElement graphElement2)
         {
-            if(!(graphElement1 is Face && graphElement2 is Face))
-                return false;
             if (graphElement1.Decorator == null || graphElement2.Decorator == null)
                 return false;
             return CombineDecorators(graphElement1.Decorator, graphElement2);
