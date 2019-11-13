@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace PuzzleGraph.Decorators
 {
-    public class CombinedDecorator : Decorator, IFaceDecorable
+    public class CombinedDecorator : Decorator
     {
         public override bool IsFaceDecorable()
         {
