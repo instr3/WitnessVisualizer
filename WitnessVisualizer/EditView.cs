@@ -368,10 +368,8 @@ namespace WitnessVisualizer
         internal void TetrisIndexToTemplateView(Decorator decorator)
         {
             List<int> indexes;
-            if (decorator is PuzzleGraph.Decorators.HollowTetrisDecorator hollowTetrisDecorator)
-                indexes = hollowTetrisDecorator.Indexes;
-            else if (decorator is PuzzleGraph.Decorators.TetrisDecorator tetrisDecorator)
-                indexes = tetrisDecorator.Indexes;
+            if (decorator is PuzzleGraph.Decorators.AbstractTetrisDecorator tetris)
+                indexes = tetris.Indexes;
             else
                 return;
             SelectedTetrisShapes = new bool[SelectedTetrisShapes.Length];
@@ -386,15 +384,10 @@ namespace WitnessVisualizer
         {
             List<int> indexes;
             List<List<Node>> shapes;
-            if (decorator is PuzzleGraph.Decorators.HollowTetrisDecorator hollowTetrisDecorator)
+            if (decorator is PuzzleGraph.Decorators.AbstractTetrisDecorator tetris)
             {
-                indexes = hollowTetrisDecorator.Indexes;
-                shapes = hollowTetrisDecorator.Shapes;
-            }
-            else if (decorator is PuzzleGraph.Decorators.TetrisDecorator tetrisDecorator)
-            {
-                indexes = tetrisDecorator.Indexes;
-                shapes = tetrisDecorator.Shapes;
+                indexes = tetris.Indexes;
+                shapes = tetris.Shapes;
             }
             else return;
             indexes.Clear();

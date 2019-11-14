@@ -53,6 +53,7 @@
     <Compile Include="Decorators\SquareDecorator.cs" />
     <Compile Include="Decorators\StarDecorator.cs" />
     <Compile Include="Decorators\StartDecorator.cs" />
+    <Compile Include="Decorators\AbstractTetrisDecorator.cs" />
     <Compile Include="Decorators\TetrisDecorator.cs" />
     <Compile Include="Decorators\TextDecorator.cs" />
     <Compile Include="Decorators\TriangleDecorator.cs" />

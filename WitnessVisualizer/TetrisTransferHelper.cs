@@ -35,26 +35,18 @@ namespace WitnessVisualizer
         }
         public static bool TetrisCompatible(Graph graph, Decorator decorator)
         {
-            if (decorator is PuzzleGraph.Decorators.HollowTetrisDecorator hollowTetrisDecorator)
+            if (decorator is PuzzleGraph.Decorators.AbstractTetrisDecorator tetris)
             {
-                return TetrisCompatible(graph, hollowTetrisDecorator.Indexes, hollowTetrisDecorator.Shapes);
-            }
-            else if (decorator is PuzzleGraph.Decorators.TetrisDecorator tetrisDecorator)
-            {
-                return TetrisCompatible(graph, tetrisDecorator.Indexes, tetrisDecorator.Shapes);
+                return TetrisCompatible(graph, tetris.Indexes, tetris.Shapes);
             }
             else return false;
         }
 
         internal static void ClearTetrisIndex(Decorator decorator)
         {
-            if (decorator is PuzzleGraph.Decorators.HollowTetrisDecorator hollowTetrisDecorator)
+            if (decorator is PuzzleGraph.Decorators.AbstractTetrisDecorator tetris)
             {
-                hollowTetrisDecorator.Indexes = new List<int>();
-            }
-            else if (decorator is PuzzleGraph.Decorators.TetrisDecorator tetrisDecorator)
-            {
-                tetrisDecorator.Indexes = new List<int>();
+                tetris.Indexes = new List<int>();
             }
         }
     }

@@ -27,24 +27,14 @@ namespace PuzzleGraph
             bool upgraded = false;
             foreach (Face face in graph.Faces)
             {
-                if (face.Decorator is Decorators.TetrisDecorator tetrisDecorator)
+                if (face.Decorator is Decorators.AbstractTetrisDecorator tetris)
                 {
-                    if(tetrisDecorator.Shapes.Count == 0 && tetrisDecorator.Indexes.Count > 0)
+                    if(tetris.Shapes.Count == 0 && tetris.Indexes.Count > 0)
                     {
                         upgraded = true;
-                        tetrisDecorator.Shapes = IndexToShape(graph, tetrisDecorator.Indexes);
-                        if (tetrisDecorator.Shapes.Count == 0)
-                            tetrisDecorator.Indexes.Clear();
-                    }
-                }
-                if (face.Decorator is Decorators.HollowTetrisDecorator hollowTetrisDecorator)
-                {
-                    if (hollowTetrisDecorator.Shapes.Count == 0 && hollowTetrisDecorator.Indexes.Count > 0)
-                    {
-                        upgraded = true;
-                        hollowTetrisDecorator.Shapes = IndexToShape(graph, hollowTetrisDecorator.Indexes);
-                        if (hollowTetrisDecorator.Shapes.Count == 0)
-                            hollowTetrisDecorator.Indexes.Clear();
+                        tetris.Shapes = IndexToShape(graph, tetris.Indexes);
+                        if (tetris.Shapes.Count == 0)
+                            tetris.Indexes.Clear();
                     }
                 }
             }
