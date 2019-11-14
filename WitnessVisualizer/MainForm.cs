@@ -710,10 +710,50 @@ namespace WitnessVisualizer
                     UpdateTetrisTemplateDrawing();
                 }
             }
-            
+
+        }
+        private void RescaleCurrentTetrisToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if(editView!=null)
+            {
+                bool ok = false;
+                if(editView.SelectedObjects.Any(element=>element.Decorator is PuzzleGraph.Decorators.AbstractTetrisDecorator))
+                {
+                    string output = "1.0";
+                    DialogResult result = InputDialog.ShowInputDialog("Scale Factor", ref output);
+                    if (result == DialogResult.OK)
+                    {
+                        double value;
+                        if (double.TryParse(output, out value))
+                        {
+                            editView.GraphEditManager.BeforePreformEdit(editView.Graph, "Rescale Tetris Object (*" + output + ")");
+                            foreach(GraphElement element in editView.SelectedObjects)
+                            {
+                                if(element.Decorator is PuzzleGraph.Decorators.AbstractTetrisDecorator tetris)
+                                {
+                                    tetris.Shapes = tetris.Shapes.Select(shape => shape.Select(node => new Node(node.X * value, node.Y * value)).ToList()).ToList();
+                                }
+                            }
+                            UpdateGraphDrawing();
+                            UpdatePropertyGridBinding();
+                            UpdateTetrisTemplateDrawing();
+                        }
+                        else
+                        {
+                            MessageBox.Show("Please enter a float scale factor (e.g., 2.0 or 0.5).");
+                        }
+                    }
+                }
+                else
+                {
+                    MessageBox.Show("Please select at least one tetris object.");
+                    return;
+                }
+            }
         }
 
         #endregion
+
 
 
         private void MainForm_Load(object sender, EventArgs e)

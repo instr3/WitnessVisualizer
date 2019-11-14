@@ -68,6 +68,7 @@
     <Compile Include="EditManager.cs" />
     <Compile Include="EditView.cs" />
     <Compile Include="GraphManipulation.cs" />
+    <Compile Include="InputDialog.cs" />
     <Compile Include="MainForm.cs">
       <SubType>Form</SubType>
     </Compile>
