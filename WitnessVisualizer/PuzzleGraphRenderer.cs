@@ -70,7 +70,7 @@ namespace WitnessVisualizer
                     }
                     else
                     {
-                        DrawDecorator(graphics, face.Decorator, screenPosition, view.Scale * (1 - graph.MetaData.EdgeWidth) * graph.MetaData.FaceDecorationScale, view.Graph.MetaData, face.GraphElementColor);
+                        DrawDecorator(face.Decorator, screenPosition, view.Scale * (1 - graph.MetaData.EdgeWidth) * graph.MetaData.FaceDecorationScale, view.Graph.MetaData, face.GraphElementColor);
                     }
                 }
                 foreach (Node node in graph.Nodes)
@@ -90,7 +90,7 @@ namespace WitnessVisualizer
                 if (node.Decorator is PuzzleGraph.Decorators.StartDecorator || node.Decorator is PuzzleGraph.Decorators.EndDecorator)
                 {
                     Vector screenPosition = new Vector(node.X, node.Y).MapToScreen(view.Scale, view.Origin);
-                    DrawDecorator(graphics, node.Decorator, screenPosition, view.Scale * graph.MetaData.EdgeWidth, view.Graph.MetaData, view.Graph.MetaData.BackgroundColor);
+                    DrawDecorator(node.Decorator, screenPosition, view.Scale * graph.MetaData.EdgeWidth, view.Graph.MetaData, view.Graph.MetaData.BackgroundColor);
                 }
             }
             foreach (Edge edge in graph.Edges)
@@ -98,7 +98,7 @@ namespace WitnessVisualizer
                 if (edge.Decorator is PuzzleGraph.Decorators.StartDecorator || edge.Decorator is PuzzleGraph.Decorators.EndDecorator)
                 {
                     Vector screenPosition = new Vector((edge.Start.X + edge.End.X) / 2, (edge.Start.Y + edge.End.Y) / 2).MapToScreen(view.Scale, view.Origin);
-                    DrawDecorator(graphics, edge.Decorator, screenPosition, view.Scale * graph.MetaData.EdgeWidth, view.Graph.MetaData, view.Graph.MetaData.BackgroundColor);
+                    DrawDecorator(edge.Decorator, screenPosition, view.Scale * graph.MetaData.EdgeWidth, view.Graph.MetaData, view.Graph.MetaData.BackgroundColor);
                 }
             }
             // Draw solutions
@@ -120,7 +120,7 @@ namespace WitnessVisualizer
                 if (node.Decorator != null && !(node.Decorator is PuzzleGraph.Decorators.EndDecorator) && !(node.Decorator is PuzzleGraph.Decorators.StartDecorator))
                 {
                     Vector screenPosition = new Vector(node.X, node.Y).MapToScreen(view.Scale, view.Origin);
-                    DrawDecorator(graphics, node.Decorator, screenPosition, view.Scale * graph.MetaData.EdgeWidth, view.Graph.MetaData, view.Graph.MetaData.BackgroundColor);
+                    DrawDecorator(node.Decorator, screenPosition, view.Scale * graph.MetaData.EdgeWidth, view.Graph.MetaData, view.Graph.MetaData.BackgroundColor);
                 }
             }
             foreach (Edge edge in graph.Edges)
@@ -129,7 +129,7 @@ namespace WitnessVisualizer
                     !(edge.Decorator is PuzzleGraph.Decorators.EndDecorator) && !(edge.Decorator is PuzzleGraph.Decorators.StartDecorator))
                 {
                     Vector screenPosition = new Vector((edge.Start.X + edge.End.X) / 2, (edge.Start.Y + edge.End.Y) / 2).MapToScreen(view.Scale, view.Origin);
-                    DrawDecorator(graphics, edge.Decorator, screenPosition, view.Scale * graph.MetaData.EdgeWidth, view.Graph.MetaData, view.Graph.MetaData.BackgroundColor);
+                    DrawDecorator(edge.Decorator, screenPosition, view.Scale * graph.MetaData.EdgeWidth, view.Graph.MetaData, view.Graph.MetaData.BackgroundColor);
                 }
             }
 
@@ -191,7 +191,7 @@ namespace WitnessVisualizer
             }
         }
 
-        public void DrawDecorator(Graphics graphics, Decorator decorator, Vector centerPosition, double scale, MetaData metaData, Color backgroudColor)
+        public void DrawDecorator(Decorator decorator, Vector centerPosition, double scale, MetaData metaData, Color backgroudColor)
         {
             if (backgroudColor == Color.Transparent)
                 backgroudColor = metaData.BackgroundColor;
@@ -389,8 +389,8 @@ namespace WitnessVisualizer
             }
             else if(decorator is PuzzleGraph.Decorators.CombinedDecorator combinedDecorator)
             {
-                DrawDecorator(graphics, combinedDecorator.First, centerPosition, scale, metaData, backgroudColor);
-                DrawDecorator(graphics, combinedDecorator.Second, centerPosition, scale, metaData, backgroudColor);
+                DrawDecorator(combinedDecorator.First, centerPosition, scale, metaData, backgroudColor);
+                DrawDecorator(combinedDecorator.Second, centerPosition, scale, metaData, backgroudColor);
             }
         }
 

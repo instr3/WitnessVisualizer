@@ -50,6 +50,9 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>designer2.ico</ApplicationIcon>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -67,6 +70,7 @@
   <ItemGroup>
     <Compile Include="EditManager.cs" />
     <Compile Include="EditView.cs" />
+    <Compile Include="FormHelper.cs" />
     <Compile Include="GraphManipulation.cs" />
     <Compile Include="InputDialog.cs" />
     <Compile Include="MainForm.cs">
@@ -125,6 +129,8 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="designer.ico" />
+    <Content Include="designer2.ico" />
     <Content Include="Icons\ColorPicker.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

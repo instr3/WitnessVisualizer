@@ -17,13 +17,14 @@ namespace WitnessVisualizer
     {
         PuzzleGraphRenderer graphRenderer;
         TetrisTemplateRenderer tetrisTemplateRenderer;
-        BufferedGraphics graphBuffer, tetrisTemplateBuffer;
+        BufferedGraphics graphBuffer, tetrisTemplateBuffer, decoratorPreviewBuffer;
         PuzzleToolkit toolkit;
         List<ListViewItem> toolkitListViewItems;
         EditView editView;
+        double decoratorPreviewScale = 1.0;
         string savePath;
         int toolkitIconSize = 32;
-        public MainForm()
+        public MainForm(string[] args)
         {
             InitializeComponent();
             // Init graph drawing
@@ -36,10 +37,37 @@ namespace WitnessVisualizer
             tetrisTemplateBuffer = BufferedGraphicsManager.Current.Allocate(tetrisTemplateTargetGraphics, new Rectangle(0, 0, tetrisTemplatePictureBox.Width, tetrisTemplatePictureBox.Height));
             tetrisTemplateBuffer.Graphics.SmoothingMode = SmoothingMode.AntiAlias;
             tetrisTemplateRenderer = new TetrisTemplateRenderer(tetrisTemplateBuffer.Graphics);
+            // Init preview graph box
+            Graphics decoratorPreviewGraphics = decoratorPreviewPictureBox.CreateGraphics();
+            decoratorPreviewBuffer = BufferedGraphicsManager.Current.Allocate(decoratorPreviewGraphics, new Rectangle(0, 0, decoratorPreviewPictureBox.Width, decoratorPreviewPictureBox.Height));
+            decoratorPreviewBuffer.Graphics.SmoothingMode = SmoothingMode.AntiAlias;
             // Init other stuff
             editorPictureBox.MouseWheel += EditorPictureBox_MouseWheel;
+            decoratorPreviewPictureBox.MouseWheel += DecoratorPreviewPictureBox_MouseWheel;
             InitToolkit();
             UpdateToolkitListView();
+            if (args.Length >= 1)
+            {
+                string fileName = args[0];
+                try
+                {
+                    Graph graph = Graph.LoadFromFile(fileName);
+                    if (ObsolateFormatFixer.FixObsoletedTetrisFormat(graph))
+                    {
+                        Console.WriteLine("[Info] We have automatically upgraded the obsoleted file format. Please remember to save.");
+                    }
+                    editView = new EditView(graph, editorPictureBox.Width, editorPictureBox.Height, tetrisTemplatePictureBox.Width, tetrisTemplatePictureBox.Height);
+                    UpdateGraphDrawing();
+                    UpdateTetrisTemplateDrawing();
+                    savePath = fileName;
+                }
+                catch
+                {
+                    MessageBox.Show("[Warning] Failed to load " + fileName);
+                    savePath = null;
+                    editView = null;
+                }
+            }
         }
 
 
@@ -51,6 +79,7 @@ namespace WitnessVisualizer
         {
             graphRenderer.Draw(editView);
             graphBuffer.Render();
+            UpdateDecoratorPreview(false);
         }
         void UpdateTetrisTemplateDrawing()
         {
@@ -84,6 +113,35 @@ namespace WitnessVisualizer
                 puzzlePropertyLabel.Text = "No Property Shown";
             else
                 puzzlePropertyLabel.Text = puzzlePropertyGrid.SelectedObject.GetType().Name;
+            UpdateDecoratorPreview(true);
+        }
+
+        private void DecoratorPreviewPictureBox_MouseWheel(object sender, MouseEventArgs e)
+        {
+            double deltaScale = Math.Exp(e.Delta / 1000.0);
+            decoratorPreviewScale *= deltaScale;
+            UpdateDecoratorPreview(false);
+        }
+        void UpdateDecoratorPreview(bool resetScale)
+        {
+            Decorator selectedDecorator = null;
+            if (puzzlePropertyGrid.SelectedObject is GraphElement graphElement) selectedDecorator = graphElement.Decorator;
+            if (puzzlePropertyGrid.SelectedObject is Decorator) selectedDecorator = puzzlePropertyGrid.SelectedObject as Decorator;
+            if (editView != null)
+            {
+                decoratorPreviewBuffer.Graphics.Clear(editView.Graph.MetaData.BackgroundColor);
+                if(selectedDecorator != null)
+                {
+                    if(resetScale)
+                        decoratorPreviewScale = PuzzleToolkit.GetSuggestedDecorationScale(selectedDecorator);
+                    PuzzleGraphRenderer renderer = new PuzzleGraphRenderer(decoratorPreviewBuffer.Graphics);
+                    double width = decoratorPreviewPictureBox.Width;
+                    double height = decoratorPreviewPictureBox.Height;
+                    renderer.DrawDecorator(selectedDecorator, new MathHelper.Vector(width / 2.0, height / 2.0),
+                        height * decoratorPreviewScale, editView.Graph.MetaData, editView.Graph.MetaData.BackgroundColor);
+                }
+                decoratorPreviewBuffer.Render();
+            }
         }
 
         #region toolkit
@@ -94,14 +152,14 @@ namespace WitnessVisualizer
             {
                 try
                 {
-                    inputToolkit = PuzzleToolkit.LoadFromFile("toolkit/current.toolkit");
+                    inputToolkit = PuzzleToolkit.LoadFromFile(Path.Combine(Application.StartupPath, "toolkit/current.toolkit"));
                 }
                 catch
                 {
                     inputToolkit = PuzzleToolkit.CreateDefaultPuzzleToolkit();
                     if (MessageBox.Show("Corrupted Toolkit. Click YES to create a new one.", "Warning", MessageBoxButtons.YesNo) == DialogResult.Yes)
                     {
-                        inputToolkit.SaveToFile("toolkit/current.toolkit");
+                        inputToolkit.SaveToFile(Path.Combine(Application.StartupPath, "toolkit/current.toolkit"));
                     }
                 }
             }
@@ -372,9 +430,6 @@ namespace WitnessVisualizer
         }
         private void ResetPropertyButton_Click(object sender, EventArgs e)
         {
-            PropertyDescriptor pd = puzzlePropertyGrid.SelectedGridItem.PropertyDescriptor;
-            pd.ResetValue(puzzlePropertyGrid.SelectedObject);
-            puzzlePropertyGrid.Refresh();
         }
 
         #endregion
@@ -563,8 +618,7 @@ namespace WitnessVisualizer
                 editView.SwitchToBestView();
                 if (exportFileDialog.ShowDialog() == DialogResult.Cancel)
                     return;
-                savePath = exportFileDialog.FileName;
-                editView.ExportToFile(savePath);
+                editView.ExportToFile(exportFileDialog.FileName);
             }
 
         }
@@ -755,11 +809,27 @@ namespace WitnessVisualizer
         #endregion
 
 
+        private void ResetToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if(puzzlePropertyGrid.SelectedGridItem != null)
+            {
+                puzzlePropertyGrid.ResetSelectedProperty();
+                // PropertyDescriptor pd = puzzlePropertyGrid.SelectedGridItem.PropertyDescriptor;
+                // pd.ResetValue(puzzlePropertyGrid.SelectedObject);
+                puzzlePropertyGrid.Refresh();
+                if (editView != null)
+                {
+                    UpdateGraphDrawing();
+                    UpdatePropertyGridBinding();
+                    UpdateTetrisTemplateDrawing();
+                }
+            }
+        }
+
 
         private void MainForm_Load(object sender, EventArgs e)
         {
-
+            FormHelper.ChangeDescriptionHeight(puzzlePropertyGrid, 20);
         }
-
     }
 }
