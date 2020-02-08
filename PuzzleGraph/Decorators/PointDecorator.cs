@@ -10,6 +10,7 @@ namespace PuzzleGraph.Decorators
 {
     public class PointDecorator : Decorator, INodeDecorable, IEdgeDecorable
     {
+        [LocalizedDisplayName("Color")]
         [XmlElement(Type = typeof(XmlColor))]
         public Color Color { get; set; } = Color.Black;
     }

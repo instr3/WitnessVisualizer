@@ -46,8 +46,9 @@ namespace WitnessVisualizer
                 undoStack.Remove(redoPtr);
                 redoPtr = preNode;
             }
+            string localizedCommandName = Resources.Lang.ResourceManager.GetString("Undo>>" + commandName) ?? commandName;
             undoPtr = new LinkedListNode<KeyValuePair<string, T>>(
-                new KeyValuePair<string, T>(commandName, (T)state.Clone()));
+                new KeyValuePair<string, T>(localizedCommandName, (T)state.Clone()));
             redoPtr = undoPtr;
 
             undoStack.AddLast(undoPtr);

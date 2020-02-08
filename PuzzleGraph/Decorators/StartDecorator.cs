@@ -10,6 +10,7 @@ namespace PuzzleGraph.Decorators
 {
     public class StartDecorator : Decorator, INodeDecorable, IEdgeDecorable
     {
+        [LocalizedDisplayName("Color")]
         [XmlElement(Type = typeof(XmlColor))]
         public Color Color { get; set; } = Color.Transparent;
     }

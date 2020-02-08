@@ -14,6 +14,7 @@ namespace PuzzleGraph.Decorators
     public class TextDecorator : Decorator, IFaceDecorable, IEdgeDecorable, INodeDecorable
     {
         // [XmlElement(Type = typeof(XmlFont))]
+        [LocalizedDisplayName("Font")]
         [XmlIgnore()]
         public Font Font { get { return SerializableFont?.ToFont(); }
             set { SerializableFont = new SerializableFont(value); }
@@ -21,8 +22,11 @@ namespace PuzzleGraph.Decorators
         [Browsable(false)]
         public SerializableFont SerializableFont { get; set; }
         [Editor(typeof(MultilineStringEditor), typeof(UITypeEditor))]
+        [LocalizedDisplayName("Text")]
         public string Text { get; set; }
-        public double Angle { get; set;  }
+        [LocalizedDisplayName("Angle")]
+        public double Angle { get; set; }
+        [LocalizedDisplayName("Color")]
         [XmlElement(Type = typeof(XmlColor))]
         public Color Color { get; set; } = Color.Black;
 

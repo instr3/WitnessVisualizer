@@ -65,16 +65,29 @@
     <Compile Include="IEdgeDecorable.cs" />
     <Compile Include="IFaceDecorable.cs" />
     <Compile Include="INodeDecorable.cs" />
+    <Compile Include="LocalizedDisplayNameAttribute.cs" />
     <Compile Include="MetaData.cs" />
     <Compile Include="Node.cs" />
     <Compile Include="Decorator.cs" />
     <Compile Include="ObsolateFormatFixer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Resources\Lang.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Lang.resx</DependentUpon>
+    </Compile>
     <Compile Include="SaveState.cs" />
     <Compile Include="SerializableFont.cs" />
     <Compile Include="TetrisTemplate.cs" />
     <Compile Include="XmlColor.cs" />
     <Compile Include="XmlFont.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\Lang.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Lang.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\Lang.zh-CN.resx" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

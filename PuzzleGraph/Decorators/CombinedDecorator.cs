@@ -24,8 +24,10 @@ namespace PuzzleGraph.Decorators
             if (First is null || Second is null) return false;
             return First.IsNodeDecorable() && Second.IsNodeDecorable();
         }
+        [LocalizedDisplayName("First")]
         [TypeConverter(typeof(ExpandableObjectConverter))]
         public Decorator First { get; set; }
+        [LocalizedDisplayName("Second")]
         [TypeConverter(typeof(ExpandableObjectConverter))]
         public Decorator Second { get; set; }
 

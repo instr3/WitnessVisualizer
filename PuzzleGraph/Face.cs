@@ -8,7 +8,9 @@ namespace PuzzleGraph
 {
     public class Face : GraphElement
     {
+        [LocalizedDisplayName("Nodes")]
         public List<Node> Nodes { get; set; }
+        [LocalizedDisplayName("GraphElementColor")]
         [XmlElement(Type = typeof(XmlColor))]
         public Color GraphElementColor { get; set; } = Color.Transparent;
 

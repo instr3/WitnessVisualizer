@@ -158,7 +158,7 @@ namespace WitnessVisualizer
                         {
                             if(oldColor!=newColor)
                             {
-                                GraphEditManager.BeforePreformEdit(Graph, "Paint " + hint + " with " + newColor.ToString());
+                                GraphEditManager.BeforePreformEdit(Graph, string.Format(Resources.Lang.Undo_Paint,hint,newColor.ToString()));
                             }
                             return newColor;
                         }
@@ -518,7 +518,7 @@ namespace WitnessVisualizer
             combinedDecorator.First = graphElement.Decorator.Clone() as Decorator;
             if (combinedDecorator.IsDecorableFor(graphElement))
             {
-                GraphEditManager.BeforePreformEdit(Graph, "Combine decorators");
+                GraphEditManager.BeforePreformEdit(Graph, "Combine Decorators");
                 graphElement.Decorator = combinedDecorator;
                 return true;
             }

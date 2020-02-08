@@ -10,8 +10,10 @@ namespace PuzzleGraph.Decorators
 {
     public class TetrisDecorator : AbstractTetrisDecorator, IFaceDecorable
     {
+        [LocalizedDisplayName("Color")]
         [XmlElement(Type = typeof(XmlColor))]
         public Color Color { get; set; } = Color.Yellow;
+        [LocalizedDisplayName("MarginSize")]
         public double MarginSize { get; set; } = 0.14;
 
     }

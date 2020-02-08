@@ -45,5 +45,9 @@ namespace PuzzleGraph
                 return xml.Deserialize(ms);
             }
         }
+        public override string ToString()
+        {
+            return Resources.Lang.ResourceManager.GetString(this.GetType().Name) ?? this.GetType().Name;
+        }
     }
 }

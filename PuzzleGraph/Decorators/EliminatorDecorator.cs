@@ -10,6 +10,7 @@ namespace PuzzleGraph.Decorators
 {
     public class EliminatorDecorator : Decorator, IFaceDecorable
     {
+        [LocalizedDisplayName("Color")]
         [XmlElement(Type = typeof(XmlColor))]
         public Color Color { get; set; } = Color.White;
     }

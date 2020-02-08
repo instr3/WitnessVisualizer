@@ -63,7 +63,7 @@ namespace WitnessVisualizer
                 }
                 catch
                 {
-                    MessageBox.Show("[Warning] Failed to load " + fileName);
+                    MessageBox.Show(Resources.Lang.Warnings_FailToLoad + fileName);
                     savePath = null;
                     editView = null;
                 }
@@ -110,9 +110,10 @@ namespace WitnessVisualizer
                 }
             }
             if (puzzlePropertyGrid.SelectedObject is null)
-                puzzlePropertyLabel.Text = "No Property Shown";
+                puzzlePropertyLabel.Text = Resources.Lang.NoPropertyShown;
             else
-                puzzlePropertyLabel.Text = puzzlePropertyGrid.SelectedObject.GetType().Name;
+                puzzlePropertyLabel.Text = Resources.Lang.ResourceManager.GetString(puzzlePropertyGrid.SelectedObject.GetType().Name) ?? 
+                    puzzlePropertyGrid.SelectedObject.ToString();
             UpdateDecoratorPreview(true);
         }
 
@@ -157,7 +158,7 @@ namespace WitnessVisualizer
                 catch
                 {
                     inputToolkit = PuzzleToolkit.CreateDefaultPuzzleToolkit();
-                    if (MessageBox.Show("Corrupted Toolkit. Click YES to create a new one.", "Warning", MessageBoxButtons.YesNo) == DialogResult.Yes)
+                    if (MessageBox.Show(Resources.Lang.Warnings_CorruptedToolkit, Resources.Lang.Warning, MessageBoxButtons.YesNo) == DialogResult.Yes)
                     {
                         inputToolkit.SaveToFile(Path.Combine(Application.StartupPath, "toolkit/current.toolkit"));
                     }
@@ -230,13 +231,13 @@ namespace WitnessVisualizer
             {
                 if (editView.SelectedObjects.Count == 0)
                 {
-                    MessageBox.Show("Please first select some objects on your puzzle.");
+                    MessageBox.Show(Resources.Lang.Errors_NoElement);
                     return;
                 }
                 Decorator decorator = editView.SelectedObjects[0].Decorator;
                 if (string.IsNullOrWhiteSpace(toolkitTextBox.Text))
                 {
-                    MessageBox.Show("Please name the object using the text box.");
+                    MessageBox.Show(Resources.Lang.Errors_NameEmpty);
                     return;
                 }
                 string name = toolkitTextBox.Text;
@@ -269,9 +270,9 @@ namespace WitnessVisualizer
         {
             if (ToolkitListView.SelectedIndices.Count == 0)
                 return;
-            if (MessageBox.Show("Are you sure you want to delete " + ToolkitListView.SelectedItems[0].Name +
+            if (MessageBox.Show(Resources.Lang.Info_ToDelete + ToolkitListView.SelectedItems[0].Name +
                 (ToolkitListView.SelectedIndices.Count > 1 ? "...?" : "?") +
-                Environment.NewLine + "You cannot undo this.", "Warning", MessageBoxButtons.YesNo) == DialogResult.Yes)
+                Environment.NewLine + Resources.Lang.Info_NoUndo, Resources.Lang.Warning, MessageBoxButtons.YesNo) == DialogResult.Yes)
             {
                 foreach (ListViewItem item in ToolkitListView.SelectedItems)
                 {
@@ -355,7 +356,7 @@ namespace WitnessVisualizer
                     count += 1;
                 }
             }
-            MessageBox.Show("Added " + count + " items.");
+            MessageBox.Show(string.Format(Resources.Lang.Info_AddItems, count));
             InitToolkit(toolkit);
             UpdateToolkitListView();
 
@@ -545,7 +546,7 @@ namespace WitnessVisualizer
             {
                 while(true)
                 {
-                    string result = Prompt.ShowDialog("Enter the angle (clockwise) in degrees:", "Hint");
+                    string result = Prompt.ShowDialog(Resources.Lang.Info_EnterDegrees, Resources.Lang.Hint);
                     if (string.IsNullOrWhiteSpace(result)) break;
                     double angle;
                     if(double.TryParse(result,out angle))
@@ -639,7 +640,7 @@ namespace WitnessVisualizer
                 }
                 else
                 {
-                    MessageBox.Show("Error: Please select an edge first.");
+                    MessageBox.Show(Resources.Lang.Errors_NoEdge);
                 }
             }
         }
@@ -687,15 +688,15 @@ namespace WitnessVisualizer
             {
                 undoToolStripMenuItem.Enabled = editView.GraphEditManager.CanUndo;
                 redoToolStripMenuItem.Enabled = editView.GraphEditManager.CanRedo;
-                undoToolStripMenuItem.Text = "Undo " + editView.GraphEditManager.LastUndoInfo;
-                redoToolStripMenuItem.Text = "Redo " + editView.GraphEditManager.LastRedoInfo;
+                undoToolStripMenuItem.Text = Resources.Lang.Undo + " " + editView.GraphEditManager.LastUndoInfo;
+                redoToolStripMenuItem.Text = Resources.Lang.Redo + " " + editView.GraphEditManager.LastRedoInfo;
             }
             else
             {
                 undoToolStripMenuItem.Enabled = false;
                 redoToolStripMenuItem.Enabled = false;
-                undoToolStripMenuItem.Text = "Undo";
-                redoToolStripMenuItem.Text = "Redo";
+                undoToolStripMenuItem.Text = Resources.Lang.Undo;
+                redoToolStripMenuItem.Text = Resources.Lang.Redo;
             }
         }
         private void UndoToolStripMenuItem_Click(object sender, EventArgs e)
@@ -738,7 +739,7 @@ namespace WitnessVisualizer
                         return;
                     }
                 }
-                MessageBox.Show("Please (use Ctrl) to select two face decorations to combine them.");
+                MessageBox.Show(Resources.Lang.Info_Combine);
             }
         }
 
@@ -794,13 +795,13 @@ namespace WitnessVisualizer
                         }
                         else
                         {
-                            MessageBox.Show("Please enter a float scale factor (e.g., 2.0 or 0.5).");
+                            MessageBox.Show(Resources.Lang.Info_FloatScale);
                         }
                     }
                 }
                 else
                 {
-                    MessageBox.Show("Please select at least one tetris object.");
+                    MessageBox.Show(Resources.Lang.Errors_NoTetris);
                     return;
                 }
             }

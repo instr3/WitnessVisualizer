@@ -4,7 +4,9 @@ namespace PuzzleGraph
 {
     public class Node: GraphElement
     {
+        [LocalizedDisplayName("X")]
         public double X { get; set; }
+        [LocalizedDisplayName("Y")]
         public double Y { get; set; }
         private Node() { }
         public Node(double inputX,double inputY)
