@@ -177,11 +177,17 @@
   <data name="Font" xml:space="preserve">
     <value>字体</value>
   </data>
+  <data name="FontFamily" xml:space="preserve">
+    <value>字体名</value>
+  </data>
   <data name="ForegroundColor" xml:space="preserve">
     <value>前景色</value>
   </data>
   <data name="GraphElementColor" xml:space="preserve">
     <value>网格颜色</value>
+  </data>
+  <data name="GraphicsUnit" xml:space="preserve">
+    <value>图像单位</value>
   </data>
   <data name="HollowTetrisDecorator" xml:space="preserve">
     <value>空心俄罗斯方块装饰</value>
@@ -219,6 +225,9 @@
   <data name="Shapes" xml:space="preserve">
     <value>形状</value>
   </data>
+  <data name="Size" xml:space="preserve">
+    <value>大小</value>
+  </data>
   <data name="SquareDecorator" xml:space="preserve">
     <value>色块装饰</value>
   </data>
@@ -230,6 +239,9 @@
   </data>
   <data name="StartDecorator" xml:space="preserve">
     <value>起点装饰</value>
+  </data>
+  <data name="Style" xml:space="preserve">
+    <value>样式</value>
   </data>
   <data name="TetrisDecorator" xml:space="preserve">
     <value>俄罗斯方块装饰</value>

@@ -117,6 +117,33 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="Broken" xml:space="preserve">
+    <value>断路</value>
+  </data>
+  <data name="Circle" xml:space="preserve">
+    <value>圆圈</value>
+  </data>
+  <data name="Eliminator" xml:space="preserve">
+    <value>抗体</value>
+  </data>
+  <data name="Emoji" xml:space="preserve">
+    <value>表情</value>
+  </data>
+  <data name="Empty" xml:space="preserve">
+    <value>空白</value>
+  </data>
+  <data name="EndD" xml:space="preserve">
+    <value>终点下</value>
+  </data>
+  <data name="EndL" xml:space="preserve">
+    <value>终点左</value>
+  </data>
+  <data name="EndR" xml:space="preserve">
+    <value>终点右</value>
+  </data>
+  <data name="EndU" xml:space="preserve">
+    <value>终点上</value>
+  </data>
   <data name="Errors.NameEmpty" xml:space="preserve">
     <value>[错误] 请用文本框键入物体的名字。</value>
   </data>
@@ -131,6 +158,9 @@
   </data>
   <data name="Hint" xml:space="preserve">
     <value>提示</value>
+  </data>
+  <data name="HollowTetris" xml:space="preserve">
+    <value>空心俄罗斯方块</value>
   </data>
   <data name="Info.AddItems" xml:space="preserve">
     <value>增加了{0}个项目。</value>
@@ -156,14 +186,65 @@
   <data name="NoPropertyShown" xml:space="preserve">
     <value>没有显示属性</value>
   </data>
+  <data name="Painter" xml:space="preserve">
+    <value>染色工具</value>
+  </data>
   <data name="PaintingModeControl" xml:space="preserve">
     <value>染色模式控制</value>
+  </data>
+  <data name="Point" xml:space="preserve">
+    <value>点</value>
+  </data>
+  <data name="Pointer" xml:space="preserve">
+    <value>指针工具</value>
   </data>
   <data name="PuzzleTitle" xml:space="preserve">
     <value>谜题标题</value>
   </data>
   <data name="Redo" xml:space="preserve">
     <value>重做</value>
+  </data>
+  <data name="Ring" xml:space="preserve">
+    <value>圆环</value>
+  </data>
+  <data name="SkewHollowTetris" xml:space="preserve">
+    <value>空心斜俄罗斯方块</value>
+  </data>
+  <data name="SkewTetris" xml:space="preserve">
+    <value>斜俄罗斯方块</value>
+  </data>
+  <data name="Square" xml:space="preserve">
+    <value>色块</value>
+  </data>
+  <data name="Star" xml:space="preserve">
+    <value>星形</value>
+  </data>
+  <data name="Start" xml:space="preserve">
+    <value>起点</value>
+  </data>
+  <data name="Symbol" xml:space="preserve">
+    <value>符号</value>
+  </data>
+  <data name="Tetris" xml:space="preserve">
+    <value>俄罗斯方块</value>
+  </data>
+  <data name="Text" xml:space="preserve">
+    <value>文本</value>
+  </data>
+  <data name="Triangle1" xml:space="preserve">
+    <value>三角形1</value>
+  </data>
+  <data name="Triangle2" xml:space="preserve">
+    <value>三角形2</value>
+  </data>
+  <data name="Triangle3" xml:space="preserve">
+    <value>三角形3</value>
+  </data>
+  <data name="Triangle4" xml:space="preserve">
+    <value>三角形4</value>
+  </data>
+  <data name="Triangle5" xml:space="preserve">
+    <value>三角形5</value>
   </data>
   <data name="Undo" xml:space="preserve">
     <value>取消</value>

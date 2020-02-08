@@ -117,6 +117,33 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="Broken" xml:space="preserve">
+    <value>Broken</value>
+  </data>
+  <data name="Circle" xml:space="preserve">
+    <value>Circle</value>
+  </data>
+  <data name="Eliminator" xml:space="preserve">
+    <value>Eliminator</value>
+  </data>
+  <data name="Emoji" xml:space="preserve">
+    <value>Emoji</value>
+  </data>
+  <data name="Empty" xml:space="preserve">
+    <value>Empty</value>
+  </data>
+  <data name="EndD" xml:space="preserve">
+    <value>EndD</value>
+  </data>
+  <data name="EndL" xml:space="preserve">
+    <value>EndL</value>
+  </data>
+  <data name="EndR" xml:space="preserve">
+    <value>EndR</value>
+  </data>
+  <data name="EndU" xml:space="preserve">
+    <value>EndU</value>
+  </data>
   <data name="Errors.NameEmpty" xml:space="preserve">
     <value>[Error] Please name the object using the text box.</value>
   </data>
@@ -131,6 +158,9 @@
   </data>
   <data name="Hint" xml:space="preserve">
     <value>Hint</value>
+  </data>
+  <data name="HollowTetris" xml:space="preserve">
+    <value>Hollow Tetris</value>
   </data>
   <data name="Info.AddItems" xml:space="preserve">
     <value>Added {0} Items.</value>
@@ -156,14 +186,65 @@
   <data name="NoPropertyShown" xml:space="preserve">
     <value>No Property Shown</value>
   </data>
+  <data name="Painter" xml:space="preserve">
+    <value>Painter</value>
+  </data>
   <data name="PaintingModeControl" xml:space="preserve">
     <value>Painting Mode Control</value>
+  </data>
+  <data name="Point" xml:space="preserve">
+    <value>Point</value>
+  </data>
+  <data name="Pointer" xml:space="preserve">
+    <value>Pointer</value>
   </data>
   <data name="PuzzleTitle" xml:space="preserve">
     <value>Puzzle Title</value>
   </data>
   <data name="Redo" xml:space="preserve">
     <value>Redo</value>
+  </data>
+  <data name="Ring" xml:space="preserve">
+    <value>Ring</value>
+  </data>
+  <data name="SkewHollowTetris" xml:space="preserve">
+    <value>Skew Hollow Tetris</value>
+  </data>
+  <data name="SkewTetris" xml:space="preserve">
+    <value>Skew Tetris</value>
+  </data>
+  <data name="Square" xml:space="preserve">
+    <value>Square</value>
+  </data>
+  <data name="Star" xml:space="preserve">
+    <value>Star</value>
+  </data>
+  <data name="Start" xml:space="preserve">
+    <value>Start</value>
+  </data>
+  <data name="Symbol" xml:space="preserve">
+    <value>Symbol</value>
+  </data>
+  <data name="Tetris" xml:space="preserve">
+    <value>Tetris</value>
+  </data>
+  <data name="Text" xml:space="preserve">
+    <value>Text</value>
+  </data>
+  <data name="Triangle1" xml:space="preserve">
+    <value>Triangle 1</value>
+  </data>
+  <data name="Triangle2" xml:space="preserve">
+    <value>Triangle 2</value>
+  </data>
+  <data name="Triangle3" xml:space="preserve">
+    <value>Triangle 3</value>
+  </data>
+  <data name="Triangle4" xml:space="preserve">
+    <value>Triangle 4</value>
+  </data>
+  <data name="Triangle5" xml:space="preserve">
+    <value>Triangle 5</value>
   </data>
   <data name="Undo" xml:space="preserve">
     <value>Undo</value>

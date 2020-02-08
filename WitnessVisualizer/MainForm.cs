@@ -206,23 +206,34 @@ namespace WitnessVisualizer
                     UpdateGraphDrawing();
                     UpdateTetrisTemplateDrawing();
                 }
-                else if (ToolkitListView.Items[index].Text == "Pointer")
+                else if (ToolkitListView.Items[index].Tag is PuzzleToolkitMiscItem miscItem) // Pointer
                 {
-                    if(editView.PasteMode || editView.ColorPaintingMode || editView.IsCreatingMode)
+                    if(miscItem.IconPath== "Icons/Cursor.png")
                     {
-                        editView.ChooseSampleDecorator(null, false);
+                        if (editView.PasteMode || editView.ColorPaintingMode || editView.IsCreatingMode)
+                        {
+                            editView.ChooseSampleDecorator(null, false);
+                            editView.PasteMode = false;
+                            editView.ColorPaintingMode = false;
+                            UpdatePropertyGridBinding();
+                        }
+                    }
+                    else if(miscItem.IconPath== "Icons/Paint.png")
+                    {
+
                         editView.PasteMode = false;
-                        editView.ColorPaintingMode = false;
+                        editView.ColorPaintingMode = true;
                         UpdatePropertyGridBinding();
                     }
+                    else
+                    {
+                        throw new NotImplementedException();
+                    }
                 }
-                else if (ToolkitListView.Items[index].Text == "Painter")
+                else
                 {
-                    editView.PasteMode = false;
-                    editView.ColorPaintingMode = true;
-                    UpdatePropertyGridBinding();
+                    throw new NotImplementedException();
                 }
-                else throw new NotImplementedException();
             }
         }
         private void ToolkitAdd_Click(object sender, EventArgs e)

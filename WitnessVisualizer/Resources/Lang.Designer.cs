@@ -61,6 +61,87 @@ namespace WitnessVisualizer.Resources {
         }
         
         /// <summary>
+        ///   查找类似 Broken 的本地化字符串。
+        /// </summary>
+        internal static string Broken {
+            get {
+                return ResourceManager.GetString("Broken", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Circle 的本地化字符串。
+        /// </summary>
+        internal static string Circle {
+            get {
+                return ResourceManager.GetString("Circle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Eliminator 的本地化字符串。
+        /// </summary>
+        internal static string Eliminator {
+            get {
+                return ResourceManager.GetString("Eliminator", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Emoji 的本地化字符串。
+        /// </summary>
+        internal static string Emoji {
+            get {
+                return ResourceManager.GetString("Emoji", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Empty 的本地化字符串。
+        /// </summary>
+        internal static string Empty {
+            get {
+                return ResourceManager.GetString("Empty", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 EndD 的本地化字符串。
+        /// </summary>
+        internal static string EndD {
+            get {
+                return ResourceManager.GetString("EndD", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 EndL 的本地化字符串。
+        /// </summary>
+        internal static string EndL {
+            get {
+                return ResourceManager.GetString("EndL", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 EndR 的本地化字符串。
+        /// </summary>
+        internal static string EndR {
+            get {
+                return ResourceManager.GetString("EndR", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 EndU 的本地化字符串。
+        /// </summary>
+        internal static string EndU {
+            get {
+                return ResourceManager.GetString("EndU", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 [Error] Please name the object using the text box. 的本地化字符串。
         /// </summary>
         internal static string Errors_NameEmpty {
@@ -102,6 +183,15 @@ namespace WitnessVisualizer.Resources {
         internal static string Hint {
             get {
                 return ResourceManager.GetString("Hint", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Hollow Tetris 的本地化字符串。
+        /// </summary>
+        internal static string HollowTetris {
+            get {
+                return ResourceManager.GetString("HollowTetris", resourceCulture);
             }
         }
         
@@ -178,11 +268,38 @@ namespace WitnessVisualizer.Resources {
         }
         
         /// <summary>
+        ///   查找类似 Painter 的本地化字符串。
+        /// </summary>
+        internal static string Painter {
+            get {
+                return ResourceManager.GetString("Painter", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Painting Mode Control 的本地化字符串。
         /// </summary>
         internal static string PaintingModeControl {
             get {
                 return ResourceManager.GetString("PaintingModeControl", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Point 的本地化字符串。
+        /// </summary>
+        internal static string Point {
+            get {
+                return ResourceManager.GetString("Point", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Pointer 的本地化字符串。
+        /// </summary>
+        internal static string Pointer {
+            get {
+                return ResourceManager.GetString("Pointer", resourceCulture);
             }
         }
         
@@ -201,6 +318,132 @@ namespace WitnessVisualizer.Resources {
         internal static string Redo {
             get {
                 return ResourceManager.GetString("Redo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Ring 的本地化字符串。
+        /// </summary>
+        internal static string Ring {
+            get {
+                return ResourceManager.GetString("Ring", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Skew Hollow Tetris 的本地化字符串。
+        /// </summary>
+        internal static string SkewHollowTetris {
+            get {
+                return ResourceManager.GetString("SkewHollowTetris", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Skew Tetris 的本地化字符串。
+        /// </summary>
+        internal static string SkewTetris {
+            get {
+                return ResourceManager.GetString("SkewTetris", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Square 的本地化字符串。
+        /// </summary>
+        internal static string Square {
+            get {
+                return ResourceManager.GetString("Square", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Star 的本地化字符串。
+        /// </summary>
+        internal static string Star {
+            get {
+                return ResourceManager.GetString("Star", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Start 的本地化字符串。
+        /// </summary>
+        internal static string Start {
+            get {
+                return ResourceManager.GetString("Start", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Symbol 的本地化字符串。
+        /// </summary>
+        internal static string Symbol {
+            get {
+                return ResourceManager.GetString("Symbol", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Tetris 的本地化字符串。
+        /// </summary>
+        internal static string Tetris {
+            get {
+                return ResourceManager.GetString("Tetris", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Text 的本地化字符串。
+        /// </summary>
+        internal static string Text {
+            get {
+                return ResourceManager.GetString("Text", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Triangle 1 的本地化字符串。
+        /// </summary>
+        internal static string Triangle1 {
+            get {
+                return ResourceManager.GetString("Triangle1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Triangle 2 的本地化字符串。
+        /// </summary>
+        internal static string Triangle2 {
+            get {
+                return ResourceManager.GetString("Triangle2", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Triangle 3 的本地化字符串。
+        /// </summary>
+        internal static string Triangle3 {
+            get {
+                return ResourceManager.GetString("Triangle3", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Triangle 4 的本地化字符串。
+        /// </summary>
+        internal static string Triangle4 {
+            get {
+                return ResourceManager.GetString("Triangle4", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Triangle 5 的本地化字符串。
+        /// </summary>
+        internal static string Triangle5 {
+            get {
+                return ResourceManager.GetString("Triangle5", resourceCulture);
             }
         }
         
