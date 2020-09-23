@@ -440,9 +440,6 @@ namespace WitnessVisualizer
             UpdateGraphDrawing();
             UpdateTetrisTemplateDrawing();
         }
-        private void ResetPropertyButton_Click(object sender, EventArgs e)
-        {
-        }
 
         #endregion
 
@@ -710,6 +707,14 @@ namespace WitnessVisualizer
                 redoToolStripMenuItem.Text = Resources.Lang.Redo;
             }
         }
+
+        private void EditToolStripMenuItem_DropDownClosed(object sender, EventArgs e)
+        {
+            // Make sure that the undo/redo shortcut is always available
+            undoToolStripMenuItem.Enabled = true;
+            redoToolStripMenuItem.Enabled = true;
+        }
+
         private void UndoToolStripMenuItem_Click(object sender, EventArgs e)
         {
             if (editView != null && editView.GraphEditManager.CanUndo)
@@ -820,6 +825,16 @@ namespace WitnessVisualizer
 
         #endregion
 
+
+        private void SplitContainer_SplitterMoved(object sender, SplitterEventArgs e)
+        {
+            if (editView != null)
+            {
+                editView.Resize(editorPictureBox.Width, editorPictureBox.Height, tetrisTemplatePictureBox.Width, tetrisTemplatePictureBox.Height);
+                UpdateGraphDrawing();
+                UpdateTetrisTemplateDrawing();
+            }
+        }
 
         private void ResetToolStripMenuItem_Click(object sender, EventArgs e)
         {
