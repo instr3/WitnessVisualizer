@@ -9,7 +9,7 @@ using System.Xml.Serialization;
 namespace PuzzleGraph.Decorators
 {
     [LocalizedDisplayName("fff")]
-    public class TriangleDecorator : Decorator, IFaceDecorable
+    public class TriangleDecorator : TransformableDecorator, IFaceDecorable, IEdgeDecorable, INodeDecorable
     {
         [LocalizedDisplayName("Count")]
         public int Count { get; set; } = 1;

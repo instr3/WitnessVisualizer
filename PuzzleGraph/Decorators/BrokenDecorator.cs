@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace PuzzleGraph.Decorators
 {
-    public class BrokenDecorator : Decorator, IEdgeDecorable
+    public class BrokenDecorator : Decorator
     {
         
     }

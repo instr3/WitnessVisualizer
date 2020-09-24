@@ -195,6 +195,15 @@ namespace WitnessVisualizer
         {
             if (backgroudColor == Color.Transparent)
                 backgroudColor = metaData.BackgroundColor;
+            graphics.TranslateTransform((float)centerPosition.X, (float)centerPosition.Y);
+            if (decorator is TransformableDecorator transformableDecorator)
+            {
+                graphics.TranslateTransform((float)(transformableDecorator.DeltaX * scale),
+                    (float)(transformableDecorator.DeltaY * scale));
+                graphics.RotateTransform((float)transformableDecorator.Angle);
+                double extraScale = transformableDecorator.ExtraScale <= 0.0 ? 1.0 : transformableDecorator.ExtraScale;
+                graphics.ScaleTransform((float)extraScale, (float)extraScale);
+            }
             if (decorator is PuzzleGraph.Decorators.EliminatorDecorator elimatorDecorator)
             {
                 double eliminatorLength = 0.200;
@@ -205,8 +214,8 @@ namespace WitnessVisualizer
                     foreach (Vector endDirection in endDirections)
                     {
                         graphics.DrawLine(pen,
-                            Vector.Zero.MapToScreen(scale, centerPosition).ToPoint(),
-                            (endDirection * eliminatorLength).MapToScreen(scale, centerPosition).ToPoint());
+                            Vector.Zero.MapToScreen(scale, Vector.Zero).ToPoint(),
+                            (endDirection * eliminatorLength).MapToScreen(scale, Vector.Zero).ToPoint());
                     }
                 }
             }
@@ -218,14 +227,14 @@ namespace WitnessVisualizer
                 using(Brush brush=new SolidBrush(squareDecorator.Color))
                 {
 
-                    graphics.FillEllipse(brush, new Vector(distance, distance).MapToScreen(scale, centerPosition).ToCircleBoundingBox(mappingCircleRadius));
-                    graphics.FillEllipse(brush, new Vector(distance, -distance).MapToScreen(scale, centerPosition).ToCircleBoundingBox(mappingCircleRadius));
-                    graphics.FillEllipse(brush, new Vector(-distance, distance).MapToScreen(scale, centerPosition).ToCircleBoundingBox(mappingCircleRadius));
-                    graphics.FillEllipse(brush, new Vector(-distance, -distance).MapToScreen(scale, centerPosition).ToCircleBoundingBox(mappingCircleRadius));
-                    graphics.FillRectangle(brush, Vector.ToRectangleF(new Vector(-distance - circleRadius, -distance).MapToScreen(scale, centerPosition),
-                                                                      new Vector(distance + circleRadius, distance).MapToScreen(scale, centerPosition)));
-                    graphics.FillRectangle(brush, Vector.ToRectangleF(new Vector(-distance, -distance - circleRadius).MapToScreen(scale, centerPosition),
-                                                                      new Vector(distance, distance + circleRadius).MapToScreen(scale, centerPosition)));
+                    graphics.FillEllipse(brush, new Vector(distance, distance).MapToScreen(scale, Vector.Zero).ToCircleBoundingBox(mappingCircleRadius));
+                    graphics.FillEllipse(brush, new Vector(distance, -distance).MapToScreen(scale, Vector.Zero).ToCircleBoundingBox(mappingCircleRadius));
+                    graphics.FillEllipse(brush, new Vector(-distance, distance).MapToScreen(scale, Vector.Zero).ToCircleBoundingBox(mappingCircleRadius));
+                    graphics.FillEllipse(brush, new Vector(-distance, -distance).MapToScreen(scale, Vector.Zero).ToCircleBoundingBox(mappingCircleRadius));
+                    graphics.FillRectangle(brush, Vector.ToRectangleF(new Vector(-distance - circleRadius, -distance).MapToScreen(scale, Vector.Zero),
+                                                                      new Vector(distance + circleRadius, distance).MapToScreen(scale, Vector.Zero)));
+                    graphics.FillRectangle(brush, Vector.ToRectangleF(new Vector(-distance, -distance - circleRadius).MapToScreen(scale, Vector.Zero),
+                                                                      new Vector(distance, distance + circleRadius).MapToScreen(scale, Vector.Zero)));
                 }
             }
             else if (decorator is PuzzleGraph.Decorators.StarDecorator starDecorator)
@@ -235,11 +244,11 @@ namespace WitnessVisualizer
                 using(Pen pen=new Pen(starDecorator.Color,(float)(distance*2*scale)))
                 {
                     graphics.DrawLine(pen,
-                        new Vector(-distance, 0).MapToScreen(scale, centerPosition).ToPoint(),
-                        new Vector(distance, 0).MapToScreen(scale, centerPosition).ToPoint());
+                        new Vector(-distance, 0).MapToScreen(scale, Vector.Zero).ToPoint(),
+                        new Vector(distance, 0).MapToScreen(scale, Vector.Zero).ToPoint());
                     graphics.DrawLine(pen,
-                        new Vector(skewDistance, -skewDistance).MapToScreen(scale, centerPosition).ToPoint(),
-                        new Vector(-skewDistance, skewDistance).MapToScreen(scale, centerPosition).ToPoint());
+                        new Vector(skewDistance, -skewDistance).MapToScreen(scale, Vector.Zero).ToPoint(),
+                        new Vector(-skewDistance, skewDistance).MapToScreen(scale, Vector.Zero).ToPoint());
 
                 }
             }
@@ -269,10 +278,10 @@ namespace WitnessVisualizer
                         for (int i = 0; i < numbersPerlevel[level]; ++i)
                         {
                             graphics.FillPolygon(brush, new PointF[] {
-                                p1.MapToScreen(scale,centerPosition).ToPoint(),
-                                p2.MapToScreen(scale,centerPosition).ToPoint(),
-                                p3.MapToScreen(scale,centerPosition).ToPoint(),
-                                p1.MapToScreen(scale,centerPosition).ToPoint(),
+                                p1.MapToScreen(scale,Vector.Zero).ToPoint(),
+                                p2.MapToScreen(scale,Vector.Zero).ToPoint(),
+                                p3.MapToScreen(scale,Vector.Zero).ToPoint(),
+                                p1.MapToScreen(scale,Vector.Zero).ToPoint(),
                             });
                             p1 += new Vector(length + distance, 0);
                             p2 += new Vector(length + distance, 0);
@@ -284,18 +293,18 @@ namespace WitnessVisualizer
             }
             else if(decorator is PuzzleGraph.Decorators.TetrisDecorator)
             {
-                DrawTetris(graphics, decorator, centerPosition, scale, metaData, backgroudColor);
+                DrawTetris(graphics, decorator, Vector.Zero, scale, metaData, backgroudColor);
             }
             else if (decorator is PuzzleGraph.Decorators.HollowTetrisDecorator)
             {
-                DrawTetris(graphics, decorator, centerPosition, scale, metaData, backgroudColor);
+                DrawTetris(graphics, decorator, Vector.Zero, scale, metaData, backgroudColor);
             }
             else if (decorator is PuzzleGraph.Decorators.CircleDecorator circleDecorator)
             {
                 double radius = 0.35;
                 using (Brush brush = new SolidBrush(circleDecorator.Color))
                 {
-                    graphics.FillEllipse(brush, centerPosition.ToCircleBoundingBox(radius * scale));
+                    graphics.FillEllipse(brush, Vector.Zero.ToCircleBoundingBox(radius * scale));
                 }
             }
             else if (decorator is PuzzleGraph.Decorators.RingDecorator ringDecorator)
@@ -304,11 +313,11 @@ namespace WitnessVisualizer
                 double innerRadius = 0.25;
                 using (Brush brush = new SolidBrush(ringDecorator.Color))
                 {
-                    graphics.FillEllipse(brush, centerPosition.ToCircleBoundingBox(radius * scale));
+                    graphics.FillEllipse(brush, Vector.Zero.ToCircleBoundingBox(radius * scale));
                 }
                 using (Brush brush = new SolidBrush(backgroudColor))
                 {
-                    graphics.FillEllipse(brush, centerPosition.ToCircleBoundingBox(innerRadius * scale));
+                    graphics.FillEllipse(brush, Vector.Zero.ToCircleBoundingBox(innerRadius * scale));
                 }
             }
             else if (decorator is PuzzleGraph.Decorators.TextDecorator textDecorator)
@@ -325,11 +334,8 @@ namespace WitnessVisualizer
                         originalFont.Style, originalFont.Unit, originalFont.GdiCharSet, originalFont.GdiVerticalFont))
                     {
                         SizeF size = graphics.MeasureString(textDecorator.Text, font);
-                        graphics.TranslateTransform((float)centerPosition.X, (float)centerPosition.Y);
-                        graphics.RotateTransform((float)textDecorator.Angle);
                         graphics.DrawString(textDecorator.Text, font, brush,
                              - size.Width / 2, - size.Height / 2);
-                        graphics.ResetTransform();
                     }
                 }
             }
@@ -341,14 +347,14 @@ namespace WitnessVisualizer
                 using (Pen pen = new Pen(pointDecorator.Color, (float)(width * scale)))
                 {
                     graphics.DrawLine(pen,
-                        new Vector(0, -radius).MapToScreen(scale, centerPosition).ToPoint(),
-                        new Vector(0, radius).MapToScreen(scale, centerPosition).ToPoint());
+                        new Vector(0, -radius).MapToScreen(scale, Vector.Zero).ToPoint(),
+                        new Vector(0, radius).MapToScreen(scale, Vector.Zero).ToPoint());
                     graphics.DrawLine(pen,
-                        new Vector(-x2, radius / 2).MapToScreen(scale, centerPosition).ToPoint(),
-                        new Vector(x2, -radius / 2).MapToScreen(scale, centerPosition).ToPoint());
+                        new Vector(-x2, radius / 2).MapToScreen(scale, Vector.Zero).ToPoint(),
+                        new Vector(x2, -radius / 2).MapToScreen(scale, Vector.Zero).ToPoint());
                     graphics.DrawLine(pen,
-                        new Vector(x2, radius / 2).MapToScreen(scale, centerPosition).ToPoint(),
-                        new Vector(-x2, -radius / 2).MapToScreen(scale, centerPosition).ToPoint());
+                        new Vector(x2, radius / 2).MapToScreen(scale, Vector.Zero).ToPoint(),
+                        new Vector(-x2, -radius / 2).MapToScreen(scale, Vector.Zero).ToPoint());
                 }
             }
             else if(decorator is PuzzleGraph.Decorators.StartDecorator startDecorator)
@@ -357,7 +363,7 @@ namespace WitnessVisualizer
                 using (Brush brush = new SolidBrush(
                     startDecorator.Color != Color.Transparent ? startDecorator.Color : metaData.ForegroundColor))
                 {
-                    graphics.FillEllipse(brush, centerPosition.ToCircleBoundingBox(radius * scale));
+                    graphics.FillEllipse(brush, Vector.Zero.ToCircleBoundingBox(radius * scale));
                 }
             }
             else if (decorator is PuzzleGraph.Decorators.EndDecorator endDecorator)
@@ -370,8 +376,8 @@ namespace WitnessVisualizer
                 })
                 {
                     double angle = endDecorator.Angle / 180 * Math.PI;
-                    graphics.DrawLine(pen, centerPosition.ToPoint(),
-                        new Vector(endDecorator.Length*Math.Cos(angle), endDecorator.Length * Math.Sin(angle)).MapToScreen(scale/metaData.EdgeWidth, centerPosition).ToPoint());
+                    graphics.DrawLine(pen, Vector.Zero.ToPoint(),
+                        new Vector(endDecorator.Length*Math.Cos(angle), endDecorator.Length * Math.Sin(angle)).MapToScreen(scale/metaData.EdgeWidth, Vector.Zero).ToPoint());
                 }
             }
             else if(decorator is PuzzleGraph.Decorators.BrokenDecorator) // Only for illustration purpose
@@ -379,19 +385,21 @@ namespace WitnessVisualizer
                 using (Pen pen = new Pen(metaData.ForegroundColor, (float)scale))
                 {
                     graphics.DrawLine(pen,
-                        new Vector(-0.5, 0.0).MapToScreen(scale / metaData.EdgeWidth, centerPosition).ToPoint(),
-                        new Vector(-0.1, 0.0).MapToScreen(scale / metaData.EdgeWidth, centerPosition).ToPoint());
+                        new Vector(-0.5, 0.0).MapToScreen(scale / metaData.EdgeWidth, Vector.Zero).ToPoint(),
+                        new Vector(-0.1, 0.0).MapToScreen(scale / metaData.EdgeWidth, Vector.Zero).ToPoint());
                     graphics.DrawLine(pen,
-                        new Vector(0.5, 0.0).MapToScreen(scale / metaData.EdgeWidth, centerPosition).ToPoint(),
-                        new Vector(0.1, 0.0).MapToScreen(scale / metaData.EdgeWidth, centerPosition).ToPoint());
+                        new Vector(0.5, 0.0).MapToScreen(scale / metaData.EdgeWidth, Vector.Zero).ToPoint(),
+                        new Vector(0.1, 0.0).MapToScreen(scale / metaData.EdgeWidth, Vector.Zero).ToPoint());
 
                 }
             }
             else if(decorator is PuzzleGraph.Decorators.CombinedDecorator combinedDecorator)
             {
+                graphics.ResetTransform();
                 DrawDecorator(combinedDecorator.First, centerPosition, scale, metaData, backgroudColor);
                 DrawDecorator(combinedDecorator.Second, centerPosition, scale, metaData, backgroudColor);
             }
+            graphics.ResetTransform();
         }
 
         void DrawTetris(Graphics graphics, Decorator decorator, Vector centerPosition, double scale, MetaData metaData, Color backgroudColor)
@@ -404,7 +412,6 @@ namespace WitnessVisualizer
             double hollowThickness;
             if (decorator is PuzzleGraph.Decorators.TetrisDecorator tetrisDecorator)
             {
-                angle = tetrisDecorator.Angle;
                 shapes = tetrisDecorator.Shapes;
                 color = tetrisDecorator.Color;
                 isHollow = false;
@@ -413,7 +420,6 @@ namespace WitnessVisualizer
             }
             else if (decorator is PuzzleGraph.Decorators.HollowTetrisDecorator hollowTetrisDecorator)
             {
-                angle = hollowTetrisDecorator.Angle;
                 shapes = hollowTetrisDecorator.Shapes;
                 color = hollowTetrisDecorator.Color;
                 isHollow = true;
@@ -449,7 +455,7 @@ namespace WitnessVisualizer
             {
                 foreach (List<Node> shape in shapes)
                 {
-                    PointF[] points = shape.Select(node => (new Vector(node.X, node.Y) - selfBias).Rotate(angle / 180 * Math.PI)
+                    PointF[] points = shape.Select(node => (new Vector(node.X, node.Y) - selfBias)
                     .MapToScreen(totalScale, centerPosition).ToPoint()).ToArray();
                     if (isHollow)
                         graphics.DrawClosedCurve(pen, points, 0.0f, System.Drawing.Drawing2D.FillMode.Alternate);
@@ -463,7 +469,7 @@ namespace WitnessVisualizer
                 {
                     foreach (List<Node> shape in shapes)
                     {
-                        PointF[] points = shape.Select(node => (new Vector(node.X, node.Y) - selfBias).Rotate(angle / 180 * Math.PI)
+                        PointF[] points = shape.Select(node => (new Vector(node.X, node.Y) - selfBias)
                             .MapToScreen(totalScale, centerPosition).ToPoint()).ToArray();
                         graphics.DrawClosedCurve(pen, points, 0.0f, System.Drawing.Drawing2D.FillMode.Alternate);
 

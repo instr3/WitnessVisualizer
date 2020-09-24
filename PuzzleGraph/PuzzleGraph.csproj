@@ -79,6 +79,7 @@
     <Compile Include="SaveState.cs" />
     <Compile Include="SerializableFont.cs" />
     <Compile Include="TetrisTemplate.cs" />
+    <Compile Include="TransformableDecorator.cs" />
     <Compile Include="XmlColor.cs" />
     <Compile Include="XmlFont.cs" />
   </ItemGroup>

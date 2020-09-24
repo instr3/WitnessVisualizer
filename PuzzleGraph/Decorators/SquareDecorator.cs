@@ -8,7 +8,7 @@ using System.Xml.Serialization;
 
 namespace PuzzleGraph.Decorators
 {
-    public class SquareDecorator : Decorator, IFaceDecorable
+    public class SquareDecorator : TransformableDecorator, IFaceDecorable, IEdgeDecorable, INodeDecorable
     {
         [LocalizedDisplayName("Color")]
         [XmlElement(Type = typeof(XmlColor))]

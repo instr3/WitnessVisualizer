@@ -8,7 +8,7 @@ using System.Xml.Serialization;
 
 namespace PuzzleGraph.Decorators
 {
-    public class HollowTetrisDecorator : AbstractTetrisDecorator, IFaceDecorable
+    public class HollowTetrisDecorator : AbstractTetrisDecorator, IFaceDecorable, IEdgeDecorable, INodeDecorable
     {
         [LocalizedDisplayName("Color")]
         [XmlElement(Type = typeof(XmlColor))]

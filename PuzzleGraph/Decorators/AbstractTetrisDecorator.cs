@@ -6,10 +6,8 @@ using System.Threading.Tasks;
 
 namespace PuzzleGraph.Decorators
 {
-    public class AbstractTetrisDecorator : Decorator
+    public class AbstractTetrisDecorator : TransformableDecorator
     {
-        [LocalizedDisplayName("Angle")]
-        public double Angle { get; set; } = 0.0;
         [LocalizedDisplayName("Shapes")]
         public List<List<Node>> Shapes { get; set; } = new List<List<Node>>();
         [LocalizedDisplayName("Indexes")]

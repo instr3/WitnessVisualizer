@@ -123,6 +123,12 @@
   <data name="Circle" xml:space="preserve">
     <value>Circle</value>
   </data>
+  <data name="DeltaX" xml:space="preserve">
+    <value>DeltaX</value>
+  </data>
+  <data name="DeltaY" xml:space="preserve">
+    <value>DeltaY</value>
+  </data>
   <data name="Eliminator" xml:space="preserve">
     <value>Eliminator</value>
   </data>
@@ -155,6 +161,9 @@
   </data>
   <data name="Errors.NoTetris" xml:space="preserve">
     <value>[Error] Please select at least an tetris element first.</value>
+  </data>
+  <data name="ExtraScale" xml:space="preserve">
+    <value>ExtraScale</value>
   </data>
   <data name="Hint" xml:space="preserve">
     <value>Hint</value>
