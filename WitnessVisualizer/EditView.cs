@@ -28,6 +28,7 @@ namespace WitnessVisualizer
         public bool ColorPaintingMode { get; set; }
         public PaintingModeControl PaintingModeControl { get; private set; }
         public List<GraphElement> SelectedObjects { get; private set; } = new List<GraphElement>();
+        List<Node> nodesToMove;
         public List<GraphElement> HoveredObjects { get; private set; } = new List<GraphElement>();
         public bool[] SelectedTetrisShapes { get; private set; }
         public EditManager<Graph> GraphEditManager { get; private set; }
@@ -91,7 +92,7 @@ namespace WitnessVisualizer
             Scale *= deltaScale;
         }
 
-        internal bool MouseDown(int x, int y, MouseButtons button, bool ctrlKey) // Return true if copy operation is performed
+        internal bool MouseDown(int x, int y, MouseButtons button, bool ctrlKey, bool shiftKey) // Return true if copy operation is performed
         {
             bool copyPerformed = false;
             if(IsCreatingMode)
@@ -132,11 +133,11 @@ namespace WitnessVisualizer
             if (HoveredObjects.Count > 0 && button != MouseButtons.Middle)
             {
                 List<GraphElement> objectToKeep = new List<GraphElement>();
-                if(ctrlKey)
+                if(ctrlKey || shiftKey)
                 {
                     foreach (GraphElement selectedObject in SelectedObjects)
                     {
-                        if (!HoveredObjects.Contains(selectedObject))
+                        if (shiftKey || !HoveredObjects.Contains(selectedObject))
                         {
                             objectToKeep.Add(selectedObject);
                         }
@@ -208,6 +209,34 @@ namespace WitnessVisualizer
                     if (!PasteMode) // Selection mode
                     {
                         SelectedObjects.AddRange(objectToKeep);
+                        if (shiftKey)
+                        {
+                            nodesToMove = new List<Node>();
+                            foreach(GraphElement element in SelectedObjects)
+                            {
+                                if (element is Node selectedNode)
+                                {
+                                    nodesToMove.Add(selectedNode);
+                                }
+                                else if (element is Edge selectedEdge)
+                                {
+                                    nodesToMove.Add(selectedEdge.Start);
+                                    nodesToMove.Add(selectedEdge.End);
+                                }
+                                else if(element is Face selectedFace)
+                                {
+                                    nodesToMove.AddRange(selectedFace.Nodes);
+                                }
+                            }
+                            if(nodesToMove.Count>0)
+                            {
+                                GraphEditManager.BeforePreformEdit(Graph, "Move Nodes");
+                                ElementMoveStartPosition = new Vector(x, y);
+                            }
+
+                        }
+                        else
+                            ElementMoveStartPosition = null;
                     }
                     else // Paste mode
                     {
@@ -261,6 +290,19 @@ namespace WitnessVisualizer
             }
             else
             {
+                if (ElementMoveStartPosition != null)
+                {
+                    Vector deltaPosition = mousePosition.MapFromScreen(Scale, Origin) - ElementMoveStartPosition.MapFromScreen(Scale, Origin);
+                    // We do not guarantee that points in nodesToMove are unique
+                    List<Vector> targetPos = nodesToMove.Select(node => new Vector(node.X, node.Y) + deltaPosition).ToList();
+                    for (int i=0;i<nodesToMove.Count;++i)
+                    {
+                        nodesToMove[i].X = targetPos[i].X;
+                        nodesToMove[i].Y = targetPos[i].Y;
+                    }
+                    ElementMoveStartPosition = mousePosition;
+                    return;
+                }
                 Vector query = mousePosition.MapFromScreen(Scale, Origin);
                 GraphElement havoredObject = QueryPosition(query);
                 if(havoredObject != null)
@@ -283,6 +325,7 @@ namespace WitnessVisualizer
 
         internal void MouseUp(int x, int y, MouseButtons button)
         {
+            ElementMoveStartPosition = null;
             Vector mousePosition = new Vector(x, y);
             if (IsDragging)
             {
@@ -298,6 +341,7 @@ namespace WitnessVisualizer
 
         public double TetrisTemplateScale { get; private set; }
         public Vector TetrisTemplateOrigin { get; private set; }
+        public Vector ElementMoveStartPosition { get; private set; }
 
         public void UpdateTetrisTemplateScaleAndOrigin(TetrisTemplate template)
         {

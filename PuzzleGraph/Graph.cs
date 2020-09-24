@@ -4,14 +4,20 @@ using System.IO;
 using System.Text;
 using System.Xml.Serialization;
 using System.Linq;
+using System.ComponentModel;
 
 namespace PuzzleGraph
 {
     public class Graph : ICloneable
     {
+        [LocalizedDisplayName("Nodes")]
         public List<Node> Nodes { get; private set; }
+        [LocalizedDisplayName("Edges")]
         public List<Edge> Edges { get; private set; }
+        [LocalizedDisplayName("Faces")]
         public List<Face> Faces { get; private set; }
+        [LocalizedDisplayName("MetaData")]
+        [TypeConverter(typeof(ExpandableObjectConverter))]
         public MetaData MetaData { get; private set; }
         public Graph()
         {

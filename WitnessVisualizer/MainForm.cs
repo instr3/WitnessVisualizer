@@ -396,7 +396,8 @@ namespace WitnessVisualizer
             if (editView != null)
             {
                 bool controlPressed = (ModifierKeys & Keys.Control) == Keys.Control;
-                if (editView.MouseDown(e.X, e.Y, e.Button, controlPressed))
+                bool shiftPressed = (ModifierKeys & Keys.Shift) == Keys.Shift;
+                if (editView.MouseDown(e.X, e.Y, e.Button, controlPressed, shiftPressed))
                     ToolkitListView.SelectedItems.Clear(); // Copy is performed
                 UpdateGraphDrawing();
                 UpdatePropertyGridBinding();
@@ -834,6 +835,11 @@ namespace WitnessVisualizer
                 UpdateGraphDrawing();
                 UpdateTetrisTemplateDrawing();
             }
+        }
+
+        private void EditorPictureBox_Click(object sender, EventArgs e)
+        {
+
         }
 
         private void ResetToolStripMenuItem_Click(object sender, EventArgs e)
