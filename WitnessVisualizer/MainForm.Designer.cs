@@ -583,6 +583,7 @@
             this.tetrisTemplatePictureBox.Name = "tetrisTemplatePictureBox";
             this.tetrisTemplatePictureBox.TabStop = false;
             this.tetrisTemplatePictureBox.MouseDown += new System.Windows.Forms.MouseEventHandler(this.TetrisTemplatePictureBox_MouseDown);
+            this.tetrisTemplatePictureBox.Resize += new System.EventHandler(this.EditorPictureBox_Resize);
             // 
             // puzzlePropertyGrid
             // 

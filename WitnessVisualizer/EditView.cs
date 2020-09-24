@@ -46,6 +46,7 @@ namespace WitnessVisualizer
         {
             editorSize = new Vector(inputEditorWidth, inputEditorHeight);
             tetrisTemplateEditorSize = new Vector(inputTetrisTemplateWidth, inputTetrisTemplateHeight);
+            UpdateTetrisTemplateScaleAndOrigin(Graph.MetaData.TetrisTemplate);
         }
         #region graph
         public GraphElement QueryPosition(Vector query)

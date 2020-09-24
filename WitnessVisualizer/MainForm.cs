@@ -34,12 +34,12 @@ namespace WitnessVisualizer
             graphRenderer = new PuzzleGraphRenderer(graphBuffer.Graphics);
             // Init tetris template drawing
             Graphics tetrisTemplateTargetGraphics = tetrisTemplatePictureBox.CreateGraphics();
-            tetrisTemplateBuffer = BufferedGraphicsManager.Current.Allocate(tetrisTemplateTargetGraphics, new Rectangle(0, 0, tetrisTemplatePictureBox.Width, tetrisTemplatePictureBox.Height));
+            tetrisTemplateBuffer = BufferedGraphicsManager.Current.Allocate(tetrisTemplateTargetGraphics, new Rectangle(0, 0, Screen.FromControl(this).Bounds.Width, Screen.FromControl(this).Bounds.Height));
             tetrisTemplateBuffer.Graphics.SmoothingMode = SmoothingMode.AntiAlias;
             tetrisTemplateRenderer = new TetrisTemplateRenderer(tetrisTemplateBuffer.Graphics);
             // Init preview graph box
             Graphics decoratorPreviewGraphics = decoratorPreviewPictureBox.CreateGraphics();
-            decoratorPreviewBuffer = BufferedGraphicsManager.Current.Allocate(decoratorPreviewGraphics, new Rectangle(0, 0, decoratorPreviewPictureBox.Width, decoratorPreviewPictureBox.Height));
+            decoratorPreviewBuffer = BufferedGraphicsManager.Current.Allocate(decoratorPreviewGraphics, new Rectangle(0, 0, Screen.FromControl(this).Bounds.Width, Screen.FromControl(this).Bounds.Height));
             decoratorPreviewBuffer.Graphics.SmoothingMode = SmoothingMode.AntiAlias;
             // Init other stuff
             editorPictureBox.MouseWheel += EditorPictureBox_MouseWheel;
