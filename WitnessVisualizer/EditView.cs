@@ -201,7 +201,16 @@ namespace WitnessVisualizer
                 {
                     if(objectToKeep.Count>0)
                     {
-                        ChooseSampleDecorator(objectToKeep[0].Decorator, true);
+                        if (ctrlKey && objectToKeep[0].Decorator is PuzzleGraph.Decorators.CombinedDecorator combinedDecorator) // Combine mode
+                        {
+                            ChooseSampleDecorator(combinedDecorator.Second, true);
+                            objectToKeep[0].Decorator = combinedDecorator.First;
+                        }
+                        else
+                        {
+                            ChooseSampleDecorator(objectToKeep[0].Decorator, true);
+                        }
+                            
                         copyPerformed = true;
                     }
                 }
