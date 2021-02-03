@@ -139,7 +139,7 @@ namespace WitnessVisualizer
                     double width = decoratorPreviewPictureBox.Width;
                     double height = decoratorPreviewPictureBox.Height;
                     renderer.DrawDecorator(selectedDecorator, new MathHelper.Vector(width / 2.0, height / 2.0),
-                        height * decoratorPreviewScale, editView.Graph.MetaData, editView.Graph.MetaData.BackgroundColor);
+                        height * decoratorPreviewScale, editView.Graph.MetaData, editView.Graph.MetaData.BackgroundColor, true);
                 }
                 decoratorPreviewBuffer.Render();
             }

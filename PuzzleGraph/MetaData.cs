@@ -29,5 +29,8 @@ namespace PuzzleGraph
         public int ExportWidth { get; set; } = 768;
         [LocalizedDisplayName("ExportHeight")]
         public int ExportHeight { get; set; } = 768;
+        [LocalizedDisplayName("LineColor")]
+        [XmlElement(Type = typeof(XmlColor))]
+        public Color LineColor { get; set; } = Color.Yellow;
     }
 }

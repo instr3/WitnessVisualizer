@@ -40,7 +40,7 @@ namespace WitnessVisualizer
         public void Draw(Graphics graphics, int width, int height)
         {
             PuzzleGraphRenderer renderer = new PuzzleGraphRenderer(graphics);
-            renderer.DrawDecorator(Decorator, new Vector(width / 2.0, height / 2.0), width * AdditionalScale, metaData, metaData.BackgroundColor);
+            renderer.DrawDecorator(Decorator, new Vector(width / 2.0, height / 2.0), width * AdditionalScale, metaData, metaData.BackgroundColor, true);
         }
         public override Image GetImage(int width, int height)
         {

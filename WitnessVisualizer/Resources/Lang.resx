@@ -171,6 +171,9 @@
   <data name="HollowTetris" xml:space="preserve">
     <value>Hollow Tetris</value>
   </data>
+  <data name="HorizontalSymmetry" xml:space="preserve">
+    <value>Horizontal Symmetry</value>
+  </data>
   <data name="Info.AddItems" xml:space="preserve">
     <value>Added {0} Items.</value>
   </data>
@@ -216,6 +219,9 @@
   <data name="Ring" xml:space="preserve">
     <value>Ring</value>
   </data>
+  <data name="RotationalSymmetry" xml:space="preserve">
+    <value>Rotational Symmetry</value>
+  </data>
   <data name="SkewHollowTetris" xml:space="preserve">
     <value>Skew Hollow Tetris</value>
   </data>
@@ -260,6 +266,9 @@
   </data>
   <data name="Undo.Paint" xml:space="preserve">
     <value>Paint {0} with {1}.</value>
+  </data>
+  <data name="VerticalSymmetry" xml:space="preserve">
+    <value>Vertical Symmetry</value>
   </data>
   <data name="Warning" xml:space="preserve">
     <value>Warning</value>

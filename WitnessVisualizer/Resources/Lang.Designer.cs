@@ -223,6 +223,15 @@ namespace WitnessVisualizer.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Horizontal Symmetry.
+        /// </summary>
+        internal static string HorizontalSymmetry {
+            get {
+                return ResourceManager.GetString("HorizontalSymmetry", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Added {0} Items..
         /// </summary>
         internal static string Info_AddItems {
@@ -358,6 +367,15 @@ namespace WitnessVisualizer.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Rotational Symmetry.
+        /// </summary>
+        internal static string RotationalSymmetry {
+            get {
+                return ResourceManager.GetString("RotationalSymmetry", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Skew Hollow Tetris.
         /// </summary>
         internal static string SkewHollowTetris {
@@ -489,6 +507,15 @@ namespace WitnessVisualizer.Resources {
         internal static string Undo_Paint {
             get {
                 return ResourceManager.GetString("Undo.Paint", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Vertical Symmetry.
+        /// </summary>
+        internal static string VerticalSymmetry {
+            get {
+                return ResourceManager.GetString("VerticalSymmetry", resourceCulture);
             }
         }
         

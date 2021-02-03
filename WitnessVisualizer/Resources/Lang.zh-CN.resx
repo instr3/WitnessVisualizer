@@ -162,6 +162,9 @@
   <data name="HollowTetris" xml:space="preserve">
     <value>空心俄罗斯方块</value>
   </data>
+  <data name="HorizontalSymmetry" xml:space="preserve">
+    <value>横向对称</value>
+  </data>
   <data name="Info.AddItems" xml:space="preserve">
     <value>增加了{0}个项目。</value>
   </data>
@@ -206,6 +209,9 @@
   </data>
   <data name="Ring" xml:space="preserve">
     <value>圆环</value>
+  </data>
+  <data name="RotationalSymmetry" xml:space="preserve">
+    <value>旋转对称</value>
   </data>
   <data name="SkewHollowTetris" xml:space="preserve">
     <value>空心斜俄罗斯方块</value>
@@ -290,6 +296,9 @@
   </data>
   <data name="Undo&gt;&gt;Tetris Decorator" xml:space="preserve">
     <value>俄罗斯方块装饰元素</value>
+  </data>
+  <data name="VerticalSymmetry" xml:space="preserve">
+    <value>纵向对称</value>
   </data>
   <data name="Warning" xml:space="preserve">
     <value>警告</value>

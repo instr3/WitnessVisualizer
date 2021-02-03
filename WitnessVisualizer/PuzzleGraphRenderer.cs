@@ -70,7 +70,7 @@ namespace WitnessVisualizer
                     }
                     else
                     {
-                        DrawDecorator(face.Decorator, screenPosition, view.Scale * (1 - graph.MetaData.EdgeWidth) * graph.MetaData.FaceDecorationScale, view.Graph.MetaData, face.GraphElementColor);
+                        DrawDecorator(face.Decorator, screenPosition, view.Scale * (1 - graph.MetaData.EdgeWidth) * graph.MetaData.FaceDecorationScale, view.Graph.MetaData, face.GraphElementColor, true);
                     }
                 }
                 foreach (Node node in graph.Nodes)
@@ -90,7 +90,7 @@ namespace WitnessVisualizer
                 if (node.Decorator is PuzzleGraph.Decorators.StartDecorator || node.Decorator is PuzzleGraph.Decorators.EndDecorator)
                 {
                     Vector screenPosition = new Vector(node.X, node.Y).MapToScreen(view.Scale, view.Origin);
-                    DrawDecorator(node.Decorator, screenPosition, view.Scale * graph.MetaData.EdgeWidth, view.Graph.MetaData, view.Graph.MetaData.BackgroundColor);
+                    DrawDecorator(node.Decorator, screenPosition, view.Scale * graph.MetaData.EdgeWidth, view.Graph.MetaData, view.Graph.MetaData.BackgroundColor, false);
                 }
             }
             foreach (Edge edge in graph.Edges)
@@ -98,7 +98,7 @@ namespace WitnessVisualizer
                 if (edge.Decorator is PuzzleGraph.Decorators.StartDecorator || edge.Decorator is PuzzleGraph.Decorators.EndDecorator)
                 {
                     Vector screenPosition = new Vector((edge.Start.X + edge.End.X) / 2, (edge.Start.Y + edge.End.Y) / 2).MapToScreen(view.Scale, view.Origin);
-                    DrawDecorator(edge.Decorator, screenPosition, view.Scale * graph.MetaData.EdgeWidth, view.Graph.MetaData, view.Graph.MetaData.BackgroundColor);
+                    DrawDecorator(edge.Decorator, screenPosition, view.Scale * graph.MetaData.EdgeWidth, view.Graph.MetaData, view.Graph.MetaData.BackgroundColor, false);
                 }
             }
             // Draw solutions
@@ -120,7 +120,7 @@ namespace WitnessVisualizer
                 if (node.Decorator != null && !(node.Decorator is PuzzleGraph.Decorators.EndDecorator) && !(node.Decorator is PuzzleGraph.Decorators.StartDecorator))
                 {
                     Vector screenPosition = new Vector(node.X, node.Y).MapToScreen(view.Scale, view.Origin);
-                    DrawDecorator(node.Decorator, screenPosition, view.Scale * graph.MetaData.EdgeWidth, view.Graph.MetaData, view.Graph.MetaData.BackgroundColor);
+                    DrawDecorator(node.Decorator, screenPosition, view.Scale * graph.MetaData.EdgeWidth, view.Graph.MetaData, view.Graph.MetaData.BackgroundColor, false);
                 }
             }
             foreach (Edge edge in graph.Edges)
@@ -129,7 +129,7 @@ namespace WitnessVisualizer
                     !(edge.Decorator is PuzzleGraph.Decorators.EndDecorator) && !(edge.Decorator is PuzzleGraph.Decorators.StartDecorator))
                 {
                     Vector screenPosition = new Vector((edge.Start.X + edge.End.X) / 2, (edge.Start.Y + edge.End.Y) / 2).MapToScreen(view.Scale, view.Origin);
-                    DrawDecorator(edge.Decorator, screenPosition, view.Scale * graph.MetaData.EdgeWidth, view.Graph.MetaData, view.Graph.MetaData.BackgroundColor);
+                    DrawDecorator(edge.Decorator, screenPosition, view.Scale * graph.MetaData.EdgeWidth, view.Graph.MetaData, view.Graph.MetaData.BackgroundColor, false);
                 }
             }
 
@@ -191,7 +191,7 @@ namespace WitnessVisualizer
             }
         }
 
-        public void DrawDecorator(Decorator decorator, Vector centerPosition, double scale, MetaData metaData, Color backgroudColor)
+        public void DrawDecorator(Decorator decorator, Vector centerPosition, double scale, MetaData metaData, Color backgroudColor, bool isFaceScale)
         {
             if (backgroudColor == Color.Transparent)
                 backgroudColor = metaData.BackgroundColor;
@@ -393,11 +393,37 @@ namespace WitnessVisualizer
 
                 }
             }
+            else if(decorator is PuzzleGraph.Decorators.SymmetryPuzzleDecorator symmetryPuzzleDecorator)
+            {
+                double unifiedScale = isFaceScale ? scale : scale / metaData.EdgeWidth * (1 - metaData.EdgeWidth) * metaData.FaceDecorationScale;
+                double lineWidth = unifiedScale * 0.1;
+                for (int lineGroup = 0; lineGroup <= 1; ++lineGroup)
+                {
+                    double xMul = lineGroup == 0 ? 1 : -1;
+                    double yMul = lineGroup == 0 && symmetryPuzzleDecorator.IsRotational ? 1 : -1;
+                    Color color = lineGroup == 0 ? metaData.LineColor : symmetryPuzzleDecorator.SecondLineColor;
+                    using (Pen pen = new Pen(color, (float)lineWidth)
+                    {
+                        EndCap = System.Drawing.Drawing2D.LineCap.Round,
+                        StartCap = System.Drawing.Drawing2D.LineCap.Round
+                    })
+                    {
+                        graphics.DrawLine(pen, new Vector(-0.15 * xMul, -0.2 * yMul).MapToScreen(unifiedScale, Vector.Zero).ToPoint(),
+                            new Vector(-0.15 * xMul, 0.2 * yMul).MapToScreen(unifiedScale, Vector.Zero).ToPoint());
+                        graphics.DrawLine(pen, new Vector(-0.15 * xMul, 0.2 * yMul).MapToScreen(unifiedScale, Vector.Zero).ToPoint(),
+                            new Vector(-0.3 * xMul, 0.2 * yMul).MapToScreen(unifiedScale, Vector.Zero).ToPoint());
+                    }
+                    graphics.FillEllipse(new SolidBrush(color),
+                        new Vector(-0.15 * xMul, -0.2 * yMul).MapToScreen(unifiedScale, Vector.Zero).ToCircleBoundingBox(lineWidth));
+                }
+                graphics.FillEllipse(Brushes.Black, Vector.Zero.MapToScreen(unifiedScale, Vector.Zero).ToCircleBoundingBox(lineWidth * 0.3));
+
+            }
             else if(decorator is PuzzleGraph.Decorators.CombinedDecorator combinedDecorator)
             {
                 graphics.ResetTransform();
-                DrawDecorator(combinedDecorator.First, centerPosition, scale, metaData, backgroudColor);
-                DrawDecorator(combinedDecorator.Second, centerPosition, scale, metaData, backgroudColor);
+                DrawDecorator(combinedDecorator.First, centerPosition, scale, metaData, backgroudColor, isFaceScale);
+                DrawDecorator(combinedDecorator.Second, centerPosition, scale, metaData, backgroudColor, isFaceScale);
             }
             graphics.ResetTransform();
         }
