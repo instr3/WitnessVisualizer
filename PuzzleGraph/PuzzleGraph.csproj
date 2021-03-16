@@ -55,6 +55,7 @@
     <Compile Include="Decorators\StarDecorator.cs" />
     <Compile Include="Decorators\StartDecorator.cs" />
     <Compile Include="Decorators\AbstractTetrisDecorator.cs" />
+    <Compile Include="Decorators\ThreeWayPuzzleDecorator.cs" />
     <Compile Include="Decorators\SymmetryPuzzleDecorator.cs" />
     <Compile Include="Decorators\TetrisDecorator.cs" />
     <Compile Include="Decorators\TextDecorator.cs" />

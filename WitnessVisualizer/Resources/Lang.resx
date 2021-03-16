@@ -246,6 +246,9 @@
   <data name="Text" xml:space="preserve">
     <value>Text</value>
   </data>
+  <data name="ThreeWaySymmetry" xml:space="preserve">
+    <value>Three-way Symmetry</value>
+  </data>
   <data name="Triangle1" xml:space="preserve">
     <value>Triangle 1</value>
   </data>

@@ -417,7 +417,31 @@ namespace WitnessVisualizer
                         new Vector(-0.15 * xMul, -0.2 * yMul).MapToScreen(unifiedScale, Vector.Zero).ToCircleBoundingBox(lineWidth));
                 }
                 graphics.FillEllipse(Brushes.Black, Vector.Zero.MapToScreen(unifiedScale, Vector.Zero).ToCircleBoundingBox(lineWidth * 0.3));
-
+            }
+            else if (decorator is PuzzleGraph.Decorators.ThreeWayPuzzleDecorator threeWayPuzzleDecorator)
+            {
+                double unifiedScale = isFaceScale ? scale : scale / metaData.EdgeWidth * (1 - metaData.EdgeWidth) * metaData.FaceDecorationScale;
+                double lineWidth = unifiedScale * 0.1;
+                for (int lineGroup = 0; lineGroup <= 2; ++lineGroup)
+                {
+                    Color color = lineGroup == 0 ? metaData.LineColor : lineGroup == 1 ? 
+                        threeWayPuzzleDecorator.SecondLineColor : threeWayPuzzleDecorator.ThirdLineColorLineColor;
+                    using (Pen pen = new Pen(color, (float)lineWidth)
+                    {
+                        EndCap = System.Drawing.Drawing2D.LineCap.Round,
+                        StartCap = System.Drawing.Drawing2D.LineCap.Round
+                    })
+                    {
+                        graphics.DrawLine(pen, new Vector(-0.15, -0.2).MapToScreen(unifiedScale, Vector.Zero).ToPoint(),
+                            new Vector(-0.15, 0.0).MapToScreen(unifiedScale, Vector.Zero).ToPoint());
+                        graphics.DrawLine(pen, new Vector(-0.15, 0.0).MapToScreen(unifiedScale, Vector.Zero).ToPoint(),
+                            new Vector(-0.15 - 0.1732, 0.1).MapToScreen(unifiedScale, Vector.Zero).ToPoint());
+                    }
+                    graphics.FillEllipse(new SolidBrush(color),
+                        new Vector(-0.15, -0.2).MapToScreen(unifiedScale, Vector.Zero).ToCircleBoundingBox(lineWidth));
+                    graphics.RotateTransform(120);
+                }
+                graphics.FillEllipse(Brushes.Black, Vector.Zero.MapToScreen(unifiedScale, Vector.Zero).ToCircleBoundingBox(lineWidth * 0.3));
             }
             else if(decorator is PuzzleGraph.Decorators.CombinedDecorator combinedDecorator)
             {

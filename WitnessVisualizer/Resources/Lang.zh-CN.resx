@@ -237,6 +237,9 @@
   <data name="Text" xml:space="preserve">
     <value>文本</value>
   </data>
+  <data name="ThreeWaySymmetry" xml:space="preserve">
+    <value>三相对称</value>
+  </data>
   <data name="Triangle1" xml:space="preserve">
     <value>三角形1</value>
   </data>

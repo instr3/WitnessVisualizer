@@ -56,6 +56,7 @@ namespace WitnessVisualizer
             Toolkit.Items.Add(new PuzzleToolkitDecoratorItem(Resources.Lang.VerticalSymmetry, new PuzzleGraph.Decorators.SymmetryPuzzleDecorator() { IsRotational = false, Angle = 0 }));
             Toolkit.Items.Add(new PuzzleToolkitDecoratorItem(Resources.Lang.HorizontalSymmetry, new PuzzleGraph.Decorators.SymmetryPuzzleDecorator() { IsRotational = false, Angle = 90 }));
             Toolkit.Items.Add(new PuzzleToolkitDecoratorItem(Resources.Lang.RotationalSymmetry, new PuzzleGraph.Decorators.SymmetryPuzzleDecorator() { IsRotational = true, Angle = 0 }));
+            Toolkit.Items.Add(new PuzzleToolkitDecoratorItem(Resources.Lang.ThreeWaySymmetry, new PuzzleGraph.Decorators.ThreeWayPuzzleDecorator() { Angle = 0 }));
             return Toolkit;
         }
         public static double GetSuggestedDecorationScale(PuzzleGraph.Decorator decorator)

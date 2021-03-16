@@ -448,6 +448,15 @@ namespace WitnessVisualizer.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Three-way Symmetry.
+        /// </summary>
+        internal static string ThreeWaySymmetry {
+            get {
+                return ResourceManager.GetString("ThreeWaySymmetry", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Triangle 1.
         /// </summary>
         internal static string Triangle1 {
