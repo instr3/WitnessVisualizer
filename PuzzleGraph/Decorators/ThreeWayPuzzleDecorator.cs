@@ -15,6 +15,6 @@ namespace PuzzleGraph.Decorators
         public Color SecondLineColor { get; set; } = Color.Aqua;
         [LocalizedDisplayName("ThirdLineColor")]
         [XmlElement(Type = typeof(XmlColor))]
-        public Color ThirdLineColorLineColor { get; set; } = Color.LightGreen;
+        public Color ThirdLineColor { get; set; } = Color.LightGreen;
     }
 }

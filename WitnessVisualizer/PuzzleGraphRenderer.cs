@@ -425,7 +425,7 @@ namespace WitnessVisualizer
                 for (int lineGroup = 0; lineGroup <= 2; ++lineGroup)
                 {
                     Color color = lineGroup == 0 ? metaData.LineColor : lineGroup == 1 ? 
-                        threeWayPuzzleDecorator.SecondLineColor : threeWayPuzzleDecorator.ThirdLineColorLineColor;
+                        threeWayPuzzleDecorator.SecondLineColor : threeWayPuzzleDecorator.ThirdLineColor;
                     using (Pen pen = new Pen(color, (float)lineWidth)
                     {
                         EndCap = System.Drawing.Drawing2D.LineCap.Round,
