@@ -8,12 +8,12 @@ using System.Xml.Serialization;
 
 namespace PuzzleGraph.Decorators
 {
-    public class TriangleDecorator : TransformableDecorator, IFaceDecorable, IEdgeDecorable, INodeDecorable
+    public class ArrowDecorator : TransformableDecorator, IFaceDecorable, IEdgeDecorable, INodeDecorable
     {
         [LocalizedDisplayName("Count")]
         public int Count { get; set; } = 1;
         [LocalizedDisplayName("Color")]
         [XmlElement(Type = typeof(XmlColor))]
-        public Color Color { get; set; } = Color.Gold;
+        public Color Color { get; set; } = Color.Purple;
     }
 }

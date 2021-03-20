@@ -61,6 +61,15 @@ namespace WitnessVisualizer.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Arrow.
+        /// </summary>
+        internal static string Arrow {
+            get {
+                return ResourceManager.GetString("Arrow", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Broken.
         /// </summary>
         internal static string Broken {

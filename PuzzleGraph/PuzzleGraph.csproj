@@ -43,6 +43,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Decorators\ArrowDecorator.cs" />
     <Compile Include="Decorators\BrokenDecorator.cs" />
     <Compile Include="Decorators\CircleDecorator.cs" />
     <Compile Include="Decorators\CombinedDecorator.cs" />

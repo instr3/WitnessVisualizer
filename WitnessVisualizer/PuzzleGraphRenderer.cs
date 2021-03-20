@@ -291,6 +291,42 @@ namespace WitnessVisualizer
                     }
                 }
             }
+            else if (decorator is PuzzleGraph.Decorators.ArrowDecorator arrowDecorator)
+            {
+                double width = 0.3;
+                double thickness = 0.08;
+                double delta_height = thickness * 1.414213562;
+                double arrow_distance = 0.08;
+                double bar_length = 0.4;
+                double head_height = 0.3 - thickness / 2;
+                List<PointF> points = new List<PointF>();
+                double current_height = bar_length;
+                points.Add(new Vector(0, current_height + thickness * head_height / (2 * width)).MapToScreen(scale, Vector.Zero).ToPoint());
+                for (int i = 0; i < arrowDecorator.Count; ++i)
+                {
+                    points.Add(new Vector(-width, current_height - head_height).MapToScreen(scale, Vector.Zero).ToPoint());
+                    current_height -= delta_height;
+                    points.Add(new Vector(-width, current_height - head_height).MapToScreen(scale, Vector.Zero).ToPoint());
+                    points.Add(new Vector(-thickness / 2, current_height).MapToScreen(scale, Vector.Zero).ToPoint());
+                    current_height -= arrow_distance;
+                    points.Add(new Vector(-thickness / 2, current_height).MapToScreen(scale, Vector.Zero).ToPoint());
+                }
+                points.Add(new Vector(-thickness / 2, -bar_length).MapToScreen(scale, Vector.Zero).ToPoint());
+                points.Add(new Vector(thickness / 2, -bar_length).MapToScreen(scale, Vector.Zero).ToPoint());
+                for (int i = 0; i < arrowDecorator.Count; ++i)
+                {
+                    points.Add(new Vector(thickness / 2, current_height).MapToScreen(scale, Vector.Zero).ToPoint());
+                    current_height += arrow_distance;
+                    points.Add(new Vector(thickness / 2, current_height).MapToScreen(scale, Vector.Zero).ToPoint());
+                    points.Add(new Vector(width, current_height - head_height).MapToScreen(scale, Vector.Zero).ToPoint());
+                    current_height += delta_height;
+                    points.Add(new Vector(width, current_height - head_height).MapToScreen(scale, Vector.Zero).ToPoint());
+                }
+                using (Brush brush = new SolidBrush(arrowDecorator.Color))
+                {
+                    graphics.FillPolygon(brush, points.ToArray());
+                }
+            }
             else if(decorator is PuzzleGraph.Decorators.TetrisDecorator)
             {
                 DrawTetris(graphics, decorator, Vector.Zero, scale, metaData, backgroudColor);

@@ -30,7 +30,7 @@ namespace WitnessVisualizer
             Toolkit.Items.Add(new PuzzleToolkitDecoratorItem(Resources.Lang.Triangle2, new PuzzleGraph.Decorators.TriangleDecorator() { Count = 2 }));
             Toolkit.Items.Add(new PuzzleToolkitDecoratorItem(Resources.Lang.Triangle3, new PuzzleGraph.Decorators.TriangleDecorator() { Count = 3 }));
             Toolkit.Items.Add(new PuzzleToolkitDecoratorItem(Resources.Lang.Triangle4, new PuzzleGraph.Decorators.TriangleDecorator() { Count = 4 }));
-            Toolkit.Items.Add(new PuzzleToolkitDecoratorItem(Resources.Lang.Triangle5, new PuzzleGraph.Decorators.TriangleDecorator() { Count = 5 }));
+            Toolkit.Items.Add(new PuzzleToolkitDecoratorItem(Resources.Lang.Arrow, new PuzzleGraph.Decorators.ArrowDecorator() { Count = 2 }));
             Toolkit.Items.Add(new PuzzleToolkitDecoratorItem(Resources.Lang.Tetris, new PuzzleGraph.Decorators.TetrisDecorator() { Indexes = exampleIndex, Shapes = exampleShapes }));
             Toolkit.Items.Add(new PuzzleToolkitDecoratorItem(Resources.Lang.HollowTetris, new PuzzleGraph.Decorators.HollowTetrisDecorator() { Indexes = exampleIndex, Shapes = exampleShapes }));
             Toolkit.Items.Add(new PuzzleToolkitDecoratorItem(Resources.Lang.SkewTetris, new PuzzleGraph.Decorators.TetrisDecorator() { Indexes = exampleIndex, Shapes = exampleShapes, Angle = -15 }));
