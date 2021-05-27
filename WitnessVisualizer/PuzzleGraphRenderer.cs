@@ -75,7 +75,8 @@ namespace WitnessVisualizer
                 }
                 foreach (Node node in graph.Nodes)
                 {
-                    DrawNode(view, node, pointBrush, lineWidth);
+                    if (view.IsDragging || !node.Hidden)
+                        DrawNode(view, node, pointBrush, lineWidth);
                 }
                 foreach (Edge edge in graph.Edges)
                 {

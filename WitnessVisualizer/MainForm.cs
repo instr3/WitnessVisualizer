@@ -397,7 +397,8 @@ namespace WitnessVisualizer
             {
                 bool controlPressed = (ModifierKeys & Keys.Control) == Keys.Control;
                 bool shiftPressed = (ModifierKeys & Keys.Shift) == Keys.Shift;
-                if (editView.MouseDown(e.X, e.Y, e.Button, controlPressed, shiftPressed))
+                bool altPressed = (ModifierKeys & Keys.Alt) == Keys.Alt;
+                if (editView.MouseDown(e.X, e.Y, e.Button, controlPressed, altPressed, shiftPressed))
                     ToolkitListView.SelectedItems.Clear(); // Copy is performed
                 UpdateGraphDrawing();
                 UpdatePropertyGridBinding();
@@ -486,7 +487,7 @@ namespace WitnessVisualizer
         }
         private void OpenToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            openInfoFileDialog.InitialDirectory = Path.Combine(Application.StartupPath, "Puzzles");
+            // openInfoFileDialog.InitialDirectory = Path.Combine(Application.StartupPath, "Puzzles");
             if (openInfoFileDialog.ShowDialog() == DialogResult.Cancel)
                 return;
             savePath = openInfoFileDialog.FileName;

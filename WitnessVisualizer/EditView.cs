@@ -93,7 +93,7 @@ namespace WitnessVisualizer
             Scale *= deltaScale;
         }
 
-        internal bool MouseDown(int x, int y, MouseButtons button, bool ctrlKey, bool shiftKey) // Return true if copy operation is performed
+        internal bool MouseDown(int x, int y, MouseButtons button, bool ctrlKey, bool altKey, bool shiftKey) // Return true if copy operation is performed
         {
             bool copyPerformed = false;
             if(IsCreatingMode)
@@ -131,7 +131,20 @@ namespace WitnessVisualizer
                     return false;
                 }
             }
-            if (HoveredObjects.Count > 0 && button != MouseButtons.Middle)
+            if (altKey && PasteMode && SampleDecorator != null) // Create and paste
+            {
+                GraphEditManager.BeforePreformEdit(Graph, "Create Graph Elements");
+                Vector pos = new Vector(x, y).MapFromScreen(Scale, Origin);
+                Node addNode = new Node(pos.X, pos.Y);
+                addNode.Hidden = true;
+                addNode.Decorator = SampleDecorator.Clone() as Decorator;
+                if (!shiftKey && addNode.Decorator is TransformableDecorator transformableDecorator)
+                {
+                    transformableDecorator.ExtraScale = (1 - Graph.MetaData.EdgeWidth) / Graph.MetaData.EdgeWidth;
+                }
+                GraphManipulation.AddShape(Graph, new List<Node>() { addNode });
+            }
+            else if (HoveredObjects.Count > 0 && button != MouseButtons.Middle)
             {
                 List<GraphElement> objectToKeep = new List<GraphElement>();
                 if(ctrlKey || shiftKey)

@@ -107,16 +107,19 @@ namespace WitnessVisualizer
                     faceNodes.Add(existNodes[i]);
                 }
             }
-            for (int i = 0; i < shape.Count; ++i)
+            if (faceNodes.Count > 1)
             {
-                int prev = i == 0 ? shape.Count - 1 : i - 1;
-                if (QueryEdge(graph, faceNodes[prev], faceNodes[i]) is null)
+                for (int i = 0; i < shape.Count; ++i)
                 {
-                    graph.Edges.Add(new Edge(faceNodes[prev], faceNodes[i]));
+                    int prev = i == 0 ? shape.Count - 1 : i - 1;
+                    if (QueryEdge(graph, faceNodes[prev], faceNodes[i]) is null)
+                    {
+                        graph.Edges.Add(new Edge(faceNodes[prev], faceNodes[i]));
+                    }
                 }
+                if (faceNodes.Count > 2)
+                    graph.Faces.Add(new Face(faceNodes));
             }
-            if (faceNodes.Count > 2)
-                graph.Faces.Add(new Face(faceNodes));
 
         }
         public static void AddShapeWithBaseDirectedSegment(Graph graph, Node node0, Node node1, List<Node> shape)
