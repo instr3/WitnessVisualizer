@@ -8,7 +8,7 @@ using System.Xml.Serialization;
 
 namespace PuzzleGraph.Decorators
 {
-    public class SymmetryPuzzleDecorator: TransformableDecorator, IFaceDecorable, IEdgeDecorable, INodeDecorable
+    public class SymmetryPuzzleDecorator: TransformableDecorator, IFaceDecorable, IEdgeDecorable, INodeDecorable, IUnifiedScaleDecorator
     {
         [LocalizedDisplayName("SecondLineColor")]
         [XmlElement(Type = typeof(XmlColor))]

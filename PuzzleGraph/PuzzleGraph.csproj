@@ -50,6 +50,7 @@
     <Compile Include="Decorators\EliminatorDecorator.cs" />
     <Compile Include="Decorators\EndDecorator.cs" />
     <Compile Include="Decorators\HollowTetrisDecorator.cs" />
+    <Compile Include="Decorators\ParallelPuzzleDecorator.cs" />
     <Compile Include="Decorators\PointDecorator.cs" />
     <Compile Include="Decorators\RingDecorator.cs" />
     <Compile Include="Decorators\SquareDecorator.cs" />
@@ -68,6 +69,7 @@
     <Compile Include="IEdgeDecorable.cs" />
     <Compile Include="IFaceDecorable.cs" />
     <Compile Include="INodeDecorable.cs" />
+    <Compile Include="IUnifiedScaleDecorator.cs" />
     <Compile Include="LocalizedDisplayNameAttribute.cs" />
     <Compile Include="MetaData.cs" />
     <Compile Include="Node.cs" />

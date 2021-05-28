@@ -207,6 +207,9 @@
   <data name="PaintingModeControl" xml:space="preserve">
     <value>Painting Mode Control</value>
   </data>
+  <data name="ParallelSymmetry" xml:space="preserve">
+    <value>Parallel Symmetry</value>
+  </data>
   <data name="Point" xml:space="preserve">
     <value>Point</value>
   </data>

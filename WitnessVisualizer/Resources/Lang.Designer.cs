@@ -331,6 +331,15 @@ namespace WitnessVisualizer.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Parallel Symmetry.
+        /// </summary>
+        internal static string ParallelSymmetry {
+            get {
+                return ResourceManager.GetString("ParallelSymmetry", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Point.
         /// </summary>
         internal static string Point {

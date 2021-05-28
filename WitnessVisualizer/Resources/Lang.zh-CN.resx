@@ -198,6 +198,9 @@
   <data name="PaintingModeControl" xml:space="preserve">
     <value>染色模式控制</value>
   </data>
+  <data name="ParallelSymmetry" xml:space="preserve">
+    <value>平行对称</value>
+  </data>
   <data name="Point" xml:space="preserve">
     <value>点</value>
   </data>
