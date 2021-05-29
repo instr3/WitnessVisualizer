@@ -228,6 +228,9 @@
   <data name="RotationalSymmetry" xml:space="preserve">
     <value>Rotational Symmetry</value>
   </data>
+  <data name="SelfIntersection" xml:space="preserve">
+    <value>Self Intersection</value>
+  </data>
   <data name="SkewHollowTetris" xml:space="preserve">
     <value>Skew Hollow Tetris</value>
   </data>

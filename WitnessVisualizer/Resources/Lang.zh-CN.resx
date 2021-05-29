@@ -219,6 +219,9 @@
   <data name="RotationalSymmetry" xml:space="preserve">
     <value>旋转对称</value>
   </data>
+  <data name="SelfIntersection" xml:space="preserve">
+    <value>二重点</value>
+  </data>
   <data name="SkewHollowTetris" xml:space="preserve">
     <value>空心斜俄罗斯方块</value>
   </data>

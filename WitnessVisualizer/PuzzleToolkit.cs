@@ -40,6 +40,7 @@ namespace WitnessVisualizer
             Toolkit.Items.Add(new PuzzleToolkitDecoratorItem(Resources.Lang.Circle, new PuzzleGraph.Decorators.CircleDecorator()));
             Toolkit.Items.Add(new PuzzleToolkitDecoratorItem(Resources.Lang.Ring, new PuzzleGraph.Decorators.RingDecorator()));
             Toolkit.Items.Add(new PuzzleToolkitDecoratorItem(Resources.Lang.Point, new PuzzleGraph.Decorators.PointDecorator(), 0.5));
+            Toolkit.Items.Add(new PuzzleToolkitDecoratorItem(Resources.Lang.SelfIntersection, new PuzzleGraph.Decorators.SelfIntersectionDecorator(), 0.5));
             Toolkit.Items.Add(new PuzzleToolkitDecoratorItem(Resources.Lang.Broken, new PuzzleGraph.Decorators.BrokenDecorator(), 0.25));
             Toolkit.Items.Add(new PuzzleToolkitDecoratorItem(Resources.Lang.Start, new PuzzleGraph.Decorators.StartDecorator(), 0.25));
             Toolkit.Items.Add(new PuzzleToolkitDecoratorItem(Resources.Lang.EndR, new PuzzleGraph.Decorators.EndDecorator() { Angle = 0 }, 0.25));

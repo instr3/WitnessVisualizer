@@ -53,6 +53,7 @@
     <Compile Include="Decorators\ParallelPuzzleDecorator.cs" />
     <Compile Include="Decorators\PointDecorator.cs" />
     <Compile Include="Decorators\RingDecorator.cs" />
+    <Compile Include="Decorators\SelfIntersectionDecorator.cs" />
     <Compile Include="Decorators\SquareDecorator.cs" />
     <Compile Include="Decorators\StarDecorator.cs" />
     <Compile Include="Decorators\StartDecorator.cs" />

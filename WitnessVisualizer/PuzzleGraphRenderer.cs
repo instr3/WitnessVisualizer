@@ -399,6 +399,36 @@ namespace WitnessVisualizer
                         new Vector(-x2, -radius / 2).MapToScreen(scale, Vector.Zero).ToPoint());
                 }
             }
+            else if (decorator is PuzzleGraph.Decorators.SelfIntersectionDecorator selfIntersectionDecorator)
+            {
+                double radius = 0.45;
+                double space = 0.1;
+                Vector dir0 = new Vector(1, 0);
+                Vector dir1 = new Vector(Math.Cos(Math.PI / 3), Math.Sin(Math.PI / 3));
+                Vector dir2 = new Vector(Math.Cos(2 * Math.PI / 3), Math.Sin(2 * Math.PI / 3));
+                using (Brush brush = new SolidBrush(selfIntersectionDecorator.Color1))
+                {
+                    graphics.FillPolygon(brush,
+                        new PointF[] {
+                            (radius * dir1 - space * dir0).MapToScreen(scale, Vector.Zero).ToPoint(),
+                            (radius * dir2).MapToScreen(scale, Vector.Zero).ToPoint(),
+                            (-radius * dir0).MapToScreen(scale, Vector.Zero).ToPoint(),
+                            (-radius * dir1 + space * dir2).MapToScreen(scale, Vector.Zero).ToPoint(),
+                        }
+                    );
+                }
+                using (Brush brush = new SolidBrush(selfIntersectionDecorator.Color2))
+                {
+                    graphics.FillPolygon(brush,
+                        new PointF[] {
+                            (-radius * dir1 + space * dir0).MapToScreen(scale, Vector.Zero).ToPoint(),
+                            (-radius * dir2).MapToScreen(scale, Vector.Zero).ToPoint(),
+                            (radius * dir0).MapToScreen(scale, Vector.Zero).ToPoint(),
+                            (radius * dir1 - space * dir2).MapToScreen(scale, Vector.Zero).ToPoint(),
+                        }
+                    );
+                }
+            }
             else if(decorator is PuzzleGraph.Decorators.StartDecorator startDecorator)
             {
                 double radius = 2.55 / 2;

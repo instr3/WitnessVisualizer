@@ -394,6 +394,15 @@ namespace WitnessVisualizer.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Self Intersection.
+        /// </summary>
+        internal static string SelfIntersection {
+            get {
+                return ResourceManager.GetString("SelfIntersection", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Skew Hollow Tetris.
         /// </summary>
         internal static string SkewHollowTetris {
