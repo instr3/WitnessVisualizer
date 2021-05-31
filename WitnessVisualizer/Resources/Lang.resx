@@ -120,6 +120,9 @@
   <data name="Arrow" xml:space="preserve">
     <value>Arrow</value>
   </data>
+  <data name="Box" xml:space="preserve">
+    <value>Box</value>
+  </data>
   <data name="Broken" xml:space="preserve">
     <value>Broken</value>
   </data>

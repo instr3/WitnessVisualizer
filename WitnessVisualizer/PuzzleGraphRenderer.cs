@@ -540,6 +540,14 @@ namespace WitnessVisualizer
                 }
                 graphics.FillEllipse(Brushes.Black, Vector.Zero.MapToScreen(unifiedScale, Vector.Zero).ToCircleBoundingBox(lineWidth * 0.3));
             }
+            else if (decorator is PuzzleGraph.Decorators.BoxDecorator boxDecorator)
+            {
+                double radius = 0.35;
+                using (Pen pen = new Pen(Color.Black, (float) (metaData.EdgeWidth * scale * 0.5)))
+                {
+                    graphics.DrawRectangle(pen, (float)(-radius * scale), (float)(-radius * scale), (float)(radius * scale * 2), (float)(radius * scale * 2));
+                }
+            }
             else if(decorator is PuzzleGraph.Decorators.CombinedDecorator combinedDecorator)
             {
                 graphics.ResetTransform();

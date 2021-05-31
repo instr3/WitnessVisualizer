@@ -70,6 +70,15 @@ namespace WitnessVisualizer.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Box.
+        /// </summary>
+        internal static string Box {
+            get {
+                return ResourceManager.GetString("Box", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Broken.
         /// </summary>
         internal static string Broken {

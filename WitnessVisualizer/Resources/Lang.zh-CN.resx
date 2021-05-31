@@ -120,6 +120,9 @@
   <data name="Arrow" xml:space="preserve">
     <value>箭头</value>
   </data>
+  <data name="Box" xml:space="preserve">
+    <value>板条箱</value>
+  </data>
   <data name="Broken" xml:space="preserve">
     <value>断路</value>
   </data>
