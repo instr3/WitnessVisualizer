@@ -26,7 +26,8 @@ namespace PuzzleGraph
         XmlInclude(typeof(ThreeWayPuzzleDecorator)),
         XmlInclude(typeof(ParallelPuzzleDecorator)),
         XmlInclude(typeof(ArrowDecorator)),
-        XmlInclude(typeof(SelfIntersectionDecorator))
+        XmlInclude(typeof(SelfIntersectionDecorator)),
+        XmlInclude(typeof(BoxDecorator)),
     ]
     public abstract class Decorator : ICloneable
     {

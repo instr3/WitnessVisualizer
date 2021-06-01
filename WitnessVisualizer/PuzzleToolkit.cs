@@ -54,6 +54,7 @@ namespace WitnessVisualizer
             Toolkit.Items.Add(new PuzzleToolkitDecoratorItem(Resources.Lang.Text, new PuzzleGraph.Decorators.TextDecorator() { Font = SystemFonts.MessageBoxFont, Text = "A" }));
             Toolkit.Items.Add(new PuzzleToolkitDecoratorItem(Resources.Lang.Symbol, new PuzzleGraph.Decorators.TextDecorator() { Font = SystemFonts.MessageBoxFont, Text = "\u2460" }));
             Toolkit.Items.Add(new PuzzleToolkitDecoratorItem(Resources.Lang.Emoji, new PuzzleGraph.Decorators.TextDecorator() { Font = new Font("Segoe UI Emoji",9), Text = "\U0001F600" }));
+            Toolkit.Items.Add(new PuzzleToolkitDecoratorItem(Resources.Lang.Box, new PuzzleGraph.Decorators.BoxDecorator()));
             Toolkit.Items.Add(new PuzzleToolkitDecoratorItem(Resources.Lang.VerticalSymmetry, new PuzzleGraph.Decorators.SymmetryPuzzleDecorator() { IsRotational = false, Angle = 0 }));
             Toolkit.Items.Add(new PuzzleToolkitDecoratorItem(Resources.Lang.HorizontalSymmetry, new PuzzleGraph.Decorators.SymmetryPuzzleDecorator() { IsRotational = false, Angle = 90 }));
             Toolkit.Items.Add(new PuzzleToolkitDecoratorItem(Resources.Lang.RotationalSymmetry, new PuzzleGraph.Decorators.SymmetryPuzzleDecorator() { IsRotational = true, Angle = 0 }));
