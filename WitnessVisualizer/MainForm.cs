@@ -843,6 +843,29 @@ namespace WitnessVisualizer
 
         }
 
+        private void playTestToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (editView != null)
+            {
+                if (!string.IsNullOrEmpty(savePath))
+                    editView.Graph.SaveToFile(savePath);
+                else
+                    SaveAsToolStripMenuItem_Click(sender, e);
+                if (!string.IsNullOrEmpty(savePath))
+                {
+                    string executable = Path.Combine(Directory.GetCurrentDirectory(), "Player.exe");
+                    try
+                    {
+                        System.Diagnostics.Process.Start(executable, savePath);
+                    }
+                    catch
+                    {
+                        MessageBox.Show("Cannot start player.exe. Is the executable missing?");
+                    }
+                }
+            }
+        }
+
         private void ResetToolStripMenuItem_Click(object sender, EventArgs e)
         {
             if(puzzlePropertyGrid.SelectedGridItem != null)

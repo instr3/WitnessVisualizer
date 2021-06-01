@@ -99,6 +99,7 @@
             this.puzzlePropertyLabel = new System.Windows.Forms.Label();
             this.tetrisTemplatePictureBox = new System.Windows.Forms.PictureBox();
             this.puzzlePropertyGrid = new System.Windows.Forms.PropertyGrid();
+            this.playTestToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.propertyGridMenuStrip.SuspendLayout();
             this.menuStrip.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
@@ -146,7 +147,8 @@
             this.openToolStripMenuItem,
             this.saveToolStripMenuItem,
             this.saveAsToolStripMenuItem,
-            this.exportToolStripMenuItem});
+            this.exportToolStripMenuItem,
+            this.playTestToolStripMenuItem});
             this.filesToolStripMenuItem.Name = "filesToolStripMenuItem";
             resources.ApplyResources(this.filesToolStripMenuItem, "filesToolStripMenuItem");
             // 
@@ -593,6 +595,12 @@
             this.puzzlePropertyGrid.ToolbarVisible = false;
             this.puzzlePropertyGrid.PropertyValueChanged += new System.Windows.Forms.PropertyValueChangedEventHandler(this.PuzzlePropertyGrid_PropertyValueChanged);
             // 
+            // playTestToolStripMenuItem
+            // 
+            this.playTestToolStripMenuItem.Name = "playTestToolStripMenuItem";
+            resources.ApplyResources(this.playTestToolStripMenuItem, "playTestToolStripMenuItem");
+            this.playTestToolStripMenuItem.Click += new System.EventHandler(this.playTestToolStripMenuItem_Click);
+            // 
             // MainForm
             // 
             resources.ApplyResources(this, "$this");
@@ -695,6 +703,7 @@
         private System.Windows.Forms.PictureBox tetrisTemplatePictureBox;
         private System.Windows.Forms.PropertyGrid puzzlePropertyGrid;
         private System.Windows.Forms.PictureBox editorPictureBox;
+        private System.Windows.Forms.ToolStripMenuItem playTestToolStripMenuItem;
     }
 }
 
