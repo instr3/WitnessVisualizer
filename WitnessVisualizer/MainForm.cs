@@ -465,7 +465,7 @@ namespace WitnessVisualizer
 
         private void SaveAsToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            // saveInfoFileDialog.InitialDirectory = Path.Combine(Application.StartupPath, "Puzzles");
+            saveInfoFileDialog.InitialDirectory = Path.Combine(Application.StartupPath, "Puzzles");
             if (editView != null)
             {
                 if (saveInfoFileDialog.ShowDialog() == DialogResult.Cancel)
@@ -487,7 +487,7 @@ namespace WitnessVisualizer
         }
         private void OpenToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            // openInfoFileDialog.InitialDirectory = Path.Combine(Application.StartupPath, "Puzzles");
+            openInfoFileDialog.InitialDirectory = Path.Combine(Application.StartupPath, "Puzzles");
             if (openInfoFileDialog.ShowDialog() == DialogResult.Cancel)
                 return;
             savePath = openInfoFileDialog.FileName;
