@@ -89,6 +89,23 @@ namespace PuzzleGraph
             }
             else if(element is Edge edge)
             {
+                List<GraphElement> elementsToDelete = new List<GraphElement>();
+                foreach (Face face in Faces)
+                {
+                    for (int i = 0; i < face.Nodes.Count; ++i)
+                    {
+                        Node firstNode = face.Nodes[i];
+                        Node secondNode = face.Nodes[i + 1 < face.Nodes.Count ? i + 1 : 0];
+                        if ((firstNode == edge.End && secondNode == edge.Start) ||
+                            (firstNode == edge.Start && secondNode == edge.End))
+                        {
+                            elementsToDelete.Add(face);
+                            break;
+                        }
+                    }
+                }
+                foreach (GraphElement newElement in elementsToDelete)
+                    RemoveElement(newElement);
                 Edges.Remove(edge);
             }
             else if(element is Face face)
