@@ -70,13 +70,16 @@ namespace WitnessVisualizer
             }
             foreach(Face face in Graph.Faces)
             {
-                Vector sum = Vector.Zero;
-                foreach (Node node in face.Nodes)
+                double totalAngle = 0.0;
+                for (int i = 0; i < face.Nodes.Count; ++i)
                 {
-                    sum += new Vector(node.X, node.Y);
+                    Node p0 = face.Nodes[i == 0 ? face.Nodes.Count - 1 : i - 1];
+                    Node p1 = face.Nodes[i];
+                    Vector v0 = new Vector(p0.X, p0.Y);
+                    Vector v1 = new Vector(p1.X, p1.Y);
+                    totalAngle += Vector.GetAngle(v0 - query, v1 - query);
                 }
-                Vector pos = (sum / face.Nodes.Count);
-                if (Vector.PointDistance(query, pos) <= 0.25)
+                if (Math.Abs(totalAngle) > 2 * Math.PI - 1e-4)
                 {
                     return face;
                 }
