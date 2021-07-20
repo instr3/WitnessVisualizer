@@ -16,9 +16,9 @@ namespace TemplateGenerator
             HexagonTemplateGenerator hexagonTemplateGenerator = new HexagonTemplateGenerator();
             RightTriangleTemplateGenerator rightTriangleTemplateGenerator = new RightTriangleTemplateGenerator();
             PyramidHexagonTemplateGenerator pyramidHexagonTemplateGenerator = new PyramidHexagonTemplateGenerator();
-            for (int i=1;i<=8;++i)
+            for (int i=1;i<=10;++i)
             {
-                for(int j=1;j<=8;++j)
+                for(int j=1;j<=10;++j)
                 {
                     SaveGeneratedPuzzle(squareTemplateGenerator.Generate(i, j, 6));
                     SaveGeneratedPuzzle(rightTriangleTemplateGenerator.Generate(i, j, 6));
