@@ -43,6 +43,7 @@ namespace MathHelper
         public static Vector operator /(Vector a, double b) => new Vector(a.X / b, a.Y / b);
         public static Vector operator /(double b, Vector a) => new Vector(a.X / b, a.Y / b);
         public static double operator ^(Vector a, Vector b) => a.X * b.X + a.Y * b.Y;
+        public static double operator *(Vector a, Vector b) => a.X * b.Y - b.X * a.Y;
         #endregion
 
         #region helper functions

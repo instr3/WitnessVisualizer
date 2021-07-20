@@ -111,6 +111,7 @@ namespace WitnessVisualizer
                             }
                             else if(CreatingNodes.First() == node)
                             {
+                                AddToCreatingNodes(node);
                                 SubmitCreatingNodes();
                             }
                             return false;
@@ -122,7 +123,7 @@ namespace WitnessVisualizer
                         Vector pos = new Vector(x, y).MapFromScreen(Scale,Origin);
                         addNode = new Node(pos.X, pos.Y);
                     }
-                    CreatingNodes.Add(addNode);
+                    AddToCreatingNodes(addNode);
                     return false;
                 }
                 else if (button == MouseButtons.Right) // Exit
@@ -548,6 +549,42 @@ namespace WitnessVisualizer
             GraphManipulation.AddShape(Graph, CreatingNodes);
             ExitCreatingMode();
             EnterCreatingMode();
+        }
+
+        void AddToCreatingNodes(Node endNode)
+        {
+            if (CreatingNodes.Count == 0)
+            {
+                CreatingNodes.Add(endNode);
+                return;
+            }
+            Node prevNode = CreatingNodes.Last();
+            Vector relativeVector = new Vector(endNode.X - prevNode.X, endNode.Y - prevNode.Y);
+            double relativeVectorLength = relativeVector.Length();
+            if (relativeVectorLength < 1e-6)
+                return;
+            relativeVector /= relativeVectorLength;
+            List<KeyValuePair<double, Node>> nodesOnLine = new List<KeyValuePair<double, Node>>();
+            foreach (Node node in Graph.Nodes)
+            {
+                Vector testVector = new Vector(node.X - prevNode.X, node.Y - prevNode.Y);
+                if (Math.Abs(testVector * relativeVector) < 1e-6)
+                {
+                    double length = relativeVector ^ testVector;
+                    if (length > 1e-6 && length < relativeVectorLength - 1e-6) // point on line
+                    {
+                        nodesOnLine.Add(new KeyValuePair<double, Node>(length, node));
+                    }
+                }
+            }
+            nodesOnLine.Sort((x1, x2) => x1.Key.CompareTo(x2.Key));
+            foreach (KeyValuePair<double, Node> pair in nodesOnLine)
+            {
+                if (!CreatingNodes.Contains(pair.Value))
+                    CreatingNodes.Add(pair.Value);
+            }
+            if (!CreatingNodes.Contains(endNode))
+                CreatingNodes.Add(endNode);
         }
 
         internal void EnterCreatingMode()
