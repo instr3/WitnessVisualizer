@@ -219,6 +219,46 @@ namespace PuzzleGraph
             return newGraph;
 
         }
+        public static Graph ScaleGraph(Graph graph, double scaleX, double scaleY)
+        {
+            Graph graphClone = new Graph(graph.ToString());
+            Graph newGraph = new Graph();
+            Dictionary<Node, Node> mapping = new Dictionary<Node, Node>();
+            foreach (Node node in graphClone.Nodes)
+            {
+                mapping[node] = new Node(node.X * scaleX, node.Y * scaleY);
+                mapping[node].Decorator = node.Decorator;
+            }
+            foreach (Node node in graphClone.Nodes)
+            {
+                newGraph.Nodes.Add(mapping[node]);
+            }
+            foreach (Edge edge in graphClone.Edges)
+            {
+                Edge newEdge = new Edge(mapping[edge.Start], mapping[edge.End]);
+                newEdge.Decorator = edge.Decorator;
+                newGraph.Edges.Add(newEdge);
+            }
+            foreach (Face face in graphClone.Faces)
+            {
+                List<Node> nodes = new List<Node>();
+                nodes.AddRange(face.Nodes);
+                Face newFace = new Face(nodes.Select(node => mapping[node]).ToList());
+                newFace.Decorator = face.Decorator;
+                newGraph.Faces.Add(newFace);
+            }
+            TetrisTemplate oldTetrisTemplate = graphClone.MetaData.TetrisTemplate;
+            newGraph.MetaData = graphClone.MetaData;
+            newGraph.MetaData.TetrisTemplate = new TetrisTemplate();
+            foreach (List<Node> shape in oldTetrisTemplate.Shapes)
+            {
+                List<Node> newShape = new List<Node>();
+                newShape.AddRange(shape);
+                newGraph.MetaData.TetrisTemplate.Shapes.Add(newShape.Select(node => new Node(node.X * scaleX, node.Y * scaleY)).ToList());
+            }
+            return newGraph;
+
+        }
 
         public object Clone()
         {

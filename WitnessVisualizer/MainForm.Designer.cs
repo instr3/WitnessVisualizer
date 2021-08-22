@@ -39,6 +39,7 @@
             this.saveToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.saveAsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.exportToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.playTestToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.editToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.undoToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.redoToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -99,7 +100,7 @@
             this.puzzlePropertyLabel = new System.Windows.Forms.Label();
             this.tetrisTemplatePictureBox = new System.Windows.Forms.PictureBox();
             this.puzzlePropertyGrid = new System.Windows.Forms.PropertyGrid();
-            this.playTestToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.scaleBoardStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.propertyGridMenuStrip.SuspendLayout();
             this.menuStrip.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
@@ -182,6 +183,12 @@
             resources.ApplyResources(this.exportToolStripMenuItem, "exportToolStripMenuItem");
             this.exportToolStripMenuItem.Click += new System.EventHandler(this.ExportToolStripMenuItem_Click);
             // 
+            // playTestToolStripMenuItem
+            // 
+            this.playTestToolStripMenuItem.Name = "playTestToolStripMenuItem";
+            resources.ApplyResources(this.playTestToolStripMenuItem, "playTestToolStripMenuItem");
+            this.playTestToolStripMenuItem.Click += new System.EventHandler(this.playTestToolStripMenuItem_Click);
+            // 
             // editToolStripMenuItem
             // 
             this.editToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
@@ -199,6 +206,7 @@
             this.flipHorizontallyToolStripMenuItem,
             this.flipVerticallyToolStripMenuItem,
             this.rotateBoardToolStripMenuItem,
+            this.scaleBoardStripMenuItem,
             this.toolStripMenuItem4,
             this.editShapesToolStripMenuItem,
             this.tetrisTemplatesToolStripMenuItem,
@@ -595,11 +603,11 @@
             this.puzzlePropertyGrid.ToolbarVisible = false;
             this.puzzlePropertyGrid.PropertyValueChanged += new System.Windows.Forms.PropertyValueChangedEventHandler(this.PuzzlePropertyGrid_PropertyValueChanged);
             // 
-            // playTestToolStripMenuItem
+            // scaleBoardStripMenuItem
             // 
-            this.playTestToolStripMenuItem.Name = "playTestToolStripMenuItem";
-            resources.ApplyResources(this.playTestToolStripMenuItem, "playTestToolStripMenuItem");
-            this.playTestToolStripMenuItem.Click += new System.EventHandler(this.playTestToolStripMenuItem_Click);
+            this.scaleBoardStripMenuItem.Name = "scaleBoardStripMenuItem";
+            resources.ApplyResources(this.scaleBoardStripMenuItem, "scaleBoardStripMenuItem");
+            this.scaleBoardStripMenuItem.Click += new System.EventHandler(this.scaleBoardStripMenuItem_Click);
             // 
             // MainForm
             // 
@@ -704,6 +712,7 @@
         private System.Windows.Forms.PropertyGrid puzzlePropertyGrid;
         private System.Windows.Forms.PictureBox editorPictureBox;
         private System.Windows.Forms.ToolStripMenuItem playTestToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem scaleBoardStripMenuItem;
     }
 }
 

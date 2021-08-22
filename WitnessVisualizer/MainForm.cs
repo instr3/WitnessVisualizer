@@ -577,6 +577,33 @@ namespace WitnessVisualizer
             }
         }
 
+        private void scaleBoardStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (editView != null)
+            {
+                while (true)
+                {
+                    string resultX = Prompt.ShowDialog(Resources.Lang.Info_EnterXScale, Resources.Lang.Hint);
+                    string resultY = Prompt.ShowDialog(Resources.Lang.Info_EnterYScale, Resources.Lang.Hint);
+                    if (string.IsNullOrWhiteSpace(resultX) || string.IsNullOrWhiteSpace(resultY)) break;
+                    double scaleX, scaleY;
+                    if (double.TryParse(resultX, out scaleX) && double.TryParse(resultY, out scaleY))
+                    {
+                        if (scaleX == 0.0 || scaleY == 0.0) break;
+                        if (!double.IsNaN(scaleX) && !double.IsInfinity(scaleY) && !double.IsNaN(scaleY) && !double.IsInfinity(scaleY))
+                        {
+                            editView.GraphEditManager.BeforePreformEdit(editView.Graph, "Scale Graph");
+                            Graph graph = Graph.ScaleGraph(editView.Graph, scaleX, scaleY);
+                            editView = new EditView(graph, editorPictureBox.Width, editorPictureBox.Height, tetrisTemplatePictureBox.Width, tetrisTemplatePictureBox.Height);
+                            UpdateGraphDrawing();
+                            UpdateTetrisTemplateDrawing();
+                            ToolkitListView.SelectedItems.Clear();
+                            break;
+                        }
+                    }
+                }
+            }
+        }
         private void ClearDecorationsToolStripMenuItem_Click(object sender, EventArgs e)
         {
             if (editView != null)
@@ -865,6 +892,7 @@ namespace WitnessVisualizer
                 }
             }
         }
+
 
         private void ResetToolStripMenuItem_Click(object sender, EventArgs e)
         {

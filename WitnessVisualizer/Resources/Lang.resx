@@ -189,6 +189,12 @@
   <data name="Info.EnterDegrees" xml:space="preserve">
     <value>Enter the angle (clockwise) in degrees:</value>
   </data>
+  <data name="Info.EnterXScale" xml:space="preserve">
+    <value>Enter the scale factor of X:</value>
+  </data>
+  <data name="Info.EnterYScale" xml:space="preserve">
+    <value>Enter the scale factor of Y:</value>
+  </data>
   <data name="Info.FloatScale" xml:space="preserve">
     <value>Please enter a float scale factor (e.g., 2.0 or 0.5).</value>
   </data>

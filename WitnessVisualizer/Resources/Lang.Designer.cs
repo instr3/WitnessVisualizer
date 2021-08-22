@@ -277,6 +277,24 @@ namespace WitnessVisualizer.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Enter the scale factor of X:.
+        /// </summary>
+        internal static string Info_EnterXScale {
+            get {
+                return ResourceManager.GetString("Info.EnterXScale", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Enter the scale factor of Y:.
+        /// </summary>
+        internal static string Info_EnterYScale {
+            get {
+                return ResourceManager.GetString("Info.EnterYScale", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Please enter a float scale factor (e.g., 2.0 or 0.5)..
         /// </summary>
         internal static string Info_FloatScale {
